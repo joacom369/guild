@@ -1,6 +1,6 @@
 ---
-name: metodo-riguroso
-description: Forma de pensar para trabajos con datos, modelos, evaluaciones, investigaciones o decisiones (tesis, informes, análisis económicos y financieros, proyectos de inversión, ciencia de datos, análisis espacial, tableros). Axiomas sobre el origen y el estado de cada cifra, seis fundamentos, validación contra la propia ilusión y hábitos para no casarse con un supuesto. Usar al empezar o revisar un trabajo analítico, antes de dar una conclusión, al cargar una fuente externa, al elegir o validar un modelo, o cuando el usuario pide rigor, metodología, sensibilidad o crítica. También con /metodo-riguroso.
+name: provenance
+description: Forma de pensar para trabajos con datos, modelos, evaluaciones, investigaciones o decisiones (tesis, informes, análisis económicos y financieros, proyectos de inversión, ciencia de datos, análisis espacial, tableros). Axiomas sobre el origen y el estado de cada cifra, seis fundamentos, validación contra la propia ilusión y hábitos para no casarse con un supuesto. Usar al empezar o revisar un trabajo analítico, antes de dar una conclusión, al cargar una fuente externa, al elegir o validar un modelo, o cuando el usuario pide rigor, metodología, sensibilidad o crítica. También con /provenance.
 ---
 
 # Método riguroso: cada cifra con su origen, cada conclusión con su nivel
@@ -169,5 +169,5 @@ magnitud. El prompt no aprende; el registro sí. Ver
 ## Cómo se combina
 
 Para ejecutar tareas de varias partes con el menor gasto, usá también
-`reparto-eficiente`. Si el proyecto tiene reglas propias (un CLAUDE.md, un
+`tokenwise`. Si el proyecto tiene reglas propias (un CLAUDE.md, un
 documento de estado), mandan sobre esta skill cuando difieren.

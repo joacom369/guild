@@ -1,6 +1,6 @@
 ---
-name: reparto-eficiente
-description: Método para hacer tareas de varias partes (investigar, criticar, programar, verificar) con la mejor calidad al menor costo de tokens, en una cuenta compartida. Usar ANTES de lanzar subagentes, cuando una tarea tiene tres o más partes independientes, cuando hay que relevar fuentes en la web, cuando una tarea pediría un equipo de varios especialistas, o cuando el usuario pide repartir, delegar o ahorrar uso. También con /reparto-eficiente.
+name: tokenwise
+description: Método para hacer tareas de varias partes (investigar, criticar, programar, verificar) con la mejor calidad al menor costo de tokens, en una cuenta compartida. Usar ANTES de lanzar subagentes, cuando una tarea tiene tres o más partes independientes, cuando hay que relevar fuentes en la web, cuando una tarea pediría un equipo de varios especialistas, o cuando el usuario pide repartir, delegar o ahorrar uso. También con /tokenwise.
 ---
 
 # Reparto eficiente: calidad con un presupuesto de tokens
@@ -108,6 +108,6 @@ especialistas sigue siempre el procedimiento de la sección 2.
 
 ## 7. Con qué se combina
 
-El piso de calidad de la sección 4 sale de `metodo-riguroso` (origen y estado
+El piso de calidad de la sección 4 sale de `provenance` (origen y estado
 de cada cifra, fuentes con metodología revisada, nivel de cada conclusión). Si
 el proyecto tiene reglas propias, mandan sobre esta skill.
