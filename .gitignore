@@ -1,0 +1,7 @@
+# Sólo se versionan las skills propias. Las de terceros (ponytail, streamlit)
+# y synced/ (lo descarga claude.ai y lo pisa en cada sincronización) quedan afuera.
+/*
+!/.gitignore
+!/README.md
+!/metodo-riguroso/
+!/reparto-eficiente/
