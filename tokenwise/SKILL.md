@@ -99,6 +99,20 @@ El encargo debe ser autocontenido y corto:
 - Ediciones de varias líneas con un script en archivo, no con heredocs: las
   comillas rompen el heredoc y obligan a repetir.
 
+### Esfuerzo y agentes que trabajan solos
+
+- **El esfuerzo es la perilla principal.** Arrancar en `medium`. `xhigh` y `max` se reservan para tareas donde se
+  midió que mejoran el resultado. Para gastar menos, conviene bajar el esfuerzo antes que pedir en el prompt
+  «pensá menos»: baja más el costo y es más predecible. Un subagente de búsqueda o de una tarea mecánica va con
+  esfuerzo bajo.
+- **Presupuesto de tiempo para los subagentes.** Si se puede estimar cuánto debería llevar, se dice en el encargo
+  («presupuesto: unos 10 minutos»), un poco por encima de lo que se quiere gastar. Con un presupuesto, los agentes
+  se reparten mejor el trabajo en paralelo y terminan antes, sin perder calidad. Es orientativo: si hace falta un
+  corte duro, ponelo vos.
+- **Un agente que se frena no es un agente que terminó.** Si deja tareas abiertas sin decir qué lo bloquea, se lo
+  relanza nombrando esas tareas. Como mucho dos o tres veces sobre la misma tarea; si sigue trabado, se corta y se
+  revisa, no se insiste.
+
 ## 6. Antes de lanzar, en una línea
 
 Decile al usuario qué vas a repartir, a cuántos agentes y con qué modelo, y
