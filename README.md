@@ -11,7 +11,7 @@ repositorio: se editan ahí y se suben con commit y push.
 ## Instalar en otra PC
 
 ```bash
-git clone https://github.com/joaquinmilanesio-prog/claude-skills.git ~/.claude/skills
+git clone https://github.com/joacom369/claude-skills.git ~/.claude/skills
 ```
 
 Si `~/.claude/skills` ya existe, clonar aparte y copiar las carpetas.
