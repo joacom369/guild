@@ -5,6 +5,10 @@
 !/README.md
 !/provenance/
 !/tokenwise/
+!/kiln/
+!/.claude-plugin/
+!/dist/
+!/empaquetar.py
 # De terceros, con licencia libre y su LICENSE: se versionan para tenerlas en cualquier PC.
 !/impeccable/
 !/design-taste-frontend/
