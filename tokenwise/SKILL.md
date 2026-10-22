@@ -1,12 +1,12 @@
 ---
 name: tokenwise
-description: Método para hacer tareas de varias partes (investigar, criticar, programar, verificar) con la mejor calidad al menor costo de tokens, en una cuenta compartida. Usar ANTES de lanzar subagentes, cuando una tarea tiene tres o más partes independientes, cuando hay que relevar fuentes en la web, cuando una tarea pediría un equipo de varios especialistas, o cuando el usuario pide repartir, delegar o ahorrar uso. También con /tokenwise.
+description: Método para hacer tareas de varias partes (investigar, criticar, programar, verificar) con la mejor calidad al menor costo de tokens, dentro del presupuesto de uso de la cuenta. Usar ANTES de lanzar subagentes, cuando una tarea tiene tres o más partes independientes, cuando hay que relevar fuentes en la web, cuando una tarea pediría un equipo de varios especialistas, o cuando el usuario pide repartir, delegar o ahorrar uso. También con /tokenwise.
 ---
 
 # Reparto eficiente: calidad con un presupuesto de tokens
 
-La cuenta es compartida: cada token gastado acá lo deja de tener otra persona.
-El problema es dual. Primero se fija el **piso de calidad**; después se busca
+El uso de la cuenta tiene un límite: cada token gastado de más se resta de lo que
+queda para el resto del trabajo. El problema es dual. Primero se fija el **piso de calidad**; después se busca
 el **menor gasto** que lo cumple. El piso no se negocia; lo demás, sí.
 
 ## 1. Antes de repartir: ¿hace falta?
@@ -23,8 +23,8 @@ documentos largos, búsquedas amplias. El agente lee y te devuelve la
 conclusión; vos no cargás el material.
 
 Paralelizar acorta el tiempo, pero **no baja el consumo**: cuatro agentes a la
-vez gastan el límite más rápido. En una cuenta compartida, lanzá en paralelo
-sólo lo que de verdad se necesita ya. Lo demás va en serie o se pospone.
+vez gastan el límite más rápido. Lanzá en paralelo sólo lo que de verdad se
+necesita ya. Lo demás va en serie o se pospone.
 
 ## 2. Quién hace qué
 
@@ -113,15 +113,62 @@ El encargo debe ser autocontenido y corto:
   relanza nombrando esas tareas. Como mucho dos o tres veces sobre la misma tarea; si sigue trabado, se corta y se
   revisa, no se insiste.
 
-## 6. Antes de lanzar, en una línea
+## 6. Modelo principal y asesor (advisor)
+
+Claude Code puede sumar un **asesor**: un segundo modelo, más fuerte, que Claude consulta en los puntos de decisión
+(antes de elegir un enfoque, ante un error que se repite, antes de dar algo por terminado). Lee la conversación entera y
+devuelve una recomendación. Se activa con `/advisor <modelo>`, se apaga con `/advisor off` y lo decide el usuario: es su
+configuración y su cuota.
+
+**Cuándo conviene:**
+- Tareas largas y de varios pasos, donde casi todo es rutina pero el plan decide el resultado: extracción y modelo de
+  datos, refactors grandes, errores que vuelven.
+- Cuando se quiere un control independiente antes de cerrar algo importante.
+
+**Cuándo no:**
+- Tareas cortas: la consulta cuesta más de lo que aporta.
+- Sesiones muy largas. Cada consulta procesa la conversación completa sin caché, así que en una sesión de horas cada
+  consulta es cara. Es mejor activarlo en una sesión nueva.
+
+**Combinaciones de partida (el asesor debe ser igual o más fuerte que el principal):**
+
+| Trabajo | Principal | Asesor | Por qué |
+|---|---|---|---|
+| Rutina con decisiones clave (extraer, convertir, controlar, programar) | Sonnet | Opus | Más barato que correr Opus todo el tiempo; la calidad se cuida en los puntos de decisión |
+| Método, teoría, diseño de indicadores, decisiones con el usuario | Opus | ninguno | El razonamiento ya está en el principal |
+| Tarea de alto riesgo donde importa una segunda mirada | Opus | Opus o Fable | Control independiente; caro, y Fable consume créditos aparte |
+
+La tabla es un punto de partida, no una regla: con más margen de uso, el principal fuerte en todo el trabajo puede valer
+la pena. Lo decide el usuario.
+
+**Relación con los agentes críticos:**
+- El asesor revisa decisiones en el momento y con todo el contexto.
+- El agente crítico revisa un resultado terminado, sin ver el plan y con una lectura dirigida.
+- No se duplican: la auditoría grande de una ronda sigue siendo un crítico; el asesor cuida el camino.
+
+Lo que dice el asesor es una opinión, no una instrucción: si choca con la evidencia (un archivo, una prueba, una cifra
+controlada), se le muestra el conflicto al usuario en lugar de seguirlo.
+
+## 7. Extraer datos sin transcribir
+
+Cuando una herramienta devuelve un resultado grande (por ejemplo, una consulta SQL), la herramienta lo guarda completo en
+un archivo. Ese archivo se convierte con un script, con conteo de filas y totales contra una consulta de control.
+
+- Nunca se copian a mano cientos de filas.
+- Tampoco se encarga a un agente que las transcriba: es caro y propenso a errores. Sólo se hace cuando no hay otra vía, y
+  después se re-consulta una muestra para verificar.
+- La consulta se guarda en el repo para que el dato sea reproducible.
+
+## 8. Antes de lanzar, en una línea
 
 Decile al usuario qué vas a repartir, a cuántos agentes y con qué modelo, y
 qué hacés vos mientras tanto. Si la tanda es grande (más de 3 agentes o una
-tarea larga), pedí el visto bueno: la cuenta es compartida. Un equipo de
-especialistas sigue siempre el procedimiento de la sección 2.
+tarea larga), pedí el visto bueno. Un equipo de especialistas sigue siempre el
+procedimiento de la sección 2.
 
-## 7. Con qué se combina
+## 9. Con qué se combina
 
 El piso de calidad de la sección 4 sale de `provenance` (origen y estado
-de cada cifra, fuentes con metodología revisada, nivel de cada conclusión). Si
-el proyecto tiene reglas propias, mandan sobre esta skill.
+de cada cifra, fuentes con metodología revisada, nivel de cada conclusión).
+Antes de elegir una técnica o una herramienta, `criterio-herramientas`. Si el
+proyecto tiene reglas propias, mandan sobre esta skill.

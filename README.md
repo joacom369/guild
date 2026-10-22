@@ -8,6 +8,7 @@ repositorio: se editan ahí y se suben con commit y push.
 | `provenance` | Forma de pensar para trabajos con datos, modelos y decisiones: origen y estado de cada cifra, validación, hábitos para no casarse con un supuesto. |
 | `kiln` | Frontend pulido desde el primer intento: entiende qué busca el usuario, ofrece direcciones con vista previa, fija un contrato de diseño, construye con código mínimo y se mira en escritorio y celular antes de mostrar. Deriva el pulido a `impeccable` y `design-taste-frontend`. |
 | `tokenwise` | Cómo repartir tareas entre subagentes con la mejor calidad al menor costo de tokens; equipos de especialistas sólo con aval del usuario. |
+| `criterio-herramientas` | Elegir la técnica o herramienta (estadística, econometría, espacial, ML, BI) que conviene para una pregunta, y decir cuándo no conviene. |
 
 ## De terceros
 

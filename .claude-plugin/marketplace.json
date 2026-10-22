@@ -1,12 +1,65 @@
 {
   "name": "joaco-skills",
-  "owner": { "name": "Joaquín Milanesio" },
-  "metadata": { "description": "Skills propias (kiln, provenance, tokenwise) y las compañeras de diseño." },
+  "owner": {
+    "name": "Joaquín Milanesio"
+  },
+  "metadata": {
+    "description": "Skills propias (kiln, provenance, tokenwise, criterio-herramientas) y las compañeras de diseño."
+  },
   "plugins": [
-    { "name": "kiln", "description": "Frontend pulido desde el primer intento: entrevista con opciones visuales, contrato de diseño, código mínimo y verificación.", "source": "./", "strict": false, "skills": ["./kiln"] },
-    { "name": "provenance", "description": "Origen y estado de cada cifra en trabajos con datos, modelos y decisiones.", "source": "./", "strict": false, "skills": ["./provenance"] },
-    { "name": "tokenwise", "description": "Repartir tareas entre subagentes con la mejor calidad al menor costo.", "source": "./", "strict": false, "skills": ["./tokenwise"] },
-    { "name": "impeccable", "description": "Diseñar, pulir y auditar interfaces (Paul Bakaus, Apache 2.0).", "source": "./", "strict": false, "skills": ["./impeccable"] },
-    { "name": "design-taste-frontend", "description": "Dirección visual sin defaults de plantilla (Leonxlnx, MIT).", "source": "./", "strict": false, "skills": ["./design-taste-frontend"] }
+    {
+      "name": "kiln",
+      "description": "Frontend pulido desde el primer intento: entrevista con opciones visuales, contrato de diseño, código mínimo y verificación.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./kiln"
+      ]
+    },
+    {
+      "name": "provenance",
+      "description": "Origen y estado de cada cifra en trabajos con datos, modelos y decisiones.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./provenance"
+      ]
+    },
+    {
+      "name": "tokenwise",
+      "description": "Repartir tareas entre subagentes con la mejor calidad al menor costo.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./tokenwise"
+      ]
+    },
+    {
+      "name": "criterio-herramientas",
+      "description": "Elegir la técnica o herramienta que conviene para una pregunta, y cuándo no.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./criterio-herramientas"
+      ]
+    },
+    {
+      "name": "impeccable",
+      "description": "Diseñar, pulir y auditar interfaces (Paul Bakaus, Apache 2.0).",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./impeccable"
+      ]
+    },
+    {
+      "name": "design-taste-frontend",
+      "description": "Dirección visual sin defaults de plantilla (Leonxlnx, MIT).",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./design-taste-frontend"
+      ]
+    }
   ]
 }

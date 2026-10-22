@@ -6,6 +6,7 @@
 !/provenance/
 !/tokenwise/
 !/kiln/
+!/criterio-herramientas/
 !/.claude-plugin/
 !/dist/
 !/empaquetar.py
