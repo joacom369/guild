@@ -241,8 +241,8 @@ ol.next { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
           <tr><td>Pantallas aisladas</td><td>Agente en su propia copia del repositorio</td><td><code>tokenwise</code></td><td>existe</td></tr>
           <tr><td>Revisión antes de entregar</td><td>Revisor independiente fuerte</td><td><code>hallmark</code> nivel 3</td><td>existe</td></tr>
           <tr><td>Puntos de decisión</td><td>Asesor</td><td><code>tokenwise</code></td><td>existe</td></tr>
-          <tr><td>Lentes del laboratorio</td><td>Una lente por agente</td><td><code>foreman</code></td><td>a construir</td></tr>
-          <tr><td>Detectar tareas repetidas</td><td>Revisión de sesiones, con permiso previo</td><td><code>foreman</code> → <code>foundry</code></td><td>a construir</td></tr>
+          <tr><td>Lentes del laboratorio</td><td>Una lente por bloque; como agente en rondas grandes</td><td><code>foreman</code></td><td>existe</td></tr>
+          <tr><td>Detectar tareas repetidas</td><td>Revisión de sesiones, con permiso previo</td><td><code>foreman</code> → <code>foundry</code></td><td>falta el adaptador</td></tr>
           <tr><td>Resumen al empezar la jornada</td><td>Rutina programada</td><td><code>sherpa</code></td><td>falta la prueba y la rutina</td></tr>
         </tbody>
       </table>
@@ -266,7 +266,8 @@ ol.next { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
         <li class="done">Construir foundry</li>
         <li class="done">Cerrar la fase «analizar» con assay</li>
         <li>Probar sherpa con la cuenta correcta y crear sus rutinas</li>
-        <li>Construir foreman: buzón de ideas, apertura y cierre de sesión, lentes</li>
+        <li class="done">Construir foreman</li>
+        <li>Adaptador de inicio de sesión para foreman (hook)</li>
         <li>Pruebas de disparo de cada skill</li>
         <li>Adaptador para Cursor</li>
       </ol>
@@ -284,7 +285,7 @@ const N = [
   [0, "guardrails", "guardrails", "ext", "Guardarraíles del dominio", {
     hace: "Las reglas de seguridad propias de cada empresa (ambiente actual, IG: ig-guardrails).",
     recibe: "—", entrega: "Qué no se toca y qué no se comparte.", deriva: "Van primero en cualquier tarea de ese dominio." }],
-  [1, "foreman", "foreman", "todo", "El capataz · a construir", {
+  [1, "foreman", "foreman", "ok", "El capataz", {
     hace: "Decide qué skill trabaja, en qué orden y cuándo se despliega una lente. Te habla sólo por un riesgo, una decisión tuya o una tarea repetida. Guarda ideas en un buzón y avisa en una línea al empezar.",
     recibe: "Tu pedido, el estado del proyecto y el buzón.", entrega: "La secuencia de fases que aplican y la síntesis de las lentes.",
     deriva: "Orquesta, no legisla: no tiene reglas de contenido propias y nunca puede relajar una regla." }],

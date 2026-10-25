@@ -72,7 +72,17 @@ mensajes de chat. Lo que falta es lo único que se construye.
 ### 4. Las lentes proponen
 
 Cada lente propone **por separado**, en no más de diez líneas, sin ver lo que propusieron las otras. Los contratos
-de cada lente están en [referencias/lentes.md](referencias/lentes.md).
+completos y el registro de lentes son de la skill `foreman`. Si no está instalada, alcanza con esto:
+
+| Lente | Pregunta | Entrega |
+|---|---|---|
+| Vago | ¿Qué es lo mínimo que llega al resultado? | La opción más barata y lo que se pierde |
+| Optimista | ¿Y si lo llevamos al máximo? | El techo, rotulado, y qué tendría que ser cierto |
+| Creativo | ¿De qué otras formas se puede resolver? | Tres caminos realmente distintos |
+| Meticuloso | ¿Qué se rompe y cómo nos enteramos? | Modos de falla y el control que avisa |
+| Escéptico | ¿Vale la pena? ¿Contra qué se compara? | El contrafáctico, el umbral, el costo oculto |
+| Innovador | ¿Qué oficio ya resolvió esto? | Un método de otra disciplina, con sus supuestos |
+| Lector | ¿Cómo lo va a usar quien lo recibe? | Lo que va a entender mal o no va a mirar |
 
 - **Por defecto:** vago, optimista, escéptico y meticuloso. El creativo, el innovador y el lector se suman cuando la
   tarea es nueva para el árbol o cuando su resultado lo usa otra persona.

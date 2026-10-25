@@ -58,7 +58,7 @@ flowchart TD
 | Capa | Pieza | Qué decide | Estado |
 |---|---|---|---|
 | 0 · Reglas | CLAUDE.md y los guardarraíles del ambiente | Lo que no se negocia: idioma, las decisiones de método son del usuario, qué sistemas son de sólo lectura. *Ambiente actual (IG): `ig-guardrails`* | existe |
-| 1 · Dirección | `foreman` | Qué skill trabaja, en qué orden, cuándo se despliega una lente, cuándo se le habla al usuario. **Orquesta, no legisla:** no tiene reglas de contenido propias | a construir |
+| 1 · Dirección | `foreman` | Qué skill trabaja, en qué orden, cuándo se despliega una lente, cuándo se le habla al usuario. **Orquesta, no legisla:** no tiene reglas de contenido propias | existe (2026-10-25) |
 | 2 · Forma de pensar | `provenance` | Qué es cada cifra, con qué nivel se concluye, cómo se valida | existe (a achicar) |
 | 2 · Fábrica | `foundry` | Si una tarea repetida se automatiza y con qué escalón | existe (2026-10-25) |
 | 3 · Decidir | `compass`, `tokenwise` | Con qué técnica o herramienta; con cuántos agentes y a qué costo | existe |
@@ -80,7 +80,8 @@ flowchart LR
   R -. tarea repetida .-> FO[foundry]
 ```
 
-Cada fase tiene **un dueño**, recibe algo concreto y entrega algo concreto. Una fase que aplica no arranca sin la
+La tabla completa (fases, qué recibe y entrega cada una, cortes, tipos de tarea y retornos) es de la skill `foreman`
+(`foreman/referencias/ciclo.md`); acá va el resumen. Cada fase tiene **un dueño**, recibe algo concreto y entrega algo concreto. Una fase que aplica no arranca sin la
 entrega de la anterior. Esto es lo que evita que las skills se pisen.
 
 **No toda tarea recorre las siete fases.** `foreman` elige las que aplican:
@@ -133,6 +134,8 @@ aplica al achicar las skills.
 | Sistemas del ambiente: sólo lectura, verdad de cada fuente | CLAUDE.md + las skills de dominio (*ambiente actual: `ig-guardrails`, `ig-data-truth`*) | `quarry` las carga antes de extraer |
 
 ## 4. El laboratorio de lentes
+
+Dueño: la skill `foreman` (`foreman/referencias/lentes.md`, con los contratos, los puntos fijos y el registro).
 
 **Aprobadas las siete (2026-10-25).** Las lentes están para abrir la cabeza: traen lo positivo o disruptivo de
 maneras distintas de pensar. Algunas propuestas van a ser grandes y otras innecesarias, y eso es parte del proceso de
@@ -215,7 +218,7 @@ contrato concreto.
    - `kiln/reference/` contra `referencias/`;
    - ~~los casos de IG nombrados en `compass`~~ (resuelto: ahora son genéricos).
 3. Construir `foundry`.
-4. Construir `foreman` (incluye el buzón y la apertura y el cierre de sesión).
+4. ~~Construir `foreman`~~ **hecho (2026-10-25).** Falta el adaptador de inicio de sesión (hook), que es decisión del usuario.
 5. ~~Pruebas de disparo~~ **hecho (2026-10-25):** 36 casos (4 por skill propia: 2 que deben disparar y 2 parecidos
    que no), con Sonnet y una corrida por caso. Primera vuelta: 34 de 36.
    - `sherpa` disparaba con «quiero automatizar mi revisión de Slack», que es de `foundry`. Se corrigió la description
@@ -224,7 +227,11 @@ contrato concreto.
    - Se encontró que una description con «: » sin comillas rompe el YAML y `claude plugin validate` no lo detecta.
      Ahora lo controla `empaquetar.py`.
 
-   Costo total: USD 2,32. Los casos están en `<skill>/evals/` y no van en los ZIP. Para repetirlos:
+   - **Segunda vuelta, con `foreman` instalado (40 casos): 39 de 40.** `foreman` no le robó el momento a ninguna otra
+     skill. `provenance` se cargaba con «guardá los datos con su procedencia» (3 de 3 veces): el nombre atrae. Se hizo
+     explícito el caso negativo; pasó 3 de 3 y sus casos positivos siguen 2 de 2.
+
+   Costo total de las dos vueltas: USD 4,45 (tope: USD 5). Los casos están en `<skill>/evals/` y no van en los ZIP. Para repetirlos:
    `claude plugin eval <skill> --ablation none --runs 1 --model sonnet`.
 6. Página visual del mapa.
 7. Adaptador de Cursor.

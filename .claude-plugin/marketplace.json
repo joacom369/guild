@@ -1,12 +1,21 @@
 {
-  "name": "joaco-skills",
+  "name": "guild",
   "owner": {
     "name": "Joaquín Milanesio"
   },
   "metadata": {
-    "description": "Skills propias (kiln, provenance, tokenwise, compass, quarry, assay, hallmark, foundry, sherpa) y las compañeras de diseño."
+    "description": "Guild: un gremio de skills para trabajar en cualquier proyecto (foreman, provenance, tokenwise, compass, quarry, assay, kiln, hallmark, foundry, sherpa) y las compañeras de diseño."
   },
   "plugins": [
+    {
+      "name": "foreman",
+      "description": "El capataz: arranca, retoma y cierra proyectos; arma el plan de fases, despliega las lentes y deja el acta.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./foreman"
+      ]
+    },
     {
       "name": "kiln",
       "description": "Frontend pulido desde el primer intento: entrevista con opciones visuales, contrato de diseño, código mínimo y verificación.",

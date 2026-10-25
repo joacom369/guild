@@ -1,5 +1,7 @@
 # Las lentes: contratos
 
+`foreman` es el dueño de estas lentes; `foundry` las usa al diseñar una automatización.
+
 Cada lente es una manera de pensar con carácter propio, pero trabaja con un contrato: una pregunta que la mueve y
 algo concreto que entrega. Propone por separado, sin ver a las otras, en no más de diez líneas. Las lentes están para
 abrir la cabeza; algunas propuestas van a sobrar, y eso es parte de aprender.
@@ -21,13 +23,35 @@ abrir la cabeza; algunas propuestas van a sobrar, y eso es parte de aprender.
 - Una propuesta concreta, con su escalón y lo que exige.
 - Si la lente no tiene nada útil que decir en este caso, que lo diga en una línea. No se rellena.
 
+## Dónde se despliegan (puntos fijos)
+
+| Punto | Lentes | Por qué ahí |
+|---|---|---|
+| `foundry`, al diseñar una automatización | vago, optimista, escéptico, meticuloso (+ creativo, innovador, lector si la tarea es nueva o la usa otro) | La tensión entre barato y ambicioso decide |
+| Fase 2, en una decisión grande (método, inversión, diseño de un sistema) | creativo, escéptico, optimista, innovador | Se ensanchan las opciones antes de cerrar |
+| Fase 6, en una ronda grande | meticuloso (como revisor independiente de `hallmark`), lector | Es el control antes de entregar |
+| Modo charla, cuando el usuario quiere ideas | las que pida, o creativo, innovador y optimista | Para salir de la zona de confort |
+
+Fuera de estos puntos no se despliegan: una lente en cada paso es ruido y gasta.
+
+## El registro de lentes
+
+Una fila por propuesta, en el registro que fija la configuración del ambiente:
+
+```markdown
+| Fecha | Proyecto | Punto | Lente | Propuesta (una línea) | ¿Se usó? | Por qué |
+|---|---|---|---|---|---|---|
+```
+
+Con el tiempo muestra qué lente rinde en qué punto. Es un dato para proponer cambios a esta tabla, no para aplicarlos
+solo.
+
 ## Cuando las lentes van como agentes
 
 El encargo de cada una lleva:
-- el relevamiento confirmado (paso 1 de `foundry`);
-- la cuenta de si vale la pena (paso 2);
-- la tabla de lo que ya existe (paso 3);
-- su fila de esta tabla.
+- el contexto confirmado (en `foundry`: el relevamiento, la cuenta de si vale la pena y lo que ya existe; en una
+  decisión: la pregunta y las opciones conocidas);
+- su fila de la tabla de contratos.
 
 No lleva las propuestas de las demás. Formato de devolución: la propuesta en diez líneas como máximo, su escalón y
 su riesgo principal.
