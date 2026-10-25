@@ -6,10 +6,18 @@
 !/provenance/
 !/tokenwise/
 !/kiln/
-!/criterio-herramientas/
+!/compass/
+!/assay/
+!/quarry/
+!/hallmark/
+!/foundry/
+!/sherpa/
+!/mapa/
 !/.claude-plugin/
 !/dist/
 !/empaquetar.py
 # De terceros, con licencia libre y su LICENSE: se versionan para tenerlas en cualquier PC.
 !/impeccable/
 !/design-taste-frontend/
+__pycache__/
+**/evals/results/

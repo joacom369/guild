@@ -43,3 +43,52 @@ que no proyecta.
   pasado sin anacronismo.
 - Entrenar la revisión con frases plausibles pero falsas («Comente»): ¿qué le
   falta o qué supone?
+
+## Plantilla: archivo de estado (bitácora)
+
+Un proyecto de más de una sesión lleva un archivo de estado en su raíz (por
+ejemplo `ESTADO.md`). **Se lee al retomar**, antes de tocar nada, y **se
+actualiza al cerrar** la sesión. Corto: si pasa de una pantalla, lo viejo se
+archiva.
+
+```markdown
+# Estado · <proyecto> · actualizado <fecha>
+
+## Dónde estamos
+Una o dos líneas: qué está hecho, qué está a medias, qué sigue.
+
+## Decisiones
+| Fecha | Qué | Antes | Ahora | Por qué | Quién |
+|---|---|---|---|---|---|
+
+## Cifras publicadas que cambiaron
+| Cifra | Era | Es | Qué la movió |
+|---|---|---|---|
+
+## Pendientes
+- [ ] … (quién, para cuándo, qué lo destraba)
+
+## Lecciones de método
+- … (tipo de error b, c o e; sólo si es sobre el método, no sobre el caso)
+```
+
+## Plantilla: una entrega
+
+Para la respuesta o el informe que cierra un trabajo. Se ajusta la extensión al
+lector; el orden no.
+
+```markdown
+**Conclusión** (nivel: preliminar sobre referencias / definitivo / techo)
+Una o dos frases. Si no se puede concluir: «no concluyo» y qué haría falta.
+
+**Opciones** — cada una con su consecuencia y lo que exige. La decisión es del usuario.
+| Opción | Qué pasa | Qué exige | Riesgo principal |
+|---|---|---|---|
+
+**Lo que no se sabe** — y qué lo resolvería (dato, cotización, prueba).
+
+**Cifras clave** — cada una con unidad, período y naturaleza
+(observado · calculado · reconstruido · supuesto · escenario · pendiente).
+
+**Límites** — qué no hace este trabajo y qué controles no se corrieron (acta de `hallmark`).
+```

@@ -1,0 +1,412 @@
+<title>Plano de skills</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Plano de obra: el árbol es el plano principal; todo lo demás son láminas anexas que se leen debajo. */
+:root {
+  --paper: #eef3f8; --sheet: #f8fafc; --ink: #102a43; --muted: #4a6580; --line: #7f9bb8; --grid: #dbe5ef;
+  --mark: #c2410c; --mark-soft: #fde7da; --ok: #1f6f50;
+  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --gap: clamp(12px, 2.4vw, 22px);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #0d1d30; --sheet: #12263d; --ink: #e2ebf5; --muted: #9db3ca; --line: #5d7fa3; --grid: #1a3049;
+  --mark: #ff8a4c; --mark-soft: #3a2418; --ok: #5fcf9f; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #0d1d30; --sheet: #12263d; --ink: #e2ebf5; --muted: #9db3ca; --line: #5d7fa3; --grid: #1a3049;
+  --mark: #ff8a4c; --mark-soft: #3a2418; --ok: #5fcf9f; color-scheme: dark }
+
+body {
+  background: var(--paper); color: var(--ink); font: 15px/1.55 var(--body);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2 { font-family: var(--display); font-weight: 700; letter-spacing: .01em; line-height: 1.05; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(34px, 6vw, 56px); }
+h2 { font-size: clamp(24px, 3.6vw, 32px); margin-bottom: 6px; }
+p { margin: 0; max-width: 68ch; }
+code, .id { font-family: var(--mono); font-size: .92em; }
+.lede { color: var(--muted); margin-top: 8px; }
+
+/* Rótulo del plano, como la carátula de una lámina */
+.title-block { display: flex; flex-wrap: wrap; gap: var(--gap); justify-content: space-between; align-items: end;
+  border-bottom: 2px solid var(--ink); padding-bottom: 14px; margin-bottom: 18px; }
+.stamp { display: grid; grid-template-columns: auto auto; gap: 2px 14px; font-size: 12.5px; color: var(--muted);
+  border: 1px solid var(--line); padding: 8px 12px; background: var(--sheet); }
+.stamp b { color: var(--ink); font-weight: 600; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.sw { width: 26px; height: 14px; border: 2px solid var(--ink); background: var(--sheet); }
+.sw.todo { border-style: dashed; }
+.sw.gap { border: 2px dotted var(--mark); background: var(--mark-soft); }
+.sw.ln { height: 0; border: 0; border-top: 2px solid var(--line); }
+.sw.ln.dash { border-top-style: dashed; }
+
+/* El plano */
+.plan { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: var(--gap); align-items: start; }
+.board { position: relative; background: var(--sheet); border: 1.5px solid var(--ink); padding: 18px 16px 22px; min-width: 0; }
+.board svg.wires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.layer { position: relative; display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 12px; align-items: center;
+  padding: 16px 0; border-top: 1px dashed var(--grid); }
+.layer:first-of-type { border-top: 0; }
+.layer-label { font-family: var(--display); font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); line-height: 1.15; }
+.layer-label small { display: block; font-family: var(--body); text-transform: none; letter-spacing: 0; font-size: 12px; font-weight: 400; }
+.nodes { display: flex; flex-wrap: wrap; gap: 12px 14px; justify-content: center; position: relative; z-index: 1; }
+
+.node { font: 500 13.5px/1.2 var(--mono); color: var(--ink); background: var(--sheet); border: 2px solid var(--ink);
+  padding: 9px 12px; cursor: pointer; text-align: left; min-height: 44px; display: grid; gap: 2px; }
+.node small { font: 400 11.5px/1.25 var(--body); color: var(--muted); }
+.node.todo { border-style: dashed; }
+.node.gap { border: 2px dotted var(--mark); background: var(--mark-soft); color: var(--mark); }
+.node.ext { border-width: 1px; border-color: var(--line); }
+.node.leaf { border-color: var(--ok); color: var(--ok); }
+.node:hover { background: var(--paper); }
+.node:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; }
+.node[aria-pressed="true"] { background: var(--ink); color: var(--sheet); border-style: solid; }
+.node[aria-pressed="true"] small { color: var(--sheet); opacity: .8; }
+
+.wire { fill: none; stroke: var(--line); stroke-width: 1.6; }
+.wire.dash { stroke-dasharray: 6 5; }
+.wire.back { stroke: var(--mark); stroke-dasharray: 3 4; }
+.wire-label { font: 500 11px var(--body); fill: var(--muted); }
+
+/* Ficha lateral */
+.sheet { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); background: var(--sheet); border: 1.5px solid var(--ink); padding: 16px 16px 18px; min-width: 0; }
+.sheet h3 { font: 600 17px var(--mono); margin: 0 0 2px; word-break: break-word; }
+.sheet .state { font-size: 12.5px; color: var(--muted); margin-bottom: 10px; }
+.sheet dl { margin: 0; display: grid; gap: 10px; }
+.sheet dt { font-family: var(--display); font-size: 13px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.sheet dd { margin: 0; font-size: 14px; }
+.sheet .hint { color: var(--muted); font-size: 14px; }
+
+/* Láminas anexas */
+section.annex { margin-top: 44px; display: grid; gap: 14px; }
+.scroll { overflow-x: auto; border: 1.5px solid var(--ink); background: var(--sheet); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--grid); }
+th { font-family: var(--display); font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: var(--paper); }
+tr:last-child td { border-bottom: 0; }
+
+.cycle { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border: 1.5px solid var(--ink); background: var(--sheet); }
+.phase { padding: 12px 12px 14px; border-right: 1px solid var(--grid); display: grid; gap: 4px; align-content: start; min-width: 0; }
+.phase:last-child { border-right: 0; }
+.phase .n { font: 700 26px var(--display); color: var(--line); line-height: 1; }
+.phase b { font-family: var(--display); font-size: 18px; font-weight: 600; }
+.phase .own { font: 500 12.5px var(--mono); word-break: break-word; }
+.phase .out { font-size: 12.5px; color: var(--muted); }
+.phase.gap { background: var(--mark-soft); }
+.phase.gap .own { color: var(--mark); }
+
+.lenses { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.lens { background: var(--sheet); border: 1.5px solid var(--ink); padding: 12px 14px; display: grid; gap: 6px; align-content: start; }
+.lens b { font-family: var(--display); font-size: 20px; font-weight: 600; }
+.lens q { font-style: italic; quotes: "«" "»"; }
+.lens .gives { font-size: 13.5px; color: var(--muted); }
+.lens .pull { font: 500 12px var(--mono); color: var(--mark); }
+
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--gap); }
+.note { border-left: 3px solid var(--mark); padding: 8px 12px; background: var(--sheet); font-size: 14px; }
+ol.next { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+.done { color: var(--muted); text-decoration: line-through; }
+
+@media (max-width: 920px) {
+  .plan { grid-template-columns: minmax(0, 1fr); }
+  .sheet { position: static; }
+  .cycle { grid-template-columns: minmax(0, 1fr); }
+  .phase { border-right: 0; border-bottom: 1px solid var(--grid); grid-template-columns: 36px minmax(0, 1fr); column-gap: 10px; }
+  .phase .n { grid-row: span 3; }
+  .two { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .layer { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .layer-label { text-align: center; }
+  /* En pantallas angostas las piezas se apilan y los cables se cruzan: las conexiones quedan en cada ficha. */
+  .board svg.wires { display: none; }
+  .wires-note { display: block; }
+}
+.wires-note { display: none; font-size: 13px; color: var(--muted); text-align: center; margin-top: 10px; }
+@media (prefers-reduced-motion: no-preference) { .node { transition: background .15s, color .15s; } }
+</style>
+
+<div class="wrap">
+  <header class="title-block">
+    <div>
+      <h1>Plano de skills</h1>
+      <p class="lede">Cómo se ordenan las skills: quién manda, quién trabaja en cada fase, qué se pasan entre sí y dónde se despliegan agentes. Tocá cualquier pieza para ver su ficha.</p>
+    </div>
+    <div class="stamp" aria-label="Datos del plano">
+      <span>Lámina</span><b>Mapa v1</b>
+      <span>Fecha</span><b>25 oct 2026</b>
+      <span>Fuente</span><b>mapa/MAPA.md</b>
+    </div>
+  </header>
+
+  <div class="legend" aria-label="Referencias">
+    <span><i class="sw"></i>existe</span>
+    <span><i class="sw todo"></i>a construir</span>
+    <span><i class="sw gap"></i>hueco (hoy no queda ninguno)</span>
+    <span><i class="sw ln"></i>manda o entrega</span>
+    <span><i class="sw ln dash"></i>convoca o agrega</span>
+  </div>
+
+  <div class="plan">
+    <div class="board" id="board">
+      <svg class="wires" id="wires" aria-hidden="true"></svg>
+      <div class="layer"><div class="layer-label">0 · Reglas<small>mandan sobre todo</small></div><div class="nodes" data-layer="0"></div></div>
+      <div class="layer"><div class="layer-label">1 · Dirección<small>orquesta, no legisla</small></div><div class="nodes" data-layer="1"></div></div>
+      <div class="layer"><div class="layer-label">2 · Pensar y fabricar<small>criterio y molde</small></div><div class="nodes" data-layer="2"></div></div>
+      <div class="layer"><div class="layer-label">3 · Decidir<small>antes de hacer</small></div><div class="nodes" data-layer="3"></div></div>
+      <div class="layer"><div class="layer-label">4 · Procedimientos<small>una fase cada uno</small></div><div class="nodes" data-layer="4"></div></div>
+      <div class="layer"><div class="layer-label">5 · Dominio<small>lo propio de cada trabajo</small></div><div class="nodes" data-layer="5"></div></div>
+      <div class="layer"><div class="layer-label">Hojas<small>automatizaciones de foundry</small></div><div class="nodes" data-layer="6"></div></div>
+      <p class="wires-note">En pantallas chicas, las conexiones de cada pieza están en su ficha.</p>
+    </div>
+
+    <aside class="sheet" id="sheet" aria-live="polite">
+      <p class="hint">Elegí una pieza del plano para ver qué hace, qué recibe, qué entrega y a quién deriva.</p>
+    </aside>
+  </div>
+
+  <section class="annex" aria-labelledby="h-marco">
+    <h2 id="h-marco">El marco: de la cosmovisión a la técnica</h2>
+    <p class="lede">El árbol sigue la escala de la metodología de las ciencias. Lo que viaja a cualquier proyecto y a cualquier IA es esta estructura de trabajo, no las herramientas de un lugar.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Nivel</th><th>Pregunta</th><th>Pieza del árbol</th></tr></thead>
+        <tbody>
+          <tr><td>Cosmovisión</td><td>¿Para qué trabajamos y qué es un buen trabajo?</td><td><code>foreman</code>: propósito, valores y despliegue. Orienta, no legisla el contenido</td></tr>
+          <tr><td>Gnoseología</td><td>¿De dónde sale lo que sabemos?</td><td><code>quarry</code>, las skills de dominio y los axiomas de origen de <code>provenance</code></td></tr>
+          <tr><td>Epistemología</td><td>¿Cuándo algo está probado y con qué nivel?</td><td><code>provenance</code> y <code>hallmark</code></td></tr>
+          <tr><td>Metodología</td><td>¿Por qué camino vamos?</td><td>El ciclo, <code>compass</code>, <code>tokenwise</code> y <code>foundry</code></td></tr>
+          <tr><td>Técnica</td><td>¿Con qué instrumento?</td><td>Los scripts y los procedimientos: <code>assay</code>, <code>kiln</code>, <code>sherpa</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="two">
+      <p class="note"><b>El círculo expansivo:</b> cada vuelta deja algo que mejora la siguiente: predicciones medidas en foundry, qué lente aportó qué, lecciones de método y pruebas de disparo. El sistema propone sus mejoras; el usuario las aprueba.</p>
+      <p class="note"><b>Confiar sin revisar todo:</b> cada entrega trae su acta, con qué se verificó, qué no y qué riesgo queda. Si el sistema no está seguro, lo dice arriba de todo. Se lee el acta en lugar de rehacer el trabajo.</p>
+    </div>
+  </section>
+
+  <section class="annex" aria-labelledby="h-ciclo">
+    <h2 id="h-ciclo">El ciclo de un trabajo</h2>
+    <p class="lede">Cada fase tiene un dueño y una entrega concreta; una fase no arranca sin la entrega de la anterior. No toda tarea recorre las siete: foreman elige las que aplican.</p>
+    <div class="cycle" id="cycle"></div>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Tipo de tarea</th><th>Fases</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><td>Análisis con cifras que sostienen una decisión</td><td>1 a 7</td><td>Evaluación de una inversión</td></tr>
+          <tr><td>Página sin cifras propias</td><td>1, 5 y la lectura de la 6</td><td>Landing, rediseño</td></tr>
+          <tr><td>Página o tablero con cifras</td><td>1, 2, 3 si hay que sacar datos, 5, 6</td><td>Tablero comercial</td></tr>
+          <tr><td>Cambio de código</td><td><code>ponytail</code> + las pruebas del proyecto</td><td>Arreglar un error</td></tr>
+          <tr><td>Consulta rápida</td><td>Se contesta directo</td><td>Una definición con su fuente</td></tr>
+          <tr><td>Tarea repetida</td><td><code>foundry</code></td><td>«Todos los días reviso Slack»</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Si <code>hallmark</code> dice «no sale», el trabajo vuelve a la fase dueña del error: una cifra mal calculada vuelve a analizar; un texto mal copiado, a construir.</p>
+  </section>
+
+  <section class="annex" aria-labelledby="h-lentes">
+    <h2 id="h-lentes">El laboratorio de lentes</h2>
+    <p class="lede">Siete maneras de pensar que abren la cabeza. Cada una propone por separado, sin ver a las otras, y foreman sintetiza. Algunas propuestas van a sobrar: es parte de aprender, y se anota cuál aportó qué.</p>
+    <div class="lenses" id="lenses"></div>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Dónde se despliegan</th><th>Lentes</th><th>Por qué ahí</th></tr></thead>
+        <tbody>
+          <tr><td><code>foundry</code>, al diseñar una automatización</td><td>vago, optimista, escéptico, meticuloso</td><td>La tensión entre barato y ambicioso decide</td></tr>
+          <tr><td>Decidir método en una decisión grande</td><td>creativo, escéptico, optimista, innovador</td><td>Se ensanchan las opciones antes de cerrar</td></tr>
+          <tr><td>Verificar en una ronda grande</td><td>meticuloso (revisor independiente), lector</td><td>Es el control antes de entregar</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="annex" aria-labelledby="h-agentes">
+    <h2 id="h-agentes">Dónde se despliegan agentes</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Punto</th><th>Agente</th><th>Lo define</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>Investigar fuentes, precios, normas</td><td>Investigador liviano en segundo plano</td><td><code>tokenwise</code></td><td>existe</td></tr>
+          <tr><td>Extracción grande repartida</td><td>Uno por origen; devuelve archivos con ficha</td><td><code>quarry</code> + <code>tokenwise</code></td><td>existe</td></tr>
+          <tr><td>Pantallas aisladas</td><td>Agente en su propia copia del repositorio</td><td><code>tokenwise</code></td><td>existe</td></tr>
+          <tr><td>Revisión antes de entregar</td><td>Revisor independiente fuerte</td><td><code>hallmark</code> nivel 3</td><td>existe</td></tr>
+          <tr><td>Puntos de decisión</td><td>Asesor</td><td><code>tokenwise</code></td><td>existe</td></tr>
+          <tr><td>Lentes del laboratorio</td><td>Una lente por agente</td><td><code>foreman</code></td><td>a construir</td></tr>
+          <tr><td>Detectar tareas repetidas</td><td>Revisión de sesiones, con permiso previo</td><td><code>foreman</code> → <code>foundry</code></td><td>a construir</td></tr>
+          <tr><td>Resumen al empezar la jornada</td><td>Rutina programada</td><td><code>sherpa</code></td><td>falta la prueba y la rutina</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="annex" aria-labelledby="h-nucleo">
+    <h2 id="h-nucleo">Núcleo portable y adaptadores</h2>
+    <div class="two">
+      <p>Todo el sistema se lleva a otro trabajo u otra plataforma sin cambios. El <b>núcleo</b> es texto y Python: el mapa, las skills, los contratos, las lentes y los scripts. Lo propio de cada trabajo (qué chat, qué sistemas, qué es urgente) vive afuera, en la configuración del ambiente.</p>
+      <p>Cada plataforma tiene su <b>adaptador</b>: en Claude Code, hooks, agentes definidos, workflows y rutinas; en Cursor con Grok, lo que soporte (a verificar). Nada del núcleo depende de una plataforma: si una skill necesita algo al abrir la sesión, lo dice como necesidad y cada adaptador lo resuelve.</p>
+    </div>
+  </section>
+
+  <section class="annex" aria-labelledby="h-falta">
+    <h2 id="h-falta">Qué falta</h2>
+    <div class="two">
+      <ol class="next">
+        <li class="done">Aprobar el mapa</li>
+        <li class="done">Ordenar las skills según un dueño por regla</li>
+        <li class="done">Construir foundry</li>
+        <li class="done">Cerrar la fase «analizar» con assay</li>
+        <li>Probar sherpa con la cuenta correcta y crear sus rutinas</li>
+        <li>Construir foreman: buzón de ideas, apertura y cierre de sesión, lentes</li>
+        <li>Pruebas de disparo de cada skill</li>
+        <li>Adaptador para Cursor</li>
+      </ol>
+      <div class="note"><b>La cadena del taller:</b> <code>quarry</code> saca el mineral, <code>assay</code> lo ensaya, <code>kiln</code> lo cuece y <code>hallmark</code> lo sella. <code>foundry</code> hace el molde cuando algo se repite.</div>
+    </div>
+  </section>
+</div>
+
+<script>
+const N = [
+  // capa, id, etiqueta corta, estado, ficha
+  [0, "reglas", "CLAUDE.md", "ok", "Reglas del usuario y del proyecto", {
+    hace: "Lo que no se negocia: idioma, las decisiones de método son del usuario, sólo lectura en los sistemas de la empresa.",
+    recibe: "—", entrega: "Límites para todas las capas.", deriva: "Manda sobre todo; una regla de proyecto manda sobre una general." }],
+  [0, "guardrails", "guardrails", "ext", "Guardarraíles del dominio", {
+    hace: "Las reglas de seguridad propias de cada empresa (ambiente actual, IG: ig-guardrails).",
+    recibe: "—", entrega: "Qué no se toca y qué no se comparte.", deriva: "Van primero en cualquier tarea de ese dominio." }],
+  [1, "foreman", "foreman", "todo", "El capataz · a construir", {
+    hace: "Decide qué skill trabaja, en qué orden y cuándo se despliega una lente. Te habla sólo por un riesgo, una decisión tuya o una tarea repetida. Guarda ideas en un buzón y avisa en una línea al empezar.",
+    recibe: "Tu pedido, el estado del proyecto y el buzón.", entrega: "La secuencia de fases que aplican y la síntesis de las lentes.",
+    deriva: "Orquesta, no legisla: no tiene reglas de contenido propias y nunca puede relajar una regla." }],
+  [2, "provenance", "provenance", "ok", "Forma de pensar", {
+    hace: "Axiomas sobre el origen y la naturaleza de cada cifra, el nivel de cada conclusión y la validación contra la propia ilusión.",
+    recibe: "El pedido; después, los resultados.", entrega: "La pregunta de análisis y, al cierre, la conclusión con su nivel.",
+    deriva: "No extrae datos (quarry), no elige técnica (compass), no analiza (assay), no controla el entregable (hallmark)." }],
+  [2, "foundry", "foundry", "ok", "La fundición", {
+    hace: "Convierte una tarea repetida en una automatización: relevar, calcular si vale la pena, buscar en el árbol, lentes, opciones y registro con predicción.",
+    recibe: "«Estoy repitiendo esta tarea».", entrega: "Una automatización nueva, una hoja más del árbol.",
+    deriva: "No ejecuta la tarea; la ejecuta lo que sale de acá." }],
+  [3, "criterio", "compass", "ok", "Con qué se contesta", {
+    hace: "Elige la técnica o la herramienta para una pregunta y dice cuándo no conviene.",
+    recibe: "La pregunta de análisis.", entrega: "Veredicto: aplica, no aplica o todavía no, con su motivo.",
+    deriva: "No construye la página (kiln) ni dicta cómo se valida el modelo (provenance)." }],
+  [3, "tokenwise", "tokenwise", "ok", "Con quién y a qué costo", {
+    hace: "Decide si conviene repartir, a cuántos agentes, con qué modelo y cómo se escribe el encargo.",
+    recibe: "Una tarea de varias partes.", entrega: "Plan de agentes con su costo.",
+    deriva: "No extrae (quarry) ni verifica (hallmark)." }],
+  [4, "quarry", "quarry", "ok", "La cantera · fase 3", {
+    hace: "Saca datos de cualquier origen sin romper la fuente: estima, prueba con una muestra, guarda la foto con su ficha y hace el perfil.",
+    recibe: "Qué datos y de dónde.", entrega: "Carpeta con datos, FICHA.json y perfil.",
+    deriva: "Carga antes las skills de dominio del ambiente." }],
+  [4, "analizar", "assay", "ok", "El ensayo · fase 4", {
+    hace: "Analiza o modela: plan escrito antes de ver resultados, pre-análisis, cálculo en una corrida con su ficha, todos los intentos contados, diagnóstico y sensibilidad.",
+    recibe: "La foto verificada y el veredicto de compass.", entrega: "Carpeta de corrida con sus salidas y CORRIDA.json.",
+    deriva: "No elige la técnica (compass) ni controla el entregable (hallmark)." }],
+  [4, "kiln", "kiln", "ok", "El horno · fase 5", {
+    hace: "Construye la página o el tablero: dirección visual, contrato, código mínimo, mirada en escritorio y celular. Se apoya en impeccable, design-taste-frontend y dataviz.",
+    recibe: "Las salidas.", entrega: "El entregable.",
+    deriva: "No decide si hace falta un tablero ni controla sus cifras." }],
+  [4, "ponytail", "ponytail", "ext", "Código mínimo", {
+    hace: "El cambio más chico que resuelve bien. Lo usan kiln, foundry y cualquier cambio de código.",
+    recibe: "Un cambio de código.", entrega: "El código.", deriva: "—" }],
+  [4, "hallmark", "hallmark", "ok", "El sello · fase 6", {
+    hace: "Busca cada cifra del entregable en las salidas, hace cerrar las identidades, mira el resultado como el lector y, en las rondas grandes, pide una revisión independiente.",
+    recibe: "El entregable y las salidas.", entrega: "Acta: sale, sale con observaciones o no sale.",
+    deriva: "Si no sale, vuelve a la fase dueña del error." }],
+  [5, "dominio", "dominio", "ext", "Conocimiento del trabajo", {
+    hace: "Lo propio de cada empresa: sistemas, vocabulario, qué fuente es la verdad (ambiente actual, IG: ig-knowledge, sales, octopuskg-guide).",
+    recibe: "—", entrega: "Criterio de dominio para las demás capas.",
+    deriva: "En su tema, una regla de dominio le gana a una general." }],
+  [6, "sherpa", "sherpa", "leaf", "Primera hoja de foundry", {
+    hace: "Te pone en contexto al empezar la jornada: lee chat y correo, clasifica en urgente, pendiente, contexto y ruido, y entrega un resumen con lo descartado a la vista.",
+    recibe: "Lo que pasó desde tu jornada anterior.", entrega: "Un resumen de una pantalla.",
+    deriva: "Sólo lectura; verifica que la cuenta sea la tuya antes de leer." }],
+];
+// desde, hasta, tipo (s = manda/entrega, d = convoca/agrega, b = vuelve), rótulo
+const E = [
+  ["reglas", "foreman", "s"], ["foreman", "provenance", "d"], ["foreman", "foundry", "d"],
+  ["provenance", "criterio", "s"], ["provenance", "tokenwise", "s"],
+  ["criterio", "quarry", "s"], ["quarry", "analizar", "s"], ["analizar", "kiln", "s"], ["kiln", "hallmark", "s"],
+  ["hallmark", "analizar", "b", "no sale"], ["quarry", "dominio", "d"], ["foundry", "sherpa", "d", "agrega"],
+];
+const PH = [
+  ["Plantear", "provenance", "Pregunta y alcance"], ["Decidir método", "criterio · tokenwise", "Técnica y plan con costo"],
+  ["Extraer", "quarry", "Foto, ficha y perfil"], ["Analizar", "assay", "Corrida con su ficha"],
+  ["Construir", "kiln · dataviz · ponytail", "El entregable"], ["Verificar", "hallmark", "Acta"], ["Registrar", "provenance · foreman", "Estado y entrega"],
+];
+const L = [
+  ["El vago", "¿Qué es lo mínimo que llega al resultado?", "La opción más barata y lo que se pierde", "↓ escalera"],
+  ["El optimista", "¿Y si lo llevamos al máximo?", "El techo, rotulado, y qué tendría que ser cierto", "↑ escalera"],
+  ["El creativo", "¿De qué otras formas se puede resolver?", "Tres caminos realmente distintos", "↔ costados"],
+  ["El meticuloso", "¿Qué se rompe y cómo nos enteramos?", "Modos de falla, casos límite, el control que avisa", "→ control"],
+  ["El escéptico", "¿Vale la pena? ¿Contra qué se compara?", "El contrafáctico, el umbral, el costo oculto", "← no hacer"],
+  ["El innovador", "¿Qué oficio ya resolvió esto?", "Un método de otra disciplina, con sus supuestos", "→ afuera"],
+  ["El lector", "¿Cómo lo va a usar quien lo recibe?", "Lo que va a entender mal o no va a mirar", "→ usuario"],
+];
+const STATE = { ok: "existe", todo: "a construir", gap: "hueco", ext: "existe · de terceros o del dominio", leaf: "existe · automatización" };
+
+const byId = {};
+for (const [layer, id, label, st, sub, info] of N) {
+  const b = document.createElement("button");
+  b.className = "node " + st; b.id = "n-" + id; b.type = "button"; b.setAttribute("aria-pressed", "false");
+  b.innerHTML = `${label}<small>${sub}</small>`;
+  b.addEventListener("click", () => select(id));
+  document.querySelector(`.nodes[data-layer="${layer}"]`).append(b);
+  byId[id] = { el: b, label, st, sub, info };
+}
+function select(id) {
+  const n = byId[id];
+  for (const k in byId) byId[k].el.setAttribute("aria-pressed", k === id ? "true" : "false");
+  const rows = [["Qué hace", n.info.hace], ["Recibe", n.info.recibe], ["Entrega", n.info.entrega], ["Límite y derivación", n.info.deriva]];
+  document.getElementById("sheet").innerHTML =
+    `<h3>${n.label}</h3><div class="state">${n.sub} · ${STATE[n.st]}</div><dl>` +
+    rows.map(([t, d]) => `<div><dt>${t}</dt><dd>${d}</dd></div>`).join("") + "</dl>";
+}
+
+document.getElementById("cycle").innerHTML = PH.map(([name, own, out, gap], i) =>
+  `<div class="phase${gap ? " gap" : ""}"><span class="n">${i + 1}</span><b>${name}</b><span class="own">${own}</span><span class="out">${out}</span></div>`).join("");
+document.getElementById("lenses").innerHTML = L.map(([name, q, gives, pull]) =>
+  `<div class="lens"><b>${name}</b><q>${q}</q><span class="gives">${gives}</span><span class="pull">${pull}</span></div>`).join("");
+
+// Cables: se recalculan con el tamaño real de cada pieza, así el plano sirve en cualquier ancho.
+const svg = document.getElementById("wires"), board = document.getElementById("board");
+function draw() {
+  const o = board.getBoundingClientRect();
+  const c = id => { const r = byId[id].el.getBoundingClientRect(); return { x: r.left - o.left + r.width / 2, t: r.top - o.top, b: r.bottom - o.top, l: r.left - o.left, r: r.right - o.left, m: r.top - o.top + r.height / 2 }; };
+  let out = `<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--line)"/></marker>` +
+    `<marker id="arb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--mark)"/></marker></defs>`;
+  for (const [a, b, kind, label] of E) {
+    const A = c(a), B = c(b);
+    let d;
+    if (Math.abs(A.m - B.m) < 8) {           // misma fila: cable horizontal
+      const back = kind === "b";
+      const y = back ? A.b + 10 : A.m;
+      d = back ? `M${A.x} ${A.b} C${A.x} ${y + 18} ${B.x} ${y + 18} ${B.x} ${B.b}` :
+        (A.x < B.x ? `M${A.r} ${A.m} L${B.l} ${B.m}` : `M${A.l} ${A.m} L${B.r} ${B.m}`);
+    } else {
+      const down = B.t > A.b, y1 = down ? A.b : A.t, y2 = down ? B.t : B.b, my = (y1 + y2) / 2;
+      d = `M${A.x} ${y1} C${A.x} ${my} ${B.x} ${my} ${B.x} ${y2}`;
+    }
+    const cls = kind === "s" ? "wire" : kind === "d" ? "wire dash" : "wire back";
+    out += `<path class="${cls}" d="${d}" marker-end="url(#${kind === "b" ? "arb" : "ar"})"/>`;
+    if (label) {
+      const lx = (A.x + B.x) / 2, ly = kind === "b" ? A.b + 30 : (Math.max(A.b, A.t) + Math.min(B.t, B.b)) / 2;
+      out += `<text class="wire-label" x="${lx}" y="${ly}" text-anchor="middle">${label}</text>`;
+    }
+  }
+  svg.innerHTML = out;
+}
+new ResizeObserver(draw).observe(board);
+document.fonts && document.fonts.ready.then(draw);
+select("foreman");
+</script>

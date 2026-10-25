@@ -1,6 +1,6 @@
 ---
 name: provenance
-description: Forma de pensar para trabajos con datos, modelos, evaluaciones, investigaciones o decisiones (tesis, informes, análisis económicos y financieros, proyectos de inversión, ciencia de datos, análisis espacial, tableros). Axiomas sobre el origen y el estado de cada cifra, seis fundamentos, validación contra la propia ilusión y hábitos para no casarse con un supuesto. Usar al empezar o revisar un trabajo analítico, antes de dar una conclusión, al cargar una fuente externa, al elegir o validar un modelo, o cuando el usuario pide rigor, metodología, sensibilidad o crítica. También con /provenance.
+description: Forma de pensar para trabajos con datos, modelos, evaluaciones, investigaciones o decisiones (tesis, informes, análisis económicos y financieros, proyectos de inversión, ciencia de datos, análisis espacial). Axiomas sobre el origen y la naturaleza de cada cifra, nivel de cada conclusión, validación contra la propia ilusión y hábitos para no casarse con un supuesto. Usar al plantear un trabajo analítico, al interpretar un resultado y antes de concluir, o cuando el usuario pide rigor, metodología, sensibilidad o crítica. No es el procedimiento para sacar datos (`quarry`), elegir una técnica (`compass`), analizar (`assay`) ni controlar un entregable antes de darlo (`hallmark`). También con /provenance.
 ---
 
 # Método riguroso: cada cifra con su origen, cada conclusión con su nivel
@@ -27,7 +27,7 @@ se sabe. Rigor sin rigidez: el método se ajusta cuando cruje, y se anota dónde
    *preliminar sobre referencias* si alguna pieza descansa en un valor público o
    un supuesto, *definitivo* si todas descansan en datos propios o
    cotizaciones firmes. Un techo («si todo sale bien») se rotula como techo.
-4. **Cada cifra declara su naturaleza:** observado · calculado · reconstruido ·
+4. **Cada cifra declara su naturaleza** (este es el vocabulario único; las demás skills lo usan tal cual): observado · calculado · reconstruido ·
    supuesto · escenario · pendiente. En un registro, además: observación,
    opinión de un participante e interpretación propia van por separado.
 5. **Una sensibilidad no es una probabilidad ni una recomendación.** Un
@@ -75,7 +75,8 @@ montaje; región; escala; lista o negociado; nuevo o usado; nominal o real; ex
 ante o ex post; qué precio exactamente). La fecha de descarga no es el período
 que representa. Descargar no es poder redistribuir. Una etiqueta de la fuente
 no es tu categoría analítica. Cada valor entra con fuente, fecha y rango. Ver
-`referencias/fuentes-y-datos.md`.
+`referencias/fuentes-y-datos.md`. Para sacar los datos (consulta, descarga,
+foto con su ficha y perfil al llegar), `quarry`.
 
 ## Los seis fundamentos, antes de cada cambio
 
@@ -98,9 +99,8 @@ no es tu categoría analítica. Cada valor entra con fuente, fecha y rango. Ver
   una moneda, un VAN negativo). Si nada le gana al benchmark, se dice.
 - **Los controles tienen límite declarado.** Que los totales cierren no prueba
   exactitud; decí qué no verifica cada control.
-- **Identidades contables en cero:** total = asignados + sin coincidencia +
-  ambiguos; un agregado calculado por vías distintas tiene que cerrar (el
-  producto por producción, gasto e ingreso); lo ambiguo se informa aparte.
+- **Identidades que cierran** (total = partes; lo ambiguo, aparte): el control
+  ejecutable es de `hallmark`, nivel 2.
 - **Condiciones antes que cálculos.** Verificar que la solución existe y es la
   que se cree (condiciones de segundo orden, estabilidad, que la restricción
   esté activa) antes de interpretarla. Resolver dos veces por caminos
@@ -110,49 +110,24 @@ no es tu categoría analítica. Cada valor entra con fuente, fecha y rango. Ver
   que muestre la diferencia (y que sea sólo redondeo).
 - **Diagnósticos que discrepan se reportan los dos**; no se elige el cómodo.
 
-Detalle en `referencias/modelos-y-validacion.md`.
+Detalle en `referencias/modelos-y-validacion.md`. Los controles del entregable
+(cifras contra salidas, identidades, lectura final, revisión independiente, acta)
+son de `hallmark`.
 
 ## Hábitos para pensar más allá del pedido
 
-- **No casarse con un supuesto.** Alternativas reales (proveedores,
-  tecnologías, financiamiento, comprar o alquilar) se modelan como opciones
-  discretas con todas sus consecuencias, no como ±10 %. El caso base es lo más
-  firme; lo demás va al lado, rotulado.
-- **Revisar el sistema de supuestos:** no redundancia, suficiencia,
-  independencia y consistencia. Ocho supuestos pueden ser tres puntos de falla.
-  Identificá cuál restricción está activa en vez de asumirla.
-- **Contrafáctico y escenarios acumulados.** ¿Contra qué se compara? Un base de
-  «continuidad» y cambios agregados de a uno, para aislar el efecto de cada uno.
-- **Buscar la variable que decide** (tornado) y poner ahí el esfuerzo de dato.
-- **Predicción refutable y que discrimine:** fechada, cuantitativa, con su
-  condición de refutación, y distinta de lo que predice el marco alternativo.
-- **Sustantivos a verbos para encontrar disciplinas.** Reescribí el objeto
-  como lo que hace: «el flujo de fondos» pasa a ser «convencer a un lector
-  escéptico de una relación causa-efecto y decidir con incertidumbre». Cada
-  verbo sugiere un oficio que ya lo resolvió (auditoría forense, periodismo de
-  datos, edición). Se toma lo que ese oficio *hace*, no se actúa el personaje.
-- **Mirar más allá del pedido, sin ejecutarlo (altitud).** Preguntá qué
-  resultado hay detrás de la tarea («que no se caiga» detrás de «arreglá este
-  error»). Si hay una versión de más nivel, se señala en la posdata rotulada,
-  con su costo; no se ejecuta sin que el usuario la pida. El alcance lo fija
-  el usuario.
-- **Herramienta importada, supuestos importados:** declarar de qué disciplina
-  viene, qué supuestos exige y si se cumplen. Rescatar la idea, no forzar la
-  forma.
-- **Un modelo es un artefacto, no una descripción:** sirve para lo que fue
-  construido; coherencia interna no es validez externa, y la elegancia formal
-  no reemplaza el contenido.
-- **Un resultado demasiado bueno se interroga:** un VAN positivo sin una
-  ventaja que lo explique (barreras, costo, información) suele ser un error de
-  proyección o el sesgo de quien propone.
-- **Estructura no es resultado, y el objeto reacciona:** el poder de un actor
-  no implica el reparto; anunciar o analizar algo puede cambiarlo.
-- **Crítica independiente** en las rondas grandes: alguien que no vio tu plan.
-  Verificá sus hallazgos antes de aceptarlos.
-- **Mirar el resultado real**, renderizado, y un caso individual concreto
-  («la observación número 100») para ver que las variables tienen sentido.
-- **Reportar los límites** y **no sobreafirmar**: antes de «siempre» o «a
-  cualquier tasa», comprobar que vale en todas las alternativas.
+- **No casarse con un supuesto:** alternativas reales como opciones discretas, no como ±10 %.
+- **Revisar el sistema de supuestos** (redundancia, suficiencia, independencia, consistencia) y buscar **la variable
+  que decide**.
+- **Contrafáctico:** ¿contra qué se compara? Escenarios acumulados de a un cambio.
+- **Predicción refutable:** fechada, cuantitativa y distinta de la del marco alternativo.
+- **Sustantivos a verbos** para encontrar el oficio que ya lo resolvió; se toma lo que hace, no se actúa el personaje.
+- **Altitud:** la versión de más nivel se señala en la posdata rotulada, con su costo; no se ejecuta sin pedido.
+- **Herramienta importada, supuestos importados.** Un modelo es un artefacto, no una descripción.
+- **Un resultado demasiado bueno se interroga.** Estructura no es resultado, y el objeto reacciona.
+- **Reportar los límites y no sobreafirmar.**
+
+Detalle y ejemplos en `referencias/habitos.md`.
 
 Para evaluación económica y financiera (tasas, costos de oportunidad, valor
 terminal, riesgo de cola, políticas), ver `referencias/evaluacion-y-decisiones.md`.
@@ -163,11 +138,18 @@ Toda decisión material se anota con **Antes / Ahora / Por qué** y quién la
 tomó. Los errores se clasifican (dirección, magnitud, medida contaminada,
 supuesto caído, quiebre reflexivo) y sólo se destila una regla si es sobre el
 método, no sobre el caso. Las lecciones se consultan antes de fijar una
-magnitud. El prompt no aprende; el registro sí. Ver
+magnitud. El prompt no aprende; el registro sí. En un proyecto de más de una
+sesión, el registro vive en un archivo de estado que se lee al retomar y se
+actualiza al cerrar. La plantilla de ese archivo y la de una entrega
+(conclusión con su nivel, opciones, lo que no se sabe) están en
 `referencias/registro-y-comunicacion.md`.
 
 ## Cómo se combina
 
-Para ejecutar tareas de varias partes con el menor gasto, usá también
-`tokenwise`. Si el proyecto tiene reglas propias (un CLAUDE.md, un
-documento de estado), mandan sobre esta skill cuando difieren.
+Esta skill es la forma de pensar: manda sobre el contenido de las demás. El orden
+de un trabajo analítico es plantear (esta skill) → elegir la técnica
+(`compass`) → extraer (`quarry`) → analizar (`assay`, con los
+axiomas de esta skill) →
+construir (`kiln`, `dataviz`) → verificar (`hallmark`) → registrar (esta skill).
+Para repartir entre agentes, `tokenwise`. Si el proyecto tiene reglas propias
+(un CLAUDE.md, un documento de estado), mandan sobre esta skill cuando difieren.

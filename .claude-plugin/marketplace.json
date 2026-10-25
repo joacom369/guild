@@ -4,7 +4,7 @@
     "name": "Joaquín Milanesio"
   },
   "metadata": {
-    "description": "Skills propias (kiln, provenance, tokenwise, criterio-herramientas) y las compañeras de diseño."
+    "description": "Skills propias (kiln, provenance, tokenwise, compass, quarry, assay, hallmark, foundry, sherpa) y las compañeras de diseño."
   },
   "plugins": [
     {
@@ -35,12 +35,57 @@
       ]
     },
     {
-      "name": "criterio-herramientas",
+      "name": "compass",
       "description": "Elegir la técnica o herramienta que conviene para una pregunta, y cuándo no.",
       "source": "./",
       "strict": false,
       "skills": [
-        "./criterio-herramientas"
+        "./compass"
+      ]
+    },
+    {
+      "name": "quarry",
+      "description": "Sacar datos de cualquier origen con su procedencia: estimar, muestra, foto con ficha y perfil al llegar.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./quarry"
+      ]
+    },
+    {
+      "name": "assay",
+      "description": "Analizar o modelar con salidas reproducibles: plan previo, corrida con ficha, intentos contados, diagnóstico y sensibilidad.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./assay"
+      ]
+    },
+    {
+      "name": "hallmark",
+      "description": "Control ejecutable de un entregable antes de darlo: cifras contra salidas, identidades, lectura y acta.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./hallmark"
+      ]
+    },
+    {
+      "name": "foundry",
+      "description": "Convertir una tarea repetida en una automatización: relevar, calcular si vale la pena, lentes, opciones y registro.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./foundry"
+      ]
+    },
+    {
+      "name": "sherpa",
+      "description": "Resumen de inicio de jornada: chat y correo clasificados en urgente, pendiente, contexto y ruido.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./sherpa"
       ]
     },
     {

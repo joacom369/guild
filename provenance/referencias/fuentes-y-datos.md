@@ -20,16 +20,11 @@ representado · alcance y completitud · condiciones de uso · exactitud. Un
 metadato documenta sólo lo que describe: no se extiende a otras capas o
 versiones.
 
-## Reproducir sin volver a la fuente
-Guardar la copia, la consulta, la URL, la fecha, la versión de la herramienta y
-un hash. Antes de recalcular, verificar el hash. Una corrida nueva no pisa la
-anterior. Los datos descargados no van al control de versiones; la consulta sí.
-
-## Descargas por servicio (WFS, APIs)
-Filtrar del lado del servidor; paginar con orden estable; comparar el total
-anunciado con el recibido; detectar páginas repetidas o truncas; pausar entre
-pedidos; poner tope de tamaño. Un intento fallido queda documentado como caso,
-no se ofrece como dato.
+## Extraer y reproducir sin volver a la fuente
+El procedimiento (estimar, muestra, paginación, foto con ficha y hash, perfil al
+llegar) está en la skill `quarry`. Acá queda el criterio: una corrida nueva no
+pisa la anterior, antes de recalcular se verifica el hash, y un intento fallido
+queda documentado como caso, no se ofrece como dato.
 
 ## Limpieza
 - Contar faltantes antes de decidir, y registrar cuántas filas se pierden y por qué.
