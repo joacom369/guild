@@ -29,6 +29,7 @@ flowchart TD
   H -. no sale .-> A
   Q -. carga .-> DOM[Skills de dominio<br/>del ambiente]
   FO -. agrega ramas .-> S[sherpa<br/>y las que vengan]
+  F -. escribir afuera .-> HE[herald<br/>con permiso por acción]
 ```
 
 **La cadena del taller:** `quarry` saca el mineral, `assay` lo ensaya, `kiln` lo cuece y `hallmark` le pone el sello.
@@ -180,7 +181,7 @@ guild/
 │       ├── scripts/                             las herramientas
 │       └── evals/                               pruebas de disparo (no van en los ZIP)
 ├── impeccable/ design-taste-frontend/           de terceros, sin modificar
-├── mapa/                                        MAPA.md, plano interactivo, auditoría, automatizaciones
+├── mapa/                                        MAPA.md, plano interactivo y documentos históricos
 ├── adaptadores/                                 lo propio de cada plataforma, y ejemplos reutilizables
 ├── docs/                                        imágenes del README
 ├── dist/                                        ZIP por skill para claude.ai

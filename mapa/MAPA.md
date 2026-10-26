@@ -234,6 +234,6 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
    Pruebas de disparo de esta vuelta (`compass`, `sherpa`, `kiln` con un caso nuevo de presentación, y los 8 casos
    nuevos de `lenses` y `herald`): 25 de 25, USD 0,98.
 
-   Quedan para después: `mapa/AUTOMATIZACIONES.md` sigue en el repositorio hasta que el usuario decida si se muda al
-   registro del ambiente; repeticiones menores entre `provenance`, `hallmark`, `tokenwise` y `assay` sobre cómo se
+   El registro de automatizaciones se mudó al ambiente (`~/.foreman/AUTOMATIZACIONES.md`): es propio de cada
+   trabajo, no del núcleo. Quedan para después las repeticiones menores entre `provenance`, `hallmark`, `tokenwise` y `assay` sobre cómo se
    verifica.
