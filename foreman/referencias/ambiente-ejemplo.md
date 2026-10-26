@@ -19,6 +19,7 @@ valores por defecto.
 - Skills de dominio del ambiente: <nombres>, se cargan antes de cada fase que toque sus sistemas
 - Detección de tareas repetidas: <qué historial ofrece esta plataforma>; siempre con permiso previo
 - Registros (si no se dice otra cosa, los de la tabla de abajo)
+- Bloques de oficios en otro archivo: <ruta> (si el bloque de un oficio, como el de `sherpa`, vive aparte)
 - Autorizaciones permanentes acotadas (`herald`): <destino · tipo de contenido · fecha en que el usuario lo autorizó>
 
 ## <oficio> · <nombre del trabajo>

@@ -30,7 +30,7 @@ el para qué y el cómo se arma el trabajo. Las reglas de contenido son de las s
 2. **Se detiene siempre en estos puntos:**
    - la decisión de método (fase 2);
    - antes de una extracción grande (`quarry` estima consultas, peso y tiempo);
-   - antes de escribir afuera o de borrar, archivar o pisar algo del usuario (lo ejecuta `herald`);
+   - antes de escribir afuera o de borrar algo del usuario que no se puede recuperar (qué entra lo define `herald`);
    - cuando `hallmark` dice «no sale».
 
    Esta lista es la única: los demás documentos la nombran, no la copian.

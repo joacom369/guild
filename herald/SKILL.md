@@ -16,6 +16,16 @@ El heraldo lleva un mensaje en nombre de otro: lo muestra antes, lleva el sello 
 constancia de que lo entregó. Esta skill es la **única dueña** de cómo se escribe afuera. Los demás oficios, cuando
 necesitan escribir, la llaman.
 
+## Qué entra y qué no
+
+| Entra (se aprueba cada acción) | No entra (sigue el trabajo normal) |
+|---|---|
+| Escribir en un sistema externo: mensaje, correo, publicación, comentario, cambio de estado o de registro | Editar los archivos que el usuario pidió cambiar, en un proyecto con control de versiones |
+| Borrar, archivar o pisar contenido del usuario que **no se puede recuperar** (sin historial, sin papelera, sin copia) | Lo que el cambio pedido reemplaza y queda en el historial (un commit, una versión anterior) |
+| Publicar o subir algo (por ejemplo, un push a un repositorio compartido) | Archivos temporales que la propia sesión creó |
+
+Ante la duda, entra.
+
 ## Las reglas (no se negocian)
 
 1. **Permiso por acción, no general.** «Podés responder a los clientes» no autoriza nada: cada mensaje, cambio o
