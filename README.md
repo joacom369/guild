@@ -3,10 +3,15 @@
 **Un gremio de skills para trabajar en cualquier proyecto, con cualquier IA.** Cada skill es un oficio con su
 procedimiento, sus reglas y sus herramientas; un capataz decide quién entra y cuándo; y cada entrega sale con un sello
 que dice qué se verificó. Lo que viaja de un trabajo a otro es **la estructura de trabajo**, no las herramientas de un
-lugar.
+lugar ni una plataforma.
 
 > Se llama al capataz, `foreman`, al empezar un proyecto. Él lee el pedido, arma el plan de fases con el oficio dueño
 > de cada una, consulta al usuario sólo en las decisiones que son suyas y cierra con un acta.
+
+[![Plano de skills: reglas, dirección, pensar y fabricar, decidir, procedimientos, dominio y hojas](docs/mapa.png)](mapa/mapa.html)
+
+<sub>El plano interactivo es [`mapa/mapa.html`](mapa/mapa.html): descargalo y abrilo en el navegador para tocar cada
+pieza y ver su ficha (GitHub muestra el código, no la página).</sub>
 
 ---
 
@@ -14,7 +19,7 @@ lugar.
 
 ```mermaid
 flowchart TD
-  U([Usuario]) --> R[Reglas del ambiente<br/>CLAUDE.md · guardarraíles]
+  U([Usuario]) --> R[Reglas del ambiente<br/>archivo de reglas · guardarraíles]
   R --> F[foreman<br/>el capataz · cosmovisión]
   F -. convoca .-> P[provenance<br/>forma de pensar]
   F -. convoca .-> FO[foundry<br/>fábrica de automatizaciones]
@@ -43,12 +48,12 @@ sequenceDiagram
   loop Cada fase que aplica
     F->>S: Carga la skill dueña
     S-->>F: Entrega concreta (foto, corrida, página, acta)
-    alt Decisión de método, extracción grande, escribir afuera, más de 3 agentes
+    alt Decisión de método, extracción grande, escribir afuera, más de 3 agentes, borrar algo
       F->>U: Corte: decide el usuario
     end
   end
   S-->>F: Acta de hallmark
-  F->>U: Acta, pendientes y posdata
+  F->>U: Acta, decisiones y dónde quedaron, pendientes
   F->>F: Actualiza el estado, el buzón y el registro de lentes
 ```
 
@@ -74,15 +79,15 @@ sólo plantear, construir y la lectura final; una consulta rápida se contesta d
 | [`provenance`](provenance/SKILL.md) | Forma de pensar | El origen y la naturaleza de cada cifra, el nivel de cada conclusión, validar contra la propia ilusión. | — |
 | [`compass`](compass/SKILL.md) | Decidir | Elige la técnica o herramienta para una pregunta y dice cuándo no conviene. | Catálogo de técnicas |
 | [`tokenwise`](tokenwise/SKILL.md) | Decidir | Si conviene repartir entre agentes, con qué modelo y cómo se escribe el encargo. | — |
-| [`quarry`](quarry/SKILL.md) | Fase: extraer | Saca datos de cualquier origen sin romper la fuente: estimar, muestra, foto con ficha, perfil al llegar. | `ficha.py`, `perfil.py` |
+| [`quarry`](quarry/SKILL.md) | Fase: extraer | Saca datos de cualquier origen sin romper la fuente: estimar, muestra, foto con ficha, perfil al llegar. | `ficha.py`, `perfil.py`, `tablas.py` |
 | [`assay`](assay/SKILL.md) | Fase: analizar | Plan antes de ver resultados, pre-análisis, cálculo en corridas reproducibles, todos los intentos contados. | `corrida.py` |
 | [`kiln`](kiln/SKILL.md) | Fase: construir | Páginas y tableros pulidos desde el primer intento, mirados en escritorio y celular. | `foto_pagina.py` |
 | [`hallmark`](hallmark/SKILL.md) | Fase: verificar | Cada cifra del entregable buscada en las salidas, identidades que cierran, lectura final, revisión independiente y acta. | `cifras.py` |
 | [`foundry`](foundry/SKILL.md) | Fábrica | Convierte una tarea repetida en una automatización: relevar, calcular si vale la pena, lentes, opciones y registro con predicción. | — |
-| [`sherpa`](sherpa/SKILL.md) | Automatización | Resumen de inicio de jornada: chat y correo en urgente, pendiente, contexto y ruido. Sólo lectura. Primera rama de `foundry`. | — |
+| [`sherpa`](sherpa/SKILL.md) | Automatización | Resumen de inicio de jornada: chat, correo y calendario en urgente, pendiente, contexto y ruido, en una sola línea de tiempo. Sólo lectura, con la identidad de cada fuente verificada. Primera rama de `foundry`. | Receta de conectores en `referencias/` |
 
-Todos los scripts usan la biblioteca estándar de Python (más `openpyxl` para `.xlsx`, y Chrome para las capturas de
-`kiln`).
+Todos los scripts usan la biblioteca estándar de Python (más `openpyxl` para `.xlsx`, y Chrome con `websockets` para
+las capturas de `kiln`).
 
 ### Las lentes
 
@@ -99,14 +104,33 @@ sintetiza. Algunas propuestas van a sobrar: es parte de aprender, y se registra 
 2. **Orquestar no es legislar.** `foreman` decide quién trabaja y cuándo, nunca relaja una regla.
 3. **Las decisiones de método son del usuario.** Hay cortes fijos que ningún oficio se saltea.
 4. **Confiar con constancia, no con promesas.** Cada entrega trae su acta: qué se verificó, qué no y qué riesgo queda.
-5. **Núcleo portable.** Las skills no nombran empresas, sistemas ni personas. Lo propio de cada trabajo va en la
-   configuración del ambiente.
+5. **Núcleo portable.** Las skills no nombran empresas, sistemas, personas ni plataformas. Lo propio de cada trabajo va
+   en la configuración del ambiente; lo propio de cada IA, en su adaptador.
 6. **El círculo expansivo.** Cada vuelta deja algo que mejora la siguiente. El sistema propone sus mejoras; el usuario
    las aprueba.
 
-## Instalar
+## Usarlo con cualquier IA
 
-### Claude Code
+El núcleo es texto (Markdown) y Python. Lo que cambia entre plataformas es cómo se cargan los oficios, dónde viven las
+reglas, qué pasa al abrir una sesión, cómo se lanzan agentes y rutinas y cómo se conectan las fuentes del usuario. Eso
+lo resuelve un **adaptador**, que cumple el contrato de [`mapa/MAPA.md`](mapa/MAPA.md) §6.
+
+| Plataforma | Cómo empezar | Estado |
+|---|---|---|
+| Claude Code y claude.ai | [`adaptadores/claude-code.md`](adaptadores/claude-code.md): clonar en `~/.claude/skills`, plugins o ZIP | En uso (el hook y la rutina, sin probar) |
+| Cualquiera que lea `AGENTS.md` (Cursor, Codex y otras) | Abrir el repositorio o apuntar las reglas a [`AGENTS.md`](AGENTS.md), el índice de oficios | Escrito, sin probar |
+| Bot en servidor propio (p. ej. Grok Bot) | El contrato del adaptador + los mismos oficios | A diseñar |
+
+Instalación rápida en Claude Code:
+
+```bash
+git clone https://github.com/joacom369/guild.git ~/.claude/skills
+```
+
+El repositorio es privado: hace falta acceso con una cuenta de GitHub que tenga permiso.
+
+<details>
+<summary>Instalar como plugins de Claude Code (2.1.275 o posterior)</summary>
 
 ```
 /plugin install foreman --marketplace joacom369/guild
@@ -123,42 +147,27 @@ sintetiza. Algunas propuestas van a sobrar: es parte de aprender, y se registra 
 /plugin install design-taste-frontend --marketplace joacom369/guild
 ```
 
-En versiones anteriores a la 2.1.275: `/plugin marketplace add joacom369/guild` y después
-`/plugin install <skill>@guild`. El repositorio es privado: la PC necesita acceso a GitHub con la cuenta (por ejemplo,
-`gh auth login`).
-
-### Clonando (recomendado para quien lo mantiene)
-
-```bash
-git clone https://github.com/joacom369/guild.git ~/.claude/skills
-```
-
-Si `~/.claude/skills` ya existe, clonar aparte y copiar las carpetas.
-
-### claude.ai
-
-Descargar `dist/<skill>.zip` y subirlo en Configuración > Capacidades > Skills.
-
-### Otras IA
-
-Las skills son texto (Markdown) y los scripts son Python. Lo que depende de cada plataforma es cómo se cargan y cómo se
-corren las tareas al abrir una sesión o con horario. Eso se resuelve con un adaptador por plataforma; el de Claude
-Code ya existe y el de Cursor está pendiente.
+En versiones anteriores: `/plugin marketplace add joacom369/guild` y después `/plugin install <skill>@guild`.
+</details>
 
 ## Configurar un ambiente nuevo
 
-1. **CLAUDE.md** (o el archivo de reglas de la plataforma): las reglas del trabajo. Por ejemplo, qué sistemas son de
-   sólo lectura, el idioma y cuándo llamar a cada oficio.
+1. **El archivo de reglas** de la plataforma (`CLAUDE.md`, `AGENTS.md` u otro): las reglas del trabajo, por ejemplo
+   qué sistemas son de sólo lectura, el idioma y cuándo llamar a cada oficio.
 2. **Skills de dominio** del trabajo, si existen: el vocabulario, qué fuente es la verdad para cada dato y cómo se
    accede a cada sistema.
-3. **Configuración de los oficios que la necesitan**, fuera de este repositorio:
-   - `foreman/referencias/ambiente-ejemplo.md`: el modo por defecto, el buzón y el registro de lentes;
-   - `sherpa/referencias/ambiente-ejemplo.md`: el chat, el correo, el horario y qué es urgente.
+3. **La configuración de los oficios que la necesitan**, fuera de este repositorio:
+   - [`foreman/referencias/ambiente-ejemplo.md`](foreman/referencias/ambiente-ejemplo.md): el modo por defecto, los
+     proyectos, el buzón y el registro de lentes;
+   - [`sherpa/referencias/ambiente-ejemplo.md`](sherpa/referencias/ambiente-ejemplo.md): los conectores verificados,
+     los grupos con su ID, el horario, el tope y qué es urgente.
+4. **Los conectores** con la cuenta del usuario: [`sherpa/referencias/conectores.md`](sherpa/referencias/conectores.md).
 
 ## Estructura del repositorio
 
 ```
 guild/
+├── AGENTS.md                                    índice de oficios para cualquier IA
 ├── foreman/ provenance/ compass/ tokenwise/     dirección, forma de pensar, decidir
 ├── quarry/ assay/ kiln/ hallmark/               la cadena del taller
 ├── foundry/ sherpa/                             fábrica y sus ramas
@@ -168,14 +177,14 @@ guild/
 │       ├── scripts/                             las herramientas
 │       └── evals/                               pruebas de disparo (no van en los ZIP)
 ├── impeccable/ design-taste-frontend/           de terceros, sin modificar
-├── mapa/                                        MAPA.md, plano visual, auditoría, registro de automatizaciones
+├── mapa/                                        MAPA.md, plano interactivo, auditoría, automatizaciones
+├── adaptadores/                                 lo propio de cada plataforma, y ejemplos reutilizables
+├── docs/                                        imágenes del README
 ├── dist/                                        ZIP por skill para claude.ai
-├── .claude-plugin/marketplace.json              catálogo de plugins
-└── empaquetar.py                                arma los ZIP y controla las descriptions
+├── .claude-plugin/marketplace.json              catálogo de plugins (adaptador de Claude Code)
+├── empaquetar.py                                arma los ZIP y controla las descriptions
+└── LICENSE
 ```
-
-El mapa completo (capas, contratos entre fases, un dueño por regla, dónde se despliegan agentes) está en
-[`mapa/MAPA.md`](mapa/MAPA.md), con un plano interactivo en [`mapa/mapa.html`](mapa/mapa.html).
 
 ## Cómo se prueba
 
@@ -185,17 +194,24 @@ El mapa completo (capas, contratos entre fases, un dueño por regla, dónde se d
 | Descriptions | Que ninguna rompa el YAML (un error que la validación no ve) | `python empaquetar.py` |
 | Disparo | Que cada skill se cargue cuando debe y no cuando no: 4 casos por skill, 2 que deben disparar y 2 parecidos que no | `claude plugin eval <skill> --ablation none --runs 1 --model sonnet` |
 | Scripts | Cada uno se probó con datos sembrados con fallas conocidas | Ver `mapa/MAPA.md` |
+| Plano | Que la página no tenga errores ni desborde en celular | `python kiln/scripts/foto_pagina.py file:///<ruta>/mapa/mapa.html <prefijo>` |
 
 ## Mantener
 
 Editar la skill → `python empaquetar.py` → `claude plugin validate .` → si cambió una description, correr sus pruebas
-de disparo → commit y push.
+de disparo → si cambió el mapa, actualizar `mapa.html` y la captura `docs/mapa.png` → commit y push.
 
-## De terceros
+## Licencia
 
-Copias sin modificar, cada una con su licencia. Para actualizarlas, reemplazar la carpeta entera por la versión nueva.
+Lo propio de este repositorio va bajo licencia **MIT** ([`LICENSE`](LICENSE)): se puede usar, cambiar y compartir
+manteniendo el aviso de autoría.
+
+### De terceros
+
+Copias sin modificar, cada una con su licencia dentro de la carpeta. Para actualizarlas, reemplazar la carpeta entera
+por la versión nueva, con su `LICENSE` y su `NOTICE`.
 
 | Skill | Autor y licencia | Para qué |
 |---|---|---|
-| `impeccable` | Paul Bakaus, Apache 2.0 (github.com/pbakaus/impeccable), v4.5.0 | Diseñar, pulir y auditar interfaces |
-| `design-taste-frontend` | Leonxlnx (taste-skill), MIT | Dirección visual sin defaults de plantilla |
+| `impeccable` | Paul Bakaus, Apache 2.0 ([`LICENSE`](impeccable/LICENSE), [`NOTICE`](impeccable/NOTICE.md)), github.com/pbakaus/impeccable, v4.5.0 | Diseñar, pulir y auditar interfaces |
+| `design-taste-frontend` | Leonxlnx (taste-skill), MIT ([`LICENSE`](design-taste-frontend/LICENSE)) | Dirección visual sin defaults de plantilla |

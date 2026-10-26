@@ -142,7 +142,7 @@ ol.next { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
     </div>
     <div class="stamp" aria-label="Datos del plano">
       <span>Lámina</span><b>Mapa v1</b>
-      <span>Fecha</span><b>25 oct 2026</b>
+      <span>Fecha</span><b>26 oct 2026</b>
       <span>Fuente</span><b>mapa/MAPA.md</b>
     </div>
   </header>
@@ -243,7 +243,7 @@ ol.next { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
           <tr><td>Puntos de decisión</td><td>Asesor</td><td><code>tokenwise</code></td><td>existe</td></tr>
           <tr><td>Lentes del laboratorio</td><td>Una lente por bloque; como agente en rondas grandes</td><td><code>foreman</code></td><td>existe</td></tr>
           <tr><td>Detectar tareas repetidas</td><td>Revisión de sesiones, con permiso previo</td><td><code>foreman</code> → <code>foundry</code></td><td>falta el adaptador</td></tr>
-          <tr><td>Resumen al empezar la jornada</td><td>Rutina programada</td><td><code>sherpa</code></td><td>falta la prueba y la rutina</td></tr>
+          <tr><td>Resumen al empezar la jornada</td><td>Rutina programada</td><td><code>sherpa</code></td><td>probada a mano; falta la rutina</td></tr>
         </tbody>
       </table>
     </div>
@@ -253,7 +253,7 @@ ol.next { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
     <h2 id="h-nucleo">Núcleo portable y adaptadores</h2>
     <div class="two">
       <p>Todo el sistema se lleva a otro trabajo u otra plataforma sin cambios. El <b>núcleo</b> es texto y Python: el mapa, las skills, los contratos, las lentes y los scripts. Lo propio de cada trabajo (qué chat, qué sistemas, qué es urgente) vive afuera, en la configuración del ambiente.</p>
-      <p>Cada plataforma tiene su <b>adaptador</b>: en Claude Code, hooks, agentes definidos, workflows y rutinas; en Cursor con Grok, lo que soporte (a verificar). Nada del núcleo depende de una plataforma: si una skill necesita algo al abrir la sesión, lo dice como necesidad y cada adaptador lo resuelve.</p>
+      <p>Cada plataforma tiene su <b>adaptador</b>: en Claude Code, hooks, agentes definidos, workflows y rutinas; en otras plataformas, <code>AGENTS.md</code> y lo que soporten (a verificar). El contrato que cumple cada adaptador está en <code>MAPA.md</code> §6 y el detalle, en <code>adaptadores/</code>. Nada del núcleo depende de una plataforma: si una skill necesita algo al abrir la sesión, lo dice como necesidad y cada adaptador lo resuelve.</p>
     </div>
   </section>
 
@@ -265,11 +265,13 @@ ol.next { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
         <li class="done">Ordenar las skills según un dueño por regla</li>
         <li class="done">Construir foundry</li>
         <li class="done">Cerrar la fase «analizar» con assay</li>
-        <li>Probar sherpa con la cuenta correcta y crear sus rutinas</li>
+        <li class="done">Probar sherpa con la cuenta correcta</li>
+        <li>Crear la rutina de sherpa y el bot propio</li>
         <li class="done">Construir foreman</li>
         <li>Adaptador de inicio de sesión para foreman (hook)</li>
-        <li>Pruebas de disparo de cada skill</li>
-        <li>Adaptador para Cursor</li>
+        <li class="done">Pruebas de disparo de cada skill</li>
+        <li class="done">Contrato del adaptador y AGENTS.md</li>
+        <li>Probar AGENTS.md en otra plataforma</li>
       </ol>
       <div class="note"><b>La cadena del taller:</b> <code>quarry</code> saca el mineral, <code>assay</code> lo ensaya, <code>kiln</code> lo cuece y <code>hallmark</code> lo sella. <code>foundry</code> hace el molde cuando algo se repite.</div>
     </div>
@@ -279,11 +281,11 @@ ol.next { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
 <script>
 const N = [
   // capa, id, etiqueta corta, estado, ficha
-  [0, "reglas", "CLAUDE.md", "ok", "Reglas del usuario y del proyecto", {
+  [0, "reglas", "reglas", "ok", "Reglas del usuario y del proyecto", {
     hace: "Lo que no se negocia: idioma, las decisiones de método son del usuario, sólo lectura en los sistemas de la empresa.",
     recibe: "—", entrega: "Límites para todas las capas.", deriva: "Manda sobre todo; una regla de proyecto manda sobre una general." }],
   [0, "guardrails", "guardrails", "ext", "Guardarraíles del dominio", {
-    hace: "Las reglas de seguridad propias de cada empresa (ambiente actual, IG: ig-guardrails).",
+    hace: "Las reglas de seguridad propias de cada empresa.",
     recibe: "—", entrega: "Qué no se toca y qué no se comparte.", deriva: "Van primero en cualquier tarea de ese dominio." }],
   [1, "foreman", "foreman", "ok", "El capataz", {
     hace: "Decide qué skill trabaja, en qué orden y cuándo se despliega una lente. Te habla sólo por un riesgo, una decisión tuya o una tarea repetida. Guarda ideas en un buzón y avisa en una línea al empezar.",
@@ -325,7 +327,7 @@ const N = [
     recibe: "El entregable y las salidas.", entrega: "Acta: sale, sale con observaciones o no sale.",
     deriva: "Si no sale, vuelve a la fase dueña del error." }],
   [5, "dominio", "dominio", "ext", "Conocimiento del trabajo", {
-    hace: "Lo propio de cada empresa: sistemas, vocabulario, qué fuente es la verdad (ambiente actual, IG: ig-knowledge, sales, octopuskg-guide).",
+    hace: "Lo propio de cada empresa: sistemas, vocabulario, qué fuente es la verdad.",
     recibe: "—", entrega: "Criterio de dominio para las demás capas.",
     deriva: "En su tema, una regla de dominio le gana a una general." }],
   [6, "sherpa", "sherpa", "leaf", "Primera hoja de foundry", {

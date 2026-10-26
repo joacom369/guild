@@ -39,11 +39,11 @@ confirmar lo dice.
 | 8 | El protocolo de modelado tiene dos dueños (`criterio-herramientas` y `provenance`) | Confunde | Sin verificar línea por línea |
 | 9 | Validación escrita en tres lugares (identidades, lectura, crítica independiente) | Menor | ✔ |
 | 10 | Abrir y cerrar sesión (ESTADO.md) sólo existe en una referencia; ninguna description cubre «retomar un proyecto» | Confunde | ✔ |
-| 11 | `quarry` no deriva a `ig-data-access` ni `ig-data-truth` cuando el origen es de IG | Confunde | ✔ |
+| 11 | `quarry` no deriva a las skills de dominio de la empresa cuando el origen es uno de sus sistemas | Confunde | ✔ |
 | 12 | El revisor del nivel 3 de `hallmark` recibe «corré `cifras.py`» sin ruta; un subagente no lo encuentra | Rompe el uso | ✔ revisor.md:29 |
 | 13 | `provenance` (182 líneas) y `tokenwise` (177), las que más se cargan, son las más largas; tokenwise trae datos de modelos que envejecen | Menor | ✔ |
 | 14 | `kiln/reference/anti-defaults.md` manda modificar la skill con un commit en medio de una tarea, sin aval | Menor | ✔ :28 |
-| 15 | Convenciones mezcladas: `reference/` y `referencias/`, nombres en inglés y en castellano, casos de IG dentro de skills generales | Menor | ✔ |
+| 15 | Convenciones mezcladas: `reference/` y `referencias/`, nombres en inglés y en castellano, casos de una empresa dentro de skills generales | Menor | ✔ |
 
 ## 3. Lectura de conjunto
 

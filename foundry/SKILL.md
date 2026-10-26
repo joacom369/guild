@@ -16,7 +16,7 @@ productividad: lo que hoy cuesta una hora por día pasa a costar unos minutos de
    lo decide él.
 2. **Sin permiso, nada se escribe en sistemas ajenos.** Una automatización que lee de un sistema (Slack, correo, una
    base) no publica, no responde, no marca como leído ni borra nada salvo que el usuario lo pida explícitamente para
-   ese paso. Las reglas del ambiente (CLAUDE.md) mandan.
+   ese paso. Las reglas del ambiente mandan.
 3. **No se construye lo que ya existe.** Antes de diseñar, se busca en el árbol.
 4. **Toda automatización nace con su control.** Si nadie se entera cuando falla, no está terminada.
 5. **Se mide lo que se prometió.** La predicción de ahorro se registra y se compara después con lo que pasó.
@@ -99,7 +99,7 @@ Con las propuestas, armá **dos o tres opciones** en la escalera de automatizaci
 
 | Escalón | Mecanismo | Sirve cuando |
 |---|---|---|
-| 1 | Una regla o una checklist en CLAUDE.md | Basta con no olvidarse de un paso |
+| 1 | Una regla o una checklist en el archivo de reglas | Basta con no olvidarse de un paso |
 | 2 | Una skill | Hay un procedimiento con criterio que se pide a demanda |
 | 3 | Un script | Hay pasos mecánicos que tienen que dar siempre lo mismo |
 | 4 | Un subagente definido | Una parte lee mucho material o necesita aislarse |

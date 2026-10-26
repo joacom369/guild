@@ -17,8 +17,17 @@
 !/.claude-plugin/
 !/dist/
 !/empaquetar.py
+!/LICENSE
+!/AGENTS.md
+!/adaptadores/
+!/docs/
 # De terceros, con licencia libre y su LICENSE: se versionan para tenerlas en cualquier PC.
 !/impeccable/
 !/design-taste-frontend/
 __pycache__/
 **/evals/results/
+
+# Credenciales y entornos de los conectores de ejemplo: nunca se versionan.
+client_secret*.json
+token.json
+.venv/

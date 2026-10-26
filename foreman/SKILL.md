@@ -25,14 +25,18 @@ el para qué y el cómo se arma el trabajo. Las reglas de contenido son de las s
 
 ## Las reglas (no se negocian)
 
-1. **Orquesta, no legisla.** No tiene reglas de contenido propias y nunca relaja una regla de otra skill, del
-   CLAUDE.md ni de las skills de dominio.
+1. **Orquesta, no legisla.** No tiene reglas de contenido propias y nunca relaja una regla de otra skill, de
+   las reglas del ambiente ni de las skills de dominio.
 2. **Se detiene siempre en estos puntos:**
    - la decisión de método (fase 2);
    - antes de una extracción grande (`quarry` estima consultas, peso y tiempo);
    - antes de escribir en un sistema externo;
    - antes de lanzar más de tres agentes (`tokenwise`);
-   - cuando `hallmark` dice «no sale».
+   - cuando `hallmark` dice «no sale»;
+   - antes de borrar, archivar o pisar algo del usuario.
+
+   **Vía libre.** Si el usuario delega las decisiones de método («decidí vos»), el primer corte se resuelve y se
+   anota con su motivo. Los demás **no se delegan**: se consultan igual.
 3. **Habla con el usuario sólo cuando vale la pena:**
    - un riesgo;
    - una decisión que es suya;
@@ -52,6 +56,8 @@ el para qué y el cómo se arma el trabajo. Las reglas de contenido son de las s
 - Leé la configuración del ambiente: dónde están el buzón y el registro de lentes, y el modo por defecto
   ([referencias/ambiente-ejemplo.md](referencias/ambiente-ejemplo.md)). Si no hay configuración, usá los valores por
   defecto que trae esa plantilla.
+- Fijá la carpeta del proyecto y trabajá con rutas absolutas: el directorio de trabajo puede cambiar a mitad de
+  sesión, y un comando relativo escribe en otro lado.
 - Ubicá el proyecto: si la configuración asocia su nombre a una carpeta, andá directo; si no, buscalo y proponé
   sumarlo a la configuración.
 - Leé el `ESTADO.md` del proyecto si existe (la plantilla es de `provenance`). Si no existe pero hay documentos que ya
@@ -105,7 +111,7 @@ dice «no sale», el trabajo vuelve a la fase dueña del error, no siempre al an
 
 1. **El acta.** Es la de `hallmark` si hubo cifras, más:
    - qué se hizo;
-   - qué decidió el usuario;
+   - cada decisión del usuario, con dónde quedó implementada (archivo y línea), «fuera del repositorio» o «falta»;
    - qué queda abierto;
    - qué no se verificó.
 
@@ -121,4 +127,4 @@ dice «no sale», el trabajo vuelve a la fase dueña del error, no siempre al an
 - `compass` y `tokenwise` (decidir);
 - `quarry` (extraer), `assay` (analizar), `kiln` y `dataviz` (construir), `hallmark` (verificar).
 
-Las ramas nuevas las fabrica `foundry`. El CLAUDE.md y las skills de dominio del ambiente mandan sobre todas.
+Las ramas nuevas las fabrica `foundry`. Las reglas y las skills de dominio del ambiente mandan sobre todas.

@@ -152,4 +152,4 @@ de un trabajo analítico es plantear (esta skill) → elegir la técnica
 axiomas de esta skill) →
 construir (`kiln`, `dataviz`) → verificar (`hallmark`) → registrar (esta skill).
 Para repartir entre agentes, `tokenwise`. Si el proyecto tiene reglas propias
-(un CLAUDE.md, un documento de estado), mandan sobre esta skill cuando difieren.
+(un archivo de reglas, un documento de estado), mandan sobre esta skill cuando difieren.

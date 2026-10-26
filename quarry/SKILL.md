@@ -11,7 +11,7 @@ marcado con el frente del que salió. Con los datos es igual: **el dato vale lo 
 es el procedimiento; el criterio sobre cada cifra está en `provenance`.
 
 Sirve para cualquier ambiente. Las reglas propias de cada uno (qué sistemas son de sólo lectura, qué no se puede
-sacar, quién autoriza) están en el CLAUDE.md del proyecto o del usuario y **mandan sobre esta skill**. Si el ambiente
+sacar, quién autoriza) están en las reglas del proyecto o del usuario y **mandan sobre esta skill**. Si el ambiente
 tiene skills de dominio sobre sus datos (cómo se accede a cada sistema, qué fuente es la verdad para cada dato, qué
 significa cada campo), **cargalas antes del paso 1**: esta skill pone el procedimiento y ellas, el conocimiento.
 

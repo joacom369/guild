@@ -3,9 +3,9 @@
 Los nombres de modelos y las condiciones de costo cambian: verificá contra la documentación vigente antes de
 recomendar una combinación.
 
-Claude Code puede sumar un **asesor**: un segundo modelo, más fuerte, que Claude consulta en los puntos de decisión
+Algunas plataformas permiten sumar un **asesor**: un segundo modelo, más fuerte, que el principal consulta en los puntos de decisión
 (antes de elegir un enfoque, ante un error que se repite, antes de dar algo por terminado). Lee la conversación entera y
-devuelve una recomendación. Se activa con `/advisor <modelo>`, se apaga con `/advisor off` y lo decide el usuario: es su
+devuelve una recomendación. Cómo se activa depende de la plataforma (en Claude Code, `/advisor <modelo>` y `/advisor off`); lo decide el usuario: es su
 configuración y su cuota.
 
 **Cuándo conviene:**

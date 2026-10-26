@@ -1,6 +1,7 @@
 # Configuración del ambiente para foreman (plantilla)
 
-Se busca, en este orden, en `~/.foreman/ambiente.md` y en el CLAUDE.md del ambiente. Va fuera del repositorio de
+Se busca, en este orden, en `~/.foreman/ambiente.md` y en el archivo de reglas del ambiente (CLAUDE.md,
+AGENTS.md o el que use la plataforma). Va fuera del repositorio de
 skills. Si no hay configuración, valen los valores por defecto.
 
 ```markdown
@@ -41,5 +42,7 @@ línea si hay novedades. Una skill sola no corre al abrir la sesión; cada plata
 - **Claude Code:** un hook de inicio de sesión que lea el buzón y muestre la línea, y una línea en el CLAUDE.md que
   diga cuándo llamar a `foreman`;
 - **otras plataformas:** su mecanismo de reglas o de arranque.
+
+Los adaptadores de cada plataforma están en `adaptadores/` del repositorio.
 
 Instalar un adaptador es decisión del usuario.

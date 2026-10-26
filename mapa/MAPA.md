@@ -1,6 +1,6 @@
 # Mapa de skills · v1 (estructura objetivo)
 
-Fecha: 2026-10-25. Reemplaza a la v0. Se armó con la auditoría ([AUDITORIA.md](AUDITORIA.md)) y las decisiones sobre el
+Fecha: 2026-10-25, actualizado el 2026-10-26 (adaptadores, primera prueba de `sherpa`). Reemplaza a la v0. Se armó con la auditoría ([AUDITORIA.md](AUDITORIA.md)) y las decisiones sobre el
 cerebro ([CEREBRO.md](CEREBRO.md)). Marcas:
 - **(existe)**: ya está construido.
 - **(a construir)**: está decidido, falta hacerlo.
@@ -44,7 +44,7 @@ cumplen.
 ```mermaid
 flowchart TD
   U([Usuario]) --- R
-  R[Capa 0 · Reglas<br/>CLAUDE.md global y de proyecto · guardarraíles del ambiente]
+  R[Capa 0 · Reglas<br/>archivo de reglas global y de proyecto · guardarraíles del ambiente]
   R --> F[Capa 1 · Dirección<br/>foreman: orquesta, no legisla]
   F -. convoca .-> P[Capa 2 · Forma de pensar<br/>provenance]
   F -. convoca .-> FO[Capa 2 · Fábrica<br/>foundry: tareas repetidas → automatizaciones]
@@ -57,13 +57,13 @@ flowchart TD
 
 | Capa | Pieza | Qué decide | Estado |
 |---|---|---|---|
-| 0 · Reglas | CLAUDE.md y los guardarraíles del ambiente | Lo que no se negocia: idioma, las decisiones de método son del usuario, qué sistemas son de sólo lectura. *Ambiente actual (IG): `ig-guardrails`* | existe |
+| 0 · Reglas | El archivo de reglas del ambiente (CLAUDE.md, AGENTS.md o el de la plataforma) y sus guardarraíles | Lo que no se negocia: idioma, las decisiones de método son del usuario, qué sistemas son de sólo lectura | existe |
 | 1 · Dirección | `foreman` | Qué skill trabaja, en qué orden, cuándo se despliega una lente, cuándo se le habla al usuario. **Orquesta, no legisla:** no tiene reglas de contenido propias | existe (2026-10-25) |
 | 2 · Forma de pensar | `provenance` | Qué es cada cifra, con qué nivel se concluye, cómo se valida | existe (a achicar) |
 | 2 · Fábrica | `foundry` | Si una tarea repetida se automatiza y con qué escalón | existe (2026-10-25) |
 | 3 · Decidir | `compass`, `tokenwise` | Con qué técnica o herramienta; con cuántos agentes y a qué costo | existe |
 | 4 · Procedimientos | `quarry`, `assay`, `kiln` (+`impeccable`, `design-taste-frontend`), `dataviz`, `ponytail`, `hallmark` | Los pasos de cada fase, con scripts que fallan | existe |
-| 5 · Dominio | Las skills de conocimiento de cada trabajo. *Ambiente actual (IG): `ig-knowledge:*`, `sales:*`, `octopuskg-guide`* | El conocimiento del negocio y de sus sistemas | depende del ambiente |
+| 5 · Dominio | Las skills de conocimiento de cada trabajo: vocabulario, sistemas, qué fuente es la verdad | El conocimiento del negocio y de sus sistemas | depende del ambiente |
 
 **Regla de precedencia (sólo para reglas de contenido):** las reglas del usuario (capa 0) mandan sobre todo. Entre
 las capas 2 a 4, una más alta manda sobre una más baja cuando chocan. Una regla de dominio le gana a una general sólo
@@ -130,8 +130,8 @@ aplica al achicar las skills.
 | Código mínimo | `ponytail` | — |
 | ESTADO.md: formato | `provenance` (plantilla) | — |
 | ESTADO.md: cuándo se lee y se escribe | `foreman` | — |
-| Qué skill trabaja y cuándo | `foreman` (+ índice corto en CLAUDE.md) | las descriptions sólo dicen su momento, con caso negativo |
-| Sistemas del ambiente: sólo lectura, verdad de cada fuente | CLAUDE.md + las skills de dominio (*ambiente actual: `ig-guardrails`, `ig-data-truth`*) | `quarry` las carga antes de extraer |
+| Qué skill trabaja y cuándo | `foreman` (+ índice corto en el archivo de reglas; `AGENTS.md` en la raíz) | las descriptions sólo dicen su momento, con caso negativo |
+| Sistemas del ambiente: sólo lectura, verdad de cada fuente | Las reglas del ambiente + sus skills de dominio | `quarry` las carga antes de extraer |
 
 ## 4. El laboratorio de lentes
 
@@ -178,23 +178,27 @@ contrato concreto.
 
 ## 6. Núcleo y adaptadores
 
-| Necesidad del núcleo | Claude Code | Cursor (con Grok) |
-|---|---|---|
-| Cargar un procedimiento a demanda | Skill (`SKILL.md`) | a verificar |
-| Reglas que valen siempre | CLAUDE.md | a verificar (reglas del proyecto) |
-| Algo que pasa sí o sí al abrir la sesión (avisar del buzón, leer ESTADO.md) | Hook `SessionStart` | a verificar |
-| Agente con una tarea y sus herramientas | Subagente (`.claude/agents/`) | a verificar (agentes en la nube) |
-| Varios agentes en un orden fijo con verificación | Workflow | a verificar |
-| Correr solo, con horario | Rutina programada | a verificar |
-| Pasos mecánicos | Scripts en Python | Scripts en Python (los mismos) |
+Esta tabla es **el contrato del adaptador**: lo que cualquier plataforma tiene que darle al núcleo. Cada adaptador
+dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). En cada celda, «probado» es lo que se usó de verdad y «documentado» lo que está descrito pero no se usó.
 
-**Patrones de portabilidad tomados del ambiente actual** (plugin de conocimiento de IG, visto el 2026-10-25; sirven en cualquier ambiente):
-- El conocimiento vive en una base aparte (el bundle OKF, un concepto por archivo, con dueño y fecha). La skill sólo
-  dice cómo leerlo. Es la misma división que hacemos entre núcleo y adaptador.
-- En los bots de otras cuentas, el plugin no está en disco y se lee con Read por rutas relativas. El plugin registra
-  que 9 de 9 lo lograron.
-- *Ambiente actual:* las skills y los conectores de Grok Bot que compartió la empresa todavía no están accesibles;
-  se suman al árbol cuando lo estén.
+| Necesidad del núcleo | Claude Code | Plataformas que leen `AGENTS.md` (Cursor, Codex y otras) | Bot en servidor propio (p. ej. Grok Bot) |
+|---|---|---|---|
+| Saber qué oficio cargar y cuándo | Descriptions de las skills + archivo de reglas (probado) | `AGENTS.md` (índice) | a verificar |
+| Cargar un procedimiento a demanda | Skill (`SKILL.md`) (probado) | Leer el `SKILL.md` por su ruta | a verificar |
+| Reglas que valen siempre | CLAUDE.md (probado) | `AGENTS.md` o las reglas del proyecto | a verificar |
+| Algo que pasa sí o sí al abrir la sesión (avisar del buzón, leer ESTADO.md) | Hook `SessionStart` (documentado, no instalado) | a verificar | a verificar |
+| Agente con una tarea y sus herramientas | Subagente (probado) | a verificar | a verificar |
+| Varios agentes en un orden fijo con verificación | Workflow (documentado) | a verificar | a verificar |
+| Correr solo, con horario | Rutina programada (documentado; la de `sherpa` falta) | a verificar | a verificar (corre 24/7) |
+| Conectores con la cuenta del usuario (chat, correo, calendario) | Conector por máquina o MCP local de lectura (probado) | a verificar | a recrear con la misma receta |
+| Pasos mecánicos | Scripts en Python | Los mismos scripts | Los mismos scripts |
+
+**Patrones de portabilidad** (vistos en bases de conocimiento de empresa; sirven en cualquier ambiente):
+- El conocimiento vive en una base aparte (un concepto por archivo, con dueño y fecha). La skill sólo dice cómo
+  leerlo. Es la misma división que hacemos entre núcleo y adaptador.
+- Donde la plataforma no instala las skills en disco, se leen por rutas relativas desde el repositorio.
+- Los conectores de una cuenta compartida pueden ser de otra persona: cada fuente se verifica por separado
+  (`sherpa/referencias/conectores.md`).
 
 ## 7. Huecos y orden de trabajo
 
@@ -202,7 +206,14 @@ contrato concreto.
 1. ~~Fase 4 (analizar)~~ **resuelto (2026-10-25):** skill `assay`. Se llevó el protocolo de modelado de `compass`.
 2. **Detección de repeticiones — decidido:** `foreman` pide permiso antes de mirar (qué va a leer y cuánto va a
    gastar). Con el visto bueno tiene vía libre para leer y proponer, pero **nunca modifica nada sin consentimiento**.
-3. **Adaptador de Cursor:** verificar qué soporta hoy.
+3. **Adaptadores fuera de Claude Code:** `AGENTS.md` está escrito pero sin probar en Cursor ni en otra plataforma.
+4. **Bot propio y trabajo en vivo** (buzón, 2026-10-26; anotado, sin diseñar):
+   - un bot con nombre («sherpa») que mande el resumen al empezar la jornada, en lugar de un mensaje privado desde la
+     cuenta del usuario;
+   - el «cerebro de bots»: bots que detectan en vivo cuando se mueve algo (un mensaje, un correo, un estado) y lo
+     resuelven o lo delegan en otro bot;
+   - el lugar natural es un bot en servidor propio (p. ej. Grok Bot), que corre sin depender de una computadora
+     prendida. Se diseña con `foundry`.
 
 **Orden de trabajo:**
 1. Aprobar este mapa.
@@ -216,7 +227,7 @@ contrato concreto.
    Quedan abiertos:
    - el protocolo de modelado de `compass` (insumo para decidir la fase 4);
    - `kiln/reference/` contra `referencias/`;
-   - ~~los casos de IG nombrados en `compass`~~ (resuelto: ahora son genéricos).
+   - ~~los casos de una empresa nombrados en `compass`~~ (resuelto: ahora son genéricos).
 3. Construir `foundry`.
 4. ~~Construir `foreman`~~ **hecho (2026-10-25).** Falta el adaptador de inicio de sesión (hook), que es decisión del usuario.
 5. ~~Pruebas de disparo~~ **hecho (2026-10-25):** 36 casos (4 por skill propia: 2 que deben disparar y 2 parecidos
@@ -233,5 +244,9 @@ contrato concreto.
 
    Costo total de las dos vueltas: USD 4,45 (tope: USD 5). Los casos están en `<skill>/evals/` y no van en los ZIP. Para repetirlos:
    `claude plugin eval <skill> --ablation none --runs 1 --model sonnet`.
-6. Página visual del mapa.
-7. Adaptador de Cursor.
+6. ~~Página visual del mapa~~ **hecho:** [`mapa.html`](mapa.html), con una captura en `docs/`.
+7. **Adaptadores (2026-10-26):** contrato del adaptador (sección 6), `AGENTS.md` en la raíz y el adaptador de Claude
+   Code en `adaptadores/`. Falta probar `AGENTS.md` en otra plataforma y diseñar el bot en servidor propio.
+8. **Primera prueba real de `sherpa` (2026-10-26):** chat, correo y calendario con la cuenta del usuario, entregado
+   por mensaje privado. Lo aprendido quedó en la skill: identidad fuente por fuente, control positivo de menciones,
+   una sola línea de tiempo y el bloque de calendario.

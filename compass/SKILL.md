@@ -10,7 +10,7 @@ decide **con qué** se analiza y **cuándo no conviene** hacerlo.
 
 Complementa a `provenance` (cómo pensar cada cifra): esta skill decide **con qué** se contesta una pregunta y
 **cuándo una herramienta no aplica**. Las decisiones son del usuario: tu tarea es darle un veredicto razonado, las
-alternativas y lo que no se sabe. Si el proyecto tiene reglas propias (CLAUDE.md), mandan sobre esta skill.
+alternativas y lo que no se sabe. Si el proyecto tiene reglas propias (su archivo de reglas), mandan sobre esta skill.
 
 ## El procedimiento (cuatro pasos, siempre en este orden)
 

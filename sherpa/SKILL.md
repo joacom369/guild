@@ -11,9 +11,10 @@ la última jornada y le entrega al usuario **lo que tiene que saber y lo que le 
 
 ## Las reglas (no se negocian)
 
-1. **Primero la identidad.** Antes de leer un solo mensaje, verificá que la cuenta conectada al chat y al correo sea
-   la del usuario configurado. Si no coincide, **se detiene** y avisa: leer la cuenta de otra persona expone sus
-   conversaciones privadas.
+1. **Primero la identidad, fuente por fuente.** Antes de leer un solo mensaje, verificá que la cuenta de **cada**
+   conector (chat, correo, calendario) sea la del usuario configurado: que una sea suya no dice nada de las otras. La
+   que no coincide **no se lee** y se avisa arriba de todo: leer la cuenta de otra persona expone sus conversaciones
+   privadas. Cómo conseguir un conector propio: [referencias/conectores.md](referencias/conectores.md).
 2. **Sólo lectura.** No responde, no reacciona, no marca como leído, no archiva. La única escritura permitida es
    **entregar el resumen** en el destino que el usuario autorizó en la configuración.
 3. **Nada se descarta en silencio.** Lo que se clasifica como ruido aparece en una lista plegada al final. Ante la
@@ -32,13 +33,18 @@ interactiva, se pide; si es una corrida programada, se entrega un resumen que di
 
 1. **Ventana.** Desde el inicio de la jornada anterior según el horario configurado (o lo que pida el usuario). Se
    dice al principio del resumen: «Desde el viernes 16:00 hasta hoy 9:00».
-2. **Identidad** (regla 1): el perfil de la cuenta conectada contra el usuario configurado.
+2. **Identidad** (regla 1): el perfil de cada cuenta conectada contra el usuario configurado.
 3. **Recolectar**, con búsquedas filtradas por fecha antes que leyendo canal por canal (son cientos):
    - menciones al usuario y a sus grupos o alias;
    - mensajes directos y grupales;
    - hilos donde el usuario participó y tuvieron respuestas nuevas;
    - actividad en los canales de su zona (todos, si así está configurado). Si el volumen supera el tope configurado,
-     se priorizan los canales con más actividad y **se dice qué canales quedaron sin leer**.
+     se priorizan los canales con más actividad y **se dice qué canales quedaron sin leer**;
+   - si hay calendario, las reuniones de hoy y de la semana, y las invitaciones sin responder.
+
+   **Control positivo.** Antes de concluir «0 menciones», probá la búsqueda con una mención que sabés que existe: las
+   plataformas suelen guardar la mención como un ID (del usuario o del grupo), no como el nombre. Sin ese control, el
+   resultado va como «no verificado». Los resúmenes anteriores de la propia `sherpa` no se cuentan.
 4. **Clasificar** cada mensaje o hilo:
 
    | Categoría | Criterio |
@@ -49,16 +55,20 @@ interactiva, se pide; si es una corrida programada, se entrega un resumen que di
    | **Ruido** | Saludos, anuncios generales, conversaciones ajenas a su zona |
 
    Si el criterio de urgencia del área está escrito en una skill de dominio, se usa esa.
-5. **Cruzar con el correo** cuando un mensaje pregunta si alguien contestó un correo («¿respondió el proveedor X?»):
-   se busca en el correo del usuario, sólo lectura, y se agrega el estado («respondió el 24/10: …» o «sin
-   respuesta desde el 20/10»).
+5. **Una sola línea de tiempo.** Ordená el chat y el correo juntos, por tema (cliente, pedido, proyecto): un pedido
+   del chat puede quedar resuelto por correo minutos después, y entonces ya no es pendiente. Cuando un mensaje pregunta
+   si alguien contestó un correo («¿respondió el proveedor X?»), se busca en el correo del usuario, sólo lectura, y se
+   agrega el estado («respondió el 24/10: …» o «sin respuesta desde el 20/10»). Para dar contexto a un pendiente se
+   leen el hilo, el canal y los correos del tema, hasta el tope de contexto configurado.
 6. **Armar el resumen**, pensado para leerse en el celular:
-   1. Ventana y, si las hubo, fallas de lectura.
-   2. **Urgente**: una línea por ítem, con quién, qué pide y el enlace.
-   3. **Pendientes tuyos**, igual, ordenados por antigüedad.
-   4. **Contexto**, agrupado por cliente, oportunidad o tema; una o dos líneas por grupo.
-   5. **Ruido**: la cuenta y la lista plegada.
-   6. Conteos: leídos = urgentes + pendientes + contexto + ruido.
+   1. Ventana, qué fuentes se leyeron y, si las hubo, fallas de lectura.
+   2. **Hoy y esta semana** (si hay calendario): reuniones con hora, y las invitaciones sin responder.
+   3. **Urgente**: una línea por ítem, con quién, qué pide y el enlace.
+   4. **Pendientes tuyos**, igual, ordenados por antigüedad.
+   5. **Contexto**, agrupado por cliente, oportunidad o tema; una o dos líneas por grupo. Incluye lo que el usuario
+      preguntó y todavía espera.
+   6. **Ruido**: la cuenta y la lista plegada.
+   7. Conteos: leídos = urgentes + pendientes + contexto + ruido.
 
    Si pasa de una pantalla, se recorta el contexto, nunca lo urgente ni los pendientes.
 7. **Entregar:** en la sesión, en el chat; en una corrida programada, en el destino configurado (por ejemplo, un

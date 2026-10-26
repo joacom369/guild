@@ -25,6 +25,8 @@
 | Cambio de código | `ponytail` + las pruebas del proyecto | Arreglar un error |
 | Consulta rápida | Se contesta directo, sin plan | Una definición, un dato con su fuente |
 | Tarea que se repite | `foundry` | «Todos los lunes armo este reporte» |
+| Migrar o integrar un sistema | `quarry` (copia con ficha) → port con paridad contra el original (`ponytail` + 6) → cortar la dependencia | Pasar un proyecto a otra herramienta |
+| Conectar una fuente o herramienta | Identidad, permiso mínimo, una lectura real de prueba y el registro en la configuración (`sherpa/referencias/conectores.md`) | Conectar el chat o el correo propios |
 | Ponerse al día con el chat y el correo | `sherpa` | «¿Qué me perdí?» |
 
 Si el tipo no está en la tabla, se elige el más parecido y se dice cuál se eligió. Si aparece seguido, se propone

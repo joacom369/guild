@@ -90,17 +90,18 @@ debaten hasta coincidir.
 
 ## Principio: un núcleo que se lleva a cualquier plataforma
 
-El objetivo es levantar el árbol también en Cursor (con Grok y sus computadoras en la nube), no sólo en Claude. Por
+El objetivo es levantar el árbol en cualquier plataforma (Cursor, un bot en servidor propio como Grok Bot u otra), no sólo en Claude. Por
 eso el sistema se arma en dos capas:
 
 | Capa | Qué tiene | Se lleva tal cual |
 |---|---|---|
 | **Núcleo** | El mapa, los SKILL.md (texto), los contratos de entrada y salida, las lentes y los scripts en Python | Sí: es texto y Python |
-| **Adaptadores** | Lo propio de cada plataforma: en Claude Code, hooks, `.claude/agents/`, workflows y rutinas; en Cursor, sus reglas y agentes en la nube | No: uno por plataforma |
+| **Adaptadores** | Lo propio de cada plataforma: en Claude Code, hooks, `.claude/agents/`, workflows y rutinas; en otras, `AGENTS.md`, sus reglas y sus agentes | No: uno por plataforma |
 
 Regla: **nada del núcleo depende de una plataforma.** Si una skill necesita un hook o un agente, lo dice como
-necesidad («al empezar la sesión, leer el buzón») y cada adaptador lo resuelve a su manera. Antes de diseñar el
-adaptador de Cursor hay que verificar qué soporta hoy (skills, reglas, agentes en la nube).
+necesidad («al empezar la sesión, leer el buzón») y cada adaptador lo resuelve a su manera. El contrato que
+tiene que cumplir cada adaptador está en `MAPA.md` §6; antes de escribir uno hay que verificar qué soporta hoy la
+plataforma.
 
 ## Más adelante (anotado, no se diseña todavía)
 
