@@ -19,7 +19,7 @@ Si `~/.claude/skills` ya existe, clonar aparte y copiar las carpetas.
 /plugin install foreman@guild
 ```
 
-Igual para `provenance`, `compass`, `tokenwise`, `quarry`, `assay`, `kiln`, `hallmark`, `foundry`, `sherpa`,
+Igual para `provenance`, `compass`, `tokenwise`, `lenses`, `herald`, `quarry`, `assay`, `kiln`, `hallmark`, `foundry`, `sherpa`,
 `impeccable` y `design-taste-frontend`. Desde la versión 2.1.275 también sirve
 `/plugin install <skill> --marketplace joacom369/guild`. El repositorio es privado: la PC necesita acceso a GitHub
 con la cuenta que tiene permiso (por ejemplo, `gh auth login`).

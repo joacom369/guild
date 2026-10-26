@@ -48,21 +48,23 @@ flowchart TD
   R --> F[Capa 1 · Dirección<br/>foreman: orquesta, no legisla]
   F -. convoca .-> P[Capa 2 · Forma de pensar<br/>provenance]
   F -. convoca .-> FO[Capa 2 · Fábrica<br/>foundry: tareas repetidas → automatizaciones]
+  F -. convoca en puntos fijos .-> L[Capa 2 · Lentes<br/>lenses: vago · optimista · creativo · meticuloso<br/>escéptico · innovador · lector]
   P --> D[Capa 3 · Decidir antes de hacer<br/>compass · tokenwise]
-  D --> X[Capa 4 · Procedimientos por fase<br/>quarry · assay · kiln · dataviz · ponytail · hallmark]
+  D --> X[Capa 4 · Procedimientos<br/>quarry · assay · kiln · hallmark · herald]
   X --> DOM[Capa 5 · Dominio<br/>skills de conocimiento del ambiente]
-  FO -. agrega nodos .-> X
-  F -. despliega en puntos fijos .-> L[Laboratorio de lentes<br/>vago · optimista · creativo · meticuloso · escéptico · innovador · lector]
+  FO -. agrega ramas .-> H[Ramas de foundry<br/>sherpa y las que vengan]
 ```
 
 | Capa | Pieza | Qué decide | Estado |
 |---|---|---|---|
 | 0 · Reglas | El archivo de reglas del ambiente (CLAUDE.md, AGENTS.md o el de la plataforma) y sus guardarraíles | Lo que no se negocia: idioma, las decisiones de método son del usuario, qué sistemas son de sólo lectura | existe |
-| 1 · Dirección | `foreman` | Qué skill trabaja, en qué orden, cuándo se despliega una lente, cuándo se le habla al usuario. **Orquesta, no legisla:** no tiene reglas de contenido propias | existe (2026-10-25) |
-| 2 · Forma de pensar | `provenance` | Qué es cada cifra, con qué nivel se concluye, cómo se valida | existe (a achicar) |
-| 2 · Fábrica | `foundry` | Si una tarea repetida se automatiza y con qué escalón | existe (2026-10-25) |
-| 3 · Decidir | `compass`, `tokenwise` | Con qué técnica o herramienta; con cuántos agentes y a qué costo | existe |
-| 4 · Procedimientos | `quarry`, `assay`, `kiln` (+`impeccable`, `design-taste-frontend`), `dataviz`, `ponytail`, `hallmark` | Los pasos de cada fase, con scripts que fallan | existe |
+| 1 · Dirección | `foreman` | Qué skill trabaja y en qué orden, los cortes con el usuario, la aprobación de delegaciones, la configuración y los registros del ambiente. **Orquesta, no legisla:** no tiene reglas de contenido propias | existe |
+| 2 · Forma de pensar | `provenance` | Qué es cada cifra, con qué nivel se concluye, cómo se valida | existe |
+| 2 · Fábrica | `foundry` | Si una tarea repetida se automatiza y con qué escalón | existe |
+| 2 · Lentes | `lenses` | Las siete maneras de pensar: contratos, puntos fijos, síntesis y registro | existe (2026-10-26) |
+| 3 · Decidir | `compass`, `tokenwise` | Con qué técnica o herramienta; la ficha de delegación (el jefe pide, se aprueba lo que se justifica) | existe |
+| 4 · Procedimientos | `quarry` (+ conectores), `assay`, `kiln` (cualquier entregable; +`impeccable`, `design-taste-frontend`, `dataviz`, las skills de archivos), `hallmark`, `herald` (escribir afuera con permiso); `ponytail` para el código | Los pasos de cada fase, con scripts que fallan | existe (`herald` desde 2026-10-26) |
+| Ramas | `sherpa` (y las que fabrique `foundry`) | Automatizaciones con su predicción | existe |
 | 5 · Dominio | Las skills de conocimiento de cada trabajo: vocabulario, sistemas, qué fuente es la verdad | El conocimiento del negocio y de sus sistemas | depende del ambiente |
 
 **Regla de precedencia (sólo para reglas de contenido):** las reglas del usuario (capa 0) mandan sobre todo. Entre
@@ -80,36 +82,13 @@ flowchart LR
   R -. tarea repetida .-> FO[foundry]
 ```
 
-La tabla completa (fases, qué recibe y entrega cada una, cortes, tipos de tarea y retornos) es de la skill `foreman`
-(`foreman/referencias/ciclo.md`); acá va el resumen. Cada fase tiene **un dueño**, recibe algo concreto y entrega algo concreto. Una fase que aplica no arranca sin la
-entrega de la anterior. Esto es lo que evita que las skills se pisen.
+Cada fase tiene **un dueño**, que puede trabajar con otros; recibe algo concreto y entrega algo concreto. Una fase
+que aplica no arranca sin la entrega de la anterior. No toda tarea recorre las siete: `foreman` elige las que
+aplican. La tabla de fases, la de tipos de tarea y los retornos son de `foreman`:
+[`foreman/referencias/ciclo.md`](../foreman/referencias/ciclo.md). Acá no se copian.
 
-**No toda tarea recorre las siete fases.** `foreman` elige las que aplican:
-
-| Tipo de tarea | Fases | Ejemplo |
-|---|---|---|
-| Análisis con cifras que sostienen una decisión | 1 a 7 | Evaluación de una inversión, informe de ventas |
-| Página o tablero sin cifras propias | 1, 5 y la lectura de la 6 | Landing, rediseño |
-| Página o tablero con cifras | 1, 2 (¿hace falta?), 3 si hay que sacar datos, 5, 6 completa | Tablero comercial |
-| Cambio de código | `ponytail` + las pruebas del proyecto | Arreglar un error |
-| Consulta rápida | Se contesta directo | Una definición, un dato puntual con su fuente |
-| Tarea repetida | `foundry` | «Todas las semanas armo este reporte» |
-
-Si `hallmark` dice «no sale», el trabajo vuelve a la fase dueña del error, no siempre al análisis: una cifra mal
-calculada vuelve a la 4 y un texto mal copiado, a la 5.
-
-| Fase | Dueño | Recibe | Entrega | Punto de corte con el usuario |
-|---|---|---|---|---|
-| 1 Plantear | `provenance` | El pedido | Pregunta de análisis, alcance (describe / explica / evalúa), qué es variable, parámetro o supuesto | Si la lectura del pedido cambia lo que se hace |
-| 2 Decidir método | `compass` + `tokenwise` | La pregunta | Veredicto de técnica («aplica / no aplica / todavía no») y plan de trabajo con costo | Siempre: el método lo decide el usuario |
-| 3 Extraer | `quarry` | Qué datos y de dónde | Carpeta con foto, `FICHA.json` y perfil | Antes de una extracción grande (consultas, peso, tiempo) |
-| 4 Analizar | `assay` (con los axiomas de `provenance`) | Foto verificada y veredicto de `compass` | Carpeta de corrida con `CORRIDA.json`, intentos contados | Si un supuesto cae o el diagnóstico falla |
-| 5 Construir | `kiln` · `dataviz` · `ponytail` | Las salidas | El entregable (página, informe, planilla) | En la dirección visual (kiln paso 2) |
-| 6 Verificar | `hallmark` | Entregable + salidas | Acta: sale / sale con observaciones / no sale | Si no sale: entregar igual lo decide el usuario |
-| 7 Registrar | `provenance` (plantillas) + `foreman` | Acta y decisiones | ESTADO.md actualizado y la entrega (conclusión, opciones, lo que no se sabe) | — |
-
-Fuera del ciclo y sobre todas las fases, `foreman` abre la sesión (lee ESTADO.md y el buzón) y la cierra (actualiza
-los dos). Eso cubre el hueco de «retomar un proyecto» que marcó la auditoría.
+Fuera del ciclo y sobre todas las fases, `foreman` abre la sesión (lee ESTADO.md, el buzón y las mediciones
+vencidas) y la cierra (actualiza todo).
 
 ## 3. Un dueño por regla
 
@@ -129,41 +108,29 @@ aplica al achicar las skills.
 | Dirección visual y pulido de una página | `kiln` (+ compañeras) | — |
 | Código mínimo | `ponytail` | — |
 | ESTADO.md: formato | `provenance` (plantilla) | — |
-| ESTADO.md: cuándo se lee y se escribe | `foreman` | — |
+| ESTADO.md: cuándo se lee y se escribe | `foreman` | `provenance` lo nombra |
+| Cortes con el usuario | `foreman` regla 2 | `AGENTS.md` y el README la nombran |
+| Pedido de agentes y su aprobación | Ficha: `tokenwise` §2. Aprobación: `foreman` regla 3 | cada oficio pide con la ficha |
+| Escribir afuera, borrar, archivar o pisar | `herald` | `foreman`, `sherpa` y `foundry` la llaman |
+| Identidad y permiso de un conector | `quarry` (`referencias/conectores.md`) | `sherpa` la nombra |
+| Configuración del ambiente y sus registros | `foreman` (`referencias/ambiente-ejemplo.md`) | cada oficio agrega su bloque |
+| Lentes: contratos, puntos y registro | `lenses` | `foreman` y `foundry` la convocan |
 | Qué skill trabaja y cuándo | `foreman` (+ índice corto en el archivo de reglas; `AGENTS.md` en la raíz) | las descriptions sólo dicen su momento, con caso negativo |
 | Sistemas del ambiente: sólo lectura, verdad de cada fuente | Las reglas del ambiente + sus skills de dominio | `quarry` las carga antes de extraer |
 
 ## 4. El laboratorio de lentes
 
-Dueño: la skill `foreman` (`foreman/referencias/lentes.md`, con los contratos, los puntos fijos y el registro).
+Dueña: la skill [`lenses`](../lenses/SKILL.md), con los contratos, los puntos fijos, la síntesis y el registro.
+Acá no se copian.
 
-**Aprobadas las siete (2026-10-25).** Las lentes están para abrir la cabeza: traen lo positivo o disruptivo de
-maneras distintas de pensar. Algunas propuestas van a ser grandes y otras innecesarias, y eso es parte del proceso de
-aprender. Por eso `foreman` anota qué lente aportó qué y qué terminó usándose; con el tiempo se ve cuáles rinden en
-cada punto. Cada lente propone **por separado** y `foreman` sintetiza; no debaten entre ellas. Cada una entrega un
-contrato concreto.
-
-| Lente | Pregunta | Entrega | Se apoya en |
-|---|---|---|---|
-| **El vago** | ¿Qué es lo mínimo que llega al resultado? | La opción más barata y lo que se pierde con ella | `ponytail` |
-| **El optimista** | ¿Y si sale todo bien y lo llevamos al máximo? | El techo, rotulado como techo, y qué tendría que ser cierto | `provenance` |
-| **El creativo** | ¿De qué otras formas se puede resolver? | Tres o más opciones realmente distintas entre sí, no variantes de la misma | — |
-| **El meticuloso** | ¿Qué se rompe y cómo nos enteramos? | Controles, casos límite, plan de verificación | `hallmark` |
-| **El escéptico** | ¿Vale la pena? ¿Contra qué se compara? | Costo, contrafáctico, umbral de conveniencia | `provenance`, `compass` |
-| **El innovador** | ¿Qué oficio ya resolvió esto? | Una herramienta o un método traído de otra disciplina, con los supuestos que trae | `provenance` («sustantivos a verbos») |
-| **El lector** | ¿Cómo lo va a usar quien lo recibe? | Lo que va a entender mal o no va a poder usar | `kiln`, `hallmark` nivel 2 |
-
-**El curioso** no es una lente: es `foreman` mismo, y lo que encuentra va al buzón.
-
-**Dónde se despliegan** (sólo en puntos fijos y con el costo avisado):
-
-| Punto | Lentes | Por qué ahí |
-|---|---|---|
-| `foundry` paso 4 (diseñar una automatización) | vago, optimista, escéptico, meticuloso | Es donde la tensión entre barato y ambicioso decide |
-| Fase 2 en una decisión grande (método, inversión) | creativo, escéptico, optimista, innovador | Las opciones se ensanchan antes de cerrar |
-| Fase 6 en una ronda grande | meticuloso (como revisor independiente), lector | Es el control antes de entregar |
+**Aprobadas las siete (2026-10-25).** Las lentes están para abrir la cabeza: algunas propuestas van a ser grandes y
+otras innecesarias, y eso es parte de aprender. **El curioso** no es una lente: es `foreman` mismo, y lo que
+encuentra va al buzón.
 
 ## 5. Dónde se despliegan agentes
+
+Cada fila es un **jefe** que pide su equipo con la ficha de `tokenwise`; dentro de un trabajo lo aprueba `foreman`.
+No hay un número fijo de agentes.
 
 | Punto | Agente | Lo define | Estado |
 |---|---|---|---|
@@ -172,7 +139,8 @@ contrato concreto.
 | Pantallas aisladas | Agente en worktree | `tokenwise` | existe |
 | Revisión antes de entregar | Revisor independiente fuerte | `hallmark` nivel 3 | existe |
 | Puntos de decisión | Asesor (advisor) | `tokenwise` | existe |
-| Lentes del laboratorio | Una lente por agente, en los puntos de la sección 4 | `foreman` | a construir |
+| Lentes | Una lente por agente, en los puntos fijos de `lenses` | `lenses` | existe |
+| Lectores de fuentes | Un lector por fuente; devuelve ítems normalizados, no resúmenes | `sherpa` | escrito, sin probar |
 | Detección de repeticiones | Revisión de las sesiones, previo permiso del usuario | `foreman` → `foundry` | a construir |
 | Automatizaciones que salen de `foundry` | Según el escalón: subagente, workflow o rutina | `foundry` | a construir |
 
@@ -198,7 +166,7 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
   leerlo. Es la misma división que hacemos entre núcleo y adaptador.
 - Donde la plataforma no instala las skills en disco, se leen por rutas relativas desde el repositorio.
 - Los conectores de una cuenta compartida pueden ser de otra persona: cada fuente se verifica por separado
-  (`sherpa/referencias/conectores.md`).
+  (`quarry/referencias/conectores.md`).
 
 ## 7. Huecos y orden de trabajo
 
@@ -228,7 +196,7 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
    - el protocolo de modelado de `compass` (insumo para decidir la fase 4);
    - `kiln/reference/` contra `referencias/`;
    - ~~los casos de una empresa nombrados en `compass`~~ (resuelto: ahora son genéricos).
-3. Construir `foundry`.
+3. ~~Construir `foundry`~~ **hecho (2026-10-25).**
 4. ~~Construir `foreman`~~ **hecho (2026-10-25).** Falta el adaptador de inicio de sesión (hook), que es decisión del usuario.
 5. ~~Pruebas de disparo~~ **hecho (2026-10-25):** 36 casos (4 por skill propia: 2 que deben disparar y 2 parecidos
    que no), con Sonnet y una corrida por caso. Primera vuelta: 34 de 36.
@@ -250,3 +218,19 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
 8. **Primera prueba real de `sherpa` (2026-10-26):** chat, correo y calendario con la cuenta del usuario, entregado
    por mensaje privado. Lo aprendido quedó en la skill: identidad fuente por fuente, control positivo de menciones,
    una sola línea de tiempo y el bloque de calendario.
+9. **Reestructuración (2026-10-26)** con cuatro propiedades (no redundancia, independencia, suficiencia, coherencia),
+   tras una auditoría con revisor independiente:
+   - oficios nuevos: `lenses` (salió de `foreman`) y `herald` (escribir afuera con permiso);
+   - delegación: el jefe pide su equipo con la ficha de `tokenwise` y `foreman` aprueba lo que se justifica, sin
+     topes fijos; al usuario se le avisa en una línea si el consumo es notable;
+   - `sherpa` con fuentes enchufables y lectores por fuente; los conectores pasaron a `quarry`;
+   - `kiln` construye cualquier entregable (la mecánica de los archivos es de las skills de archivos);
+   - configuración y registros del ambiente con un solo dueño (`foreman`), fuera del repositorio;
+   - el mapa apunta al dueño en lugar de copiar tablas.
+
+   Pruebas de disparo de esta vuelta (`compass`, `sherpa`, `kiln` con un caso nuevo de presentación, y los 8 casos
+   nuevos de `lenses` y `herald`): 25 de 25, USD 0,98.
+
+   Quedan para después: `mapa/AUTOMATIZACIONES.md` sigue en el repositorio hasta que el usuario decida si se muda al
+   registro del ambiente; repeticiones menores entre `provenance`, `hallmark`, `tokenwise` y `assay` sobre cómo se
+   verifica.

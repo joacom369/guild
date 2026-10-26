@@ -1,5 +1,8 @@
 # foreman y foundry · el cerebro y el taller · borrador (2026-10-25)
 
+> **Documento histórico** (2026-10-25): registra cómo se llegó al mapa. Lo vigente está en
+> [`MAPA.md`](MAPA.md) y en cada skill; si difieren, mandan ellos.
+
 Nada de esto está construido. Es la estructura que surge de la charla y la auditoría, con las decisiones abiertas al
 final.
 

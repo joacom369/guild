@@ -71,25 +71,11 @@ mensajes de chat. Lo que falta es lo único que se construye.
 
 ### 4. Las lentes proponen
 
-Cada lente propone **por separado**, en no más de diez líneas, sin ver lo que propusieron las otras. Los contratos
-completos y el registro de lentes son de la skill `foreman`. Si no está instalada, alcanza con esto:
-
-| Lente | Pregunta | Entrega |
-|---|---|---|
-| Vago | ¿Qué es lo mínimo que llega al resultado? | La opción más barata y lo que se pierde |
-| Optimista | ¿Y si lo llevamos al máximo? | El techo, rotulado, y qué tendría que ser cierto |
-| Creativo | ¿De qué otras formas se puede resolver? | Tres caminos realmente distintos |
-| Meticuloso | ¿Qué se rompe y cómo nos enteramos? | Modos de falla y el control que avisa |
-| Escéptico | ¿Vale la pena? ¿Contra qué se compara? | El contrafáctico, el umbral, el costo oculto |
-| Innovador | ¿Qué oficio ya resolvió esto? | Un método de otra disciplina, con sus supuestos |
-| Lector | ¿Cómo lo va a usar quien lo recibe? | Lo que va a entender mal o no va a mirar |
-
-- **Por defecto:** vago, optimista, escéptico y meticuloso. El creativo, el innovador y el lector se suman cuando la
-  tarea es nueva para el árbol o cuando su resultado lo usa otra persona.
-- **En el mismo turno**, cada lente se escribe como un bloque aparte, sin mezclarlas. Es lo barato y alcanza para
-  tareas chicas.
-- **Como agentes separados**, sólo si la automatización es grande o el usuario lo pide. Antes se aplica `tokenwise`
-  y se avisa el costo. Así las lentes no se contaminan entre sí, que es el punto.
+Convocá las lentes con la skill `lenses`, en su punto «diseñar una automatización»: por defecto vago, optimista,
+escéptico y meticuloso; el creativo, el innovador y el lector se suman cuando la tarea es nueva para el árbol o cuando
+su resultado lo usa otra persona. Los contratos, cómo se proponen y el registro son de `lenses`. Si no está
+instalada, cada lente responde su pregunta en un bloque aparte: vago (lo mínimo que llega), optimista (el techo),
+escéptico (¿vale la pena?), meticuloso (qué se rompe).
 
 Anotá qué lente propuso qué: al final se registra cuál terminó usándose.
 
@@ -120,8 +106,8 @@ skill, se prueba su disparo (`claude plugin eval`, si está disponible).
 
 ### 7. Registrar
 
-Agregá una fila en `AUTOMATIZACIONES.md`, en la carpeta del mapa de skills (`mapa/` dentro del repositorio de
-skills), y creá el archivo si no existe:
+Agregá una fila en el registro de automatizaciones que fija la configuración del ambiente (por defecto,
+`~/.foreman/AUTOMATIZACIONES.md`), y creá el archivo si no existe:
 
 ```markdown
 | Fecha | Automatización | Escalón | Tarea que reemplaza | Predicción (fechada) | Lentes que aportaron | Medición |
@@ -134,7 +120,9 @@ lentes.
 
 ## Cómo se combina
 
-- `foreman` detecta tareas repetidas y las trae acá; también despliega las lentes.
-- `tokenwise` cuando las lentes o la construcción van con agentes.
+- `foreman` detecta tareas repetidas y las trae acá, y mira las mediciones vencidas al abrir.
+- `lenses` en el paso 4.
+- `tokenwise` cuando las lentes o la construcción van con agentes (el pedido de delegación).
+- `herald` si la automatización escribe afuera.
 - `provenance` para la cuenta de si vale la pena (cada número con su naturaleza).
 - `ponytail`, `quarry`, `kiln` y `hallmark` para construir y controlar.

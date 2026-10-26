@@ -1,8 +1,9 @@
 # Conectores: la cuenta del usuario, con el permiso mínimo
 
-`sherpa` lee el chat, el correo y el calendario del usuario a través de conectores. Esta referencia dice cómo
-comprobar que cada uno es suyo y qué hacer cuando no lo es. Los comandos de cada plataforma están en los adaptadores
-del repositorio (`adaptadores/`).
+Cualquier oficio que lee una fuente personal del usuario (chat, correo, calendario, repositorios, un CRM) lo hace a
+través de un conector. Esta referencia, de `quarry`, dice cómo comprobar que cada uno es suyo y qué hacer cuando no
+lo es. La usan `quarry` en sus extracciones y `sherpa` en su lectura diaria. Los comandos de cada plataforma están en
+los adaptadores del repositorio de skills (`adaptadores/`).
 
 ## Por qué hace falta
 
@@ -17,6 +18,7 @@ separado.
 | Chat | El perfil de la cuenta conectada (nombre, usuario, correo) |
 | Correo | La dirección de la cuenta, o el remitente de un enviado pedido **sólo con metadatos** (sin asunto ni texto) |
 | Calendario | El identificador del calendario principal |
+| Cualquier otra (repositorio, CRM, tickets) | La herramienta de «quién soy» o el perfil de la cuenta, si la tiene; si no, un dato propio del usuario pedido sólo con metadatos |
 
 Si no coincide, no se lee nada más de esa fuente y se avisa arriba de todo.
 
@@ -30,7 +32,7 @@ En orden, del más simple al más trabajoso:
    exige un programa especial, se crea una credencial OAuth propia (por ejemplo, un proyecto en la consola del
    proveedor con su pantalla de consentimiento interna) y un servidor chico que pide **sólo permisos de lectura**.
    Así, aunque algo falle, el token no puede mandar, borrar ni modificar nada. Hay un ejemplo en
-   `adaptadores/ejemplos/mcp-lectura-google/`.
+   `adaptadores/ejemplos/mcp-lectura-google/` del repositorio de skills.
 3. **Sin conector.** La fuente queda fuera y el resumen lo dice arriba.
 
 ## Reglas para cualquier conector

@@ -10,7 +10,7 @@ puede mandar, borrar ni modificar nada, aunque el código lo intentara.
 
 Cuando el conector de la plataforma está autenticado como otra persona, o cuando los servidores oficiales no están
 disponibles para tu cuenta. La receta general está en
-[`sherpa/referencias/conectores.md`](../../../sherpa/referencias/conectores.md).
+[`quarry/referencias/conectores.md`](../../../quarry/referencias/conectores.md).
 
 ## Instalar
 

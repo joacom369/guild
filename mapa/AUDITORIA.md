@@ -1,5 +1,8 @@
 # Auditoría de las skills · 2026-10-25
 
+> **Documento histórico** (2026-10-25): registra cómo se llegó al mapa. Lo vigente está en
+> [`MAPA.md`](MAPA.md) y en cada skill; si difieren, mandan ellos.
+
 > Registro histórico: usa los nombres de ese día. `criterio-herramientas` hoy se llama `compass`.
 
 Tres miradas independientes:

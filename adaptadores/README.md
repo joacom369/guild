@@ -27,4 +27,4 @@ El contrato que cumple cada adaptador, con el estado de cada plataforma, está e
 
 - [`ejemplos/mcp-lectura-google/`](ejemplos/mcp-lectura-google/): un servidor MCP local de **sólo lectura** para Gmail
   y Google Calendar, con credencial propia. Sirve en cualquier plataforma que hable MCP. Es la receta de
-  [`sherpa/referencias/conectores.md`](../sherpa/referencias/conectores.md) llevada a código.
+  [`quarry/referencias/conectores.md`](../quarry/referencias/conectores.md) llevada a código.

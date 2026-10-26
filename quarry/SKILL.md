@@ -26,6 +26,10 @@ significa cada campo), **cargalas antes del paso 1**: esta skill pone el procedi
 4. **Una corrida nueva no pisa la anterior.** Cada foto lleva fecha en el nombre de la carpeta.
 5. **Un intento fallido queda anotado como caso**, con el error tal como salió. No se ofrece como dato.
 
+**Conectores personales.** Antes de leer una fuente del usuario (chat, correo, calendario, repositorio), verificá
+que la cuenta del conector sea la suya: [referencias/conectores.md](referencias/conectores.md). Una lectura liviana,
+como la diaria de `sherpa`, sigue estas reglas y esa verificación, sin foto ni ficha.
+
 ## El procedimiento
 
 ### 1. Reconocer el frente (antes de consultar)

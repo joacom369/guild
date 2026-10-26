@@ -4,8 +4,8 @@
 
 - Rondas grandes: un informe que sostiene una decisión, un modelo nuevo, un tablero que va a usar otro equipo.
 - Cuando el usuario la pide.
-- No en cada cambio: una por ronda grande. Lanzarla cuesta tokens y tiempo, y eso se le dice al usuario antes
-  (ver `tokenwise`).
+- No en cada cambio: una por ronda grande. Lanzarla cuesta tokens y tiempo: se pide con la ficha de delegación de
+  `tokenwise`.
 
 ## El encargo
 

@@ -8,7 +8,7 @@ import zipfile
 from pathlib import Path
 
 RAIZ = Path(__file__).parent
-PROPIAS = ["kiln", "provenance", "tokenwise", "compass", "quarry", "assay", "hallmark", "foundry", "sherpa", "foreman"]
+PROPIAS = ["kiln", "provenance", "tokenwise", "compass", "quarry", "assay", "hallmark", "foundry", "sherpa", "foreman", "lenses", "herald"]
 
 for nombre in sys.argv[1:] or PROPIAS:
     carpeta = RAIZ / nombre

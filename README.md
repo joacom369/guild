@@ -48,7 +48,11 @@ sequenceDiagram
   loop Cada fase que aplica
     F->>S: Carga la skill dueña
     S-->>F: Entrega concreta (foto, corrida, página, acta)
-    alt Decisión de método, extracción grande, escribir afuera, más de 3 agentes, borrar algo
+    opt El oficio necesita agentes
+      S->>F: Ficha de delegación (tokenwise)
+      F-->>S: Aprobado si se justifica
+    end
+    alt Corte de la regla 2 (método, extracción grande, escribir afuera o borrar)
       F->>U: Corte: decide el usuario
     end
   end
@@ -68,7 +72,7 @@ sólo plantear, construir y la lectura final; una consulta rápida se contesta d
 | Cosmovisión | ¿Para qué trabajamos y qué es un buen trabajo? | `foreman` |
 | Gnoseología | ¿De dónde sale lo que sabemos? | `quarry`, las skills de dominio, los axiomas de origen de `provenance` |
 | Epistemología | ¿Cuándo algo está probado y con qué nivel? | `provenance`, `hallmark` |
-| Metodología | ¿Por qué camino vamos? | El ciclo, `compass`, `tokenwise`, `foundry` |
+| Metodología | ¿Por qué camino vamos? | El ciclo, `compass`, `tokenwise`, `lenses`, `foundry` |
 | Técnica | ¿Con qué instrumento? | Los scripts y los procedimientos: `assay`, `kiln`, `sherpa` |
 
 ## Los oficios
@@ -78,25 +82,21 @@ sólo plantear, construir y la lectura final; una consulta rápida se contesta d
 | [`foreman`](foreman/SKILL.md) | Dirección | Arranca, retoma y cierra proyectos. Arma el plan de fases, despliega las lentes, cierra con un acta y lleva el buzón de ideas. **Orquesta, no legisla.** | Ciclo y lentes en `referencias/` |
 | [`provenance`](provenance/SKILL.md) | Forma de pensar | El origen y la naturaleza de cada cifra, el nivel de cada conclusión, validar contra la propia ilusión. | — |
 | [`compass`](compass/SKILL.md) | Decidir | Elige la técnica o herramienta para una pregunta y dice cuándo no conviene. | Catálogo de técnicas |
-| [`tokenwise`](tokenwise/SKILL.md) | Decidir | Si conviene repartir entre agentes, con qué modelo y cómo se escribe el encargo. | — |
-| [`quarry`](quarry/SKILL.md) | Fase: extraer | Saca datos de cualquier origen sin romper la fuente: estimar, muestra, foto con ficha, perfil al llegar. | `ficha.py`, `perfil.py`, `tablas.py` |
+| [`tokenwise`](tokenwise/SKILL.md) | Decidir | La ficha de delegación: cada oficio pide el equipo que necesita y se aprueba lo que se justifica por costo y beneficio, sin topes fijos. Cómo se escribe el encargo. | — |
+| [`lenses`](lenses/SKILL.md) | Pensar distinto | Las siete lentes: proponen por separado en puntos fijos, con su registro. | — |
+| [`quarry`](quarry/SKILL.md) | Fase: extraer | Saca datos de cualquier origen sin romper la fuente: estimar, muestra, foto con ficha, perfil al llegar. Dueña de los conectores: que cada cuenta sea la del usuario. | `ficha.py`, `perfil.py`, `tablas.py` |
 | [`assay`](assay/SKILL.md) | Fase: analizar | Plan antes de ver resultados, pre-análisis, cálculo en corridas reproducibles, todos los intentos contados. | `corrida.py` |
-| [`kiln`](kiln/SKILL.md) | Fase: construir | Páginas y tableros pulidos desde el primer intento, mirados en escritorio y celular. | `foto_pagina.py` |
+| [`kiln`](kiln/SKILL.md) | Fase: construir | Cualquier entregable pulido desde el primer intento: páginas y tableros, y también documentos, planillas y presentaciones. Se mira antes de mostrar. | `foto_pagina.py` |
 | [`hallmark`](hallmark/SKILL.md) | Fase: verificar | Cada cifra del entregable buscada en las salidas, identidades que cierran, lectura final, revisión independiente y acta. | `cifras.py` |
+| [`herald`](herald/SKILL.md) | Escribir afuera | Responder, publicar, cambiar un estado o borrar, siempre con vista previa exacta, aprobación por acción, registro y cómo deshacer. | — |
 | [`foundry`](foundry/SKILL.md) | Fábrica | Convierte una tarea repetida en una automatización: relevar, calcular si vale la pena, lentes, opciones y registro con predicción. | — |
-| [`sherpa`](sherpa/SKILL.md) | Automatización | Resumen de inicio de jornada: chat, correo y calendario en urgente, pendiente, contexto y ruido, en una sola línea de tiempo. Sólo lectura, con la identidad de cada fuente verificada. Primera rama de `foundry`. | Receta de conectores en `referencias/` |
+| [`sherpa`](sherpa/SKILL.md) | Automatización | Resumen de inicio de jornada con las fuentes que el usuario conecte (chat, correo, calendario u otras), en una sola línea de tiempo y con un lector por fuente. Sólo lectura. Primera rama de `foundry`. | — |
 
 Todos los scripts usan la biblioteca estándar de Python (más `openpyxl` para `.xlsx`, y Chrome con `websockets` para
 las capturas de `kiln`).
 
-### Las lentes
-
-Siete maneras de pensar que sacan el trabajo de su zona de confort. Cada una propone por separado y `foreman`
-sintetiza. Algunas propuestas van a sobrar: es parte de aprender, y se registra cuál aportó qué.
-
-| Vago | Optimista | Creativo | Meticuloso | Escéptico | Innovador | Lector |
-|---|---|---|---|---|---|---|
-| Lo mínimo que llega | El techo, rotulado | Caminos distintos | Qué se rompe | ¿Vale la pena? | Qué oficio ya lo resolvió | Cómo lo va a usar quien lo recibe |
+**Las lentes** (vago, optimista, creativo, meticuloso, escéptico, innovador y lector) son siete maneras de pensar que
+sacan el trabajo de su zona de confort. Sus contratos y dónde se despliegan están en [`lenses`](lenses/SKILL.md).
 
 ## Principios
 
@@ -137,6 +137,8 @@ El repositorio es privado: hace falta acceso con una cuenta de GitHub que tenga 
 /plugin install provenance --marketplace joacom369/guild
 /plugin install compass --marketplace joacom369/guild
 /plugin install tokenwise --marketplace joacom369/guild
+/plugin install lenses --marketplace joacom369/guild
+/plugin install herald --marketplace joacom369/guild
 /plugin install quarry --marketplace joacom369/guild
 /plugin install assay --marketplace joacom369/guild
 /plugin install kiln --marketplace joacom369/guild
@@ -161,15 +163,16 @@ En versiones anteriores: `/plugin marketplace add joacom369/guild` y después `/
      proyectos, el buzón y el registro de lentes;
    - [`sherpa/referencias/ambiente-ejemplo.md`](sherpa/referencias/ambiente-ejemplo.md): los conectores verificados,
      los grupos con su ID, el horario, el tope y qué es urgente.
-4. **Los conectores** con la cuenta del usuario: [`sherpa/referencias/conectores.md`](sherpa/referencias/conectores.md).
+4. **Los conectores** con la cuenta del usuario: [`quarry/referencias/conectores.md`](quarry/referencias/conectores.md).
 
 ## Estructura del repositorio
 
 ```
 guild/
 ├── AGENTS.md                                    índice de oficios para cualquier IA
-├── foreman/ provenance/ compass/ tokenwise/     dirección, forma de pensar, decidir
-├── quarry/ assay/ kiln/ hallmark/               la cadena del taller
+├── foreman/ provenance/ lenses/                 dirección, forma de pensar, lentes
+├── compass/ tokenwise/                          decidir
+├── quarry/ assay/ kiln/ hallmark/ herald/       la cadena del taller y la escritura afuera
 ├── foundry/ sherpa/                             fábrica y sus ramas
 │   └── <skill>/
 │       ├── SKILL.md                             el oficio

@@ -288,8 +288,8 @@ const N = [
     hace: "Las reglas de seguridad propias de cada empresa.",
     recibe: "—", entrega: "Qué no se toca y qué no se comparte.", deriva: "Van primero en cualquier tarea de ese dominio." }],
   [1, "foreman", "foreman", "ok", "El capataz", {
-    hace: "Decide qué skill trabaja, en qué orden y cuándo se despliega una lente. Te habla sólo por un riesgo, una decisión tuya o una tarea repetida. Guarda ideas en un buzón y avisa en una línea al empezar.",
-    recibe: "Tu pedido, el estado del proyecto y el buzón.", entrega: "La secuencia de fases que aplican y la síntesis de las lentes.",
+    hace: "Decide qué skill trabaja y en qué orden, es dueño de los cortes con vos y aprueba los equipos que pide cada oficio. Te habla sólo por un riesgo, una decisión tuya o una tarea repetida. Guarda ideas en un buzón y avisa en una línea al empezar.",
+    recibe: "Tu pedido, el estado del proyecto, el buzón y las mediciones vencidas.", entrega: "La secuencia de fases que aplican, las delegaciones aprobadas y el acta.",
     deriva: "Orquesta, no legisla: no tiene reglas de contenido propias y nunca puede relajar una regla." }],
   [2, "provenance", "provenance", "ok", "Forma de pensar", {
     hace: "Axiomas sobre el origen y la naturaleza de cada cifra, el nivel de cada conclusión y la validación contra la propia ilusión.",
@@ -299,39 +299,44 @@ const N = [
     hace: "Convierte una tarea repetida en una automatización: relevar, calcular si vale la pena, buscar en el árbol, lentes, opciones y registro con predicción.",
     recibe: "«Estoy repitiendo esta tarea».", entrega: "Una automatización nueva, una hoja más del árbol.",
     deriva: "No ejecuta la tarea; la ejecuta lo que sale de acá." }],
+  [2, "lenses", "lenses", "ok", "Las lentes", {
+    hace: "Siete maneras de pensar (vago, optimista, creativo, meticuloso, escéptico, innovador, lector) que proponen por separado en puntos fijos.",
+    recibe: "Una decisión grande, el diseño de una automatización o una ronda grande de control.", entrega: "Propuestas separadas y su registro; la síntesis la hace quien las convocó.",
+    deriva: "No decide: decidís vos." }],
   [3, "criterio", "compass", "ok", "Con qué se contesta", {
     hace: "Elige la técnica o la herramienta para una pregunta y dice cuándo no conviene.",
     recibe: "La pregunta de análisis.", entrega: "Veredicto: aplica, no aplica o todavía no, con su motivo.",
-    deriva: "No construye la página (kiln) ni dicta cómo se valida el modelo (provenance)." }],
+    deriva: "No construye la página (kiln) ni dicta cómo se valida el modelo (assay)." }],
   [3, "tokenwise", "tokenwise", "ok", "Con quién y a qué costo", {
-    hace: "Decide si conviene repartir, a cuántos agentes, con qué modelo y cómo se escribe el encargo.",
-    recibe: "Una tarea de varias partes.", entrega: "Plan de agentes con su costo.",
+    hace: "La ficha de delegación: cada oficio pide el equipo que necesita y se aprueba lo que se justifica por costo y beneficio, sin topes fijos. Y cómo se escribe el encargo.",
+    recibe: "Un pedido de agentes.", entrega: "La ficha evaluada (equipo, costo, beneficio).",
     deriva: "No extrae (quarry) ni verifica (hallmark)." }],
   [4, "quarry", "quarry", "ok", "La cantera · fase 3", {
     hace: "Saca datos de cualquier origen sin romper la fuente: estima, prueba con una muestra, guarda la foto con su ficha y hace el perfil.",
     recibe: "Qué datos y de dónde.", entrega: "Carpeta con datos, FICHA.json y perfil.",
-    deriva: "Carga antes las skills de dominio del ambiente." }],
+    deriva: "Carga antes las skills de dominio del ambiente. Es dueña de los conectores: verifica que cada cuenta sea la tuya." }],
   [4, "analizar", "assay", "ok", "El ensayo · fase 4", {
     hace: "Analiza o modela: plan escrito antes de ver resultados, pre-análisis, cálculo en una corrida con su ficha, todos los intentos contados, diagnóstico y sensibilidad.",
     recibe: "La foto verificada y el veredicto de compass.", entrega: "Carpeta de corrida con sus salidas y CORRIDA.json.",
     deriva: "No elige la técnica (compass) ni controla el entregable (hallmark)." }],
   [4, "kiln", "kiln", "ok", "El horno · fase 5", {
-    hace: "Construye la página o el tablero: dirección visual, contrato, código mínimo, mirada en escritorio y celular. Se apoya en impeccable, design-taste-frontend y dataviz.",
+    hace: "Construye cualquier entregable (página, tablero, documento, planilla, presentación): dirección visual, contrato, código mínimo y mirarlo antes de mostrar. Se apoya en impeccable, design-taste-frontend, dataviz, las skills de archivos y, para el código, ponytail.",
     recibe: "Las salidas.", entrega: "El entregable.",
     deriva: "No decide si hace falta un tablero ni controla sus cifras." }],
-  [4, "ponytail", "ponytail", "ext", "Código mínimo", {
-    hace: "El cambio más chico que resuelve bien. Lo usan kiln, foundry y cualquier cambio de código.",
-    recibe: "Un cambio de código.", entrega: "El código.", deriva: "—" }],
   [4, "hallmark", "hallmark", "ok", "El sello · fase 6", {
     hace: "Busca cada cifra del entregable en las salidas, hace cerrar las identidades, mira el resultado como el lector y, en las rondas grandes, pide una revisión independiente.",
     recibe: "El entregable y las salidas.", entrega: "Acta: sale, sale con observaciones o no sale.",
     deriva: "Si no sale, vuelve a la fase dueña del error." }],
+  [4, "herald", "herald", "ok", "El heraldo", {
+    hace: "Escribe afuera con permiso: vista previa exacta, aprobación de esa acción, ejecución única, registro y cómo deshacer. También para borrar, archivar o pisar.",
+    recibe: "Un mensaje, un cambio o un borrado que alguien necesita.", entrega: "La acción hecha, con su enlace y su registro.",
+    deriva: "Nunca con un permiso general: cada acción se aprueba por separado." }],
   [5, "dominio", "dominio", "ext", "Conocimiento del trabajo", {
     hace: "Lo propio de cada empresa: sistemas, vocabulario, qué fuente es la verdad.",
     recibe: "—", entrega: "Criterio de dominio para las demás capas.",
     deriva: "En su tema, una regla de dominio le gana a una general." }],
   [6, "sherpa", "sherpa", "leaf", "Primera hoja de foundry", {
-    hace: "Te pone en contexto al empezar la jornada: lee chat y correo, clasifica en urgente, pendiente, contexto y ruido, y entrega un resumen con lo descartado a la vista.",
+    hace: "Te pone en contexto al empezar la jornada con las fuentes que conectaste (chat, correo, calendario u otras): las junta en una sola línea de tiempo, clasifica en urgente, pendiente, contexto y ruido, y entrega un resumen con lo descartado a la vista.",
     recibe: "Lo que pasó desde tu jornada anterior.", entrega: "Un resumen de una pantalla.",
     deriva: "Sólo lectura; verifica que la cuenta sea la tuya antes de leer." }],
 ];
@@ -339,7 +344,7 @@ const N = [
 const E = [
   ["reglas", "foreman", "s"], ["foreman", "provenance", "d"], ["foreman", "foundry", "d"],
   ["provenance", "criterio", "s"], ["provenance", "tokenwise", "s"],
-  ["criterio", "quarry", "s"], ["quarry", "analizar", "s"], ["analizar", "kiln", "s"], ["kiln", "hallmark", "s"],
+  ["criterio", "quarry", "s"], ["quarry", "analizar", "s"], ["analizar", "kiln", "s"], ["kiln", "hallmark", "s"], ["foreman", "lenses", "d"],
   ["hallmark", "analizar", "b", "no sale"], ["quarry", "dominio", "d"], ["foundry", "sherpa", "d", "agrega"],
 ];
 const PH = [

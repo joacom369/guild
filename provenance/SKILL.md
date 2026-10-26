@@ -139,17 +139,15 @@ tomó. Los errores se clasifican (dirección, magnitud, medida contaminada,
 supuesto caído, quiebre reflexivo) y sólo se destila una regla si es sobre el
 método, no sobre el caso. Las lecciones se consultan antes de fijar una
 magnitud. El prompt no aprende; el registro sí. En un proyecto de más de una
-sesión, el registro vive en un archivo de estado que se lee al retomar y se
-actualiza al cerrar. La plantilla de ese archivo y la de una entrega
+sesión, el registro vive en un archivo de estado; cuándo se lee y se escribe lo
+dice `foreman`. La plantilla de ese archivo y la de una entrega
 (conclusión con su nivel, opciones, lo que no se sabe) están en
 `referencias/registro-y-comunicacion.md`.
 
 ## Cómo se combina
 
-Esta skill es la forma de pensar: manda sobre el contenido de las demás. El orden
-de un trabajo analítico es plantear (esta skill) → elegir la técnica
-(`compass`) → extraer (`quarry`) → analizar (`assay`, con los
-axiomas de esta skill) →
-construir (`kiln`, `dataviz`) → verificar (`hallmark`) → registrar (esta skill).
+Esta skill es la forma de pensar: manda sobre el contenido de las demás. Las fases de un
+trabajo y su dueño están en el ciclo de `foreman`; esta skill plantea al
+principio, da los axiomas al analizar y registra al final.
 Para repartir entre agentes, `tokenwise`. Si el proyecto tiene reglas propias
 (un archivo de reglas, un documento de estado), mandan sobre esta skill cuando difieren.

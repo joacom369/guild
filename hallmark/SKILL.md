@@ -62,7 +62,7 @@ el proyecto ya tiene pruebas o un control de paridad, se corren y su resultado s
 **Lectura:** abrí el entregable como lo va a abrir quien lo usa (la página renderizada, la planilla, el PDF) y leelo
 de punta a punta.
 
-- Una página se mira renderizada en escritorio y celular. Si `kiln` está instalada, su script `scripts/foto_pagina.py` hace las
+- Una página se mira renderizada en escritorio y celular. Si `kiln` está instalada, su script `foto_pagina.py` hace las
   dos y reporta errores de consola.
 - Una planilla, abierta: fórmulas con valor, sin `#REF!`, filtros y celdas ocultas a la vista.
 - Seguí un caso concreto de punta a punta («el cliente 100»): que sus valores tengan sentido en cada paso.
@@ -73,7 +73,7 @@ de punta a punta.
 ### Nivel 3 · Revisión independiente
 
 Alguien que no vio tu plan ni tu razonamiento revisa el entregable contra sus fuentes. Un solo revisor por ronda
-grande, con un modelo fuerte. Antes de lanzarlo, aplicá `tokenwise` (costo y encargo). Cómo armar el encargo y cómo
+grande, con un modelo fuerte. Antes de lanzarlo, pedilo con la ficha de delegación de `tokenwise`. Cómo armar el encargo y cómo
 tratar lo que devuelve, en [referencias/revisor.md](referencias/revisor.md).
 
 Sus hallazgos **se verifican antes de aceptarlos**: un revisor también se equivoca, y con la misma seguridad.
@@ -109,4 +109,4 @@ cambia lo que entiende el lector. Esa decisión se le muestra al usuario; **entr
 - `provenance`: qué es cada cifra y cuándo una conclusión es preliminar. Hallmark controla que el entregable lo respete.
 - `quarry`: la foto de datos con su ficha. Antes de recalcular, `ficha.py --verificar`.
 - `kiln`: en una página, el pulido y las capturas. Hallmark agrega las cifras y el acta.
-- `tokenwise`: costo y encargo del revisor del nivel 3.
+- `tokenwise`: el pedido de delegación del revisor del nivel 3 (el contenido del encargo es de esta skill).

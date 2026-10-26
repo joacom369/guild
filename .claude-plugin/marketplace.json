@@ -4,7 +4,7 @@
     "name": "Joaquín Milanesio"
   },
   "metadata": {
-    "description": "Guild: un gremio de skills para trabajar en cualquier proyecto (foreman, provenance, tokenwise, compass, quarry, assay, kiln, hallmark, foundry, sherpa) y las compañeras de diseño."
+    "description": "Guild: un gremio de skills para trabajar en cualquier proyecto, con cualquier IA (foreman, provenance, compass, tokenwise, lenses, quarry, assay, kiln, hallmark, herald, foundry, sherpa) y las compañeras de diseño."
   },
   "plugins": [
     {
@@ -17,8 +17,26 @@
       ]
     },
     {
+      "name": "herald",
+      "description": "Escribir afuera con permiso: vista previa exacta, aprobación por acción, registro y cómo deshacer.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./herald"
+      ]
+    },
+    {
+      "name": "lenses",
+      "description": "Las siete lentes que proponen por separado para abrir opciones antes de decidir, con sus contratos, puntos fijos y registro.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./lenses"
+      ]
+    },
+    {
       "name": "kiln",
-      "description": "Frontend pulido desde el primer intento: entrevista con opciones visuales, contrato de diseño, código mínimo y verificación.",
+      "description": "Entregables pulidos desde el primer intento (páginas, tableros, documentos, planillas, presentaciones): opciones visuales, contrato de diseño, código mínimo y verificación.",
       "source": "./",
       "strict": false,
       "skills": [
@@ -36,7 +54,7 @@
     },
     {
       "name": "tokenwise",
-      "description": "Repartir tareas entre subagentes con la mejor calidad al menor costo.",
+      "description": "Repartir tareas entre agentes con la mejor calidad al menor costo: el jefe pide su equipo y se aprueba lo que se justifica.",
       "source": "./",
       "strict": false,
       "skills": [
@@ -90,7 +108,7 @@
     },
     {
       "name": "sherpa",
-      "description": "Resumen de inicio de jornada: chat y correo clasificados en urgente, pendiente, contexto y ruido.",
+      "description": "Ponerse al día al empezar la jornada con las fuentes que el usuario conectó, en una sola línea de tiempo. Sólo lectura.",
       "source": "./",
       "strict": false,
       "skills": [

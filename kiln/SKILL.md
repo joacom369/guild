@@ -1,12 +1,14 @@
 ---
 name: kiln
 description: >
-  Punto de partida para construir el frontend de una página web, un tablero, un recorrido o un informe en HTML
-  (con tablas, gráficos, presentaciones o 3D) que tiene que salir pulido desde el primer intento y no con el
-  aspecto genérico de plantilla. Entiende qué busca el usuario, le ofrece direcciones con vista previa, fija un
+  Punto de partida para construir un entregable que tiene que salir pulido desde el primer intento y no con el
+  aspecto genérico de plantilla: el frontend de una página web, un tablero, un recorrido o un informe en HTML (con
+  tablas, gráficos, presentaciones o 3D), y también un documento, una planilla, una presentación o un PDF. Entiende qué busca el usuario, le ofrece direcciones con vista previa, fija un
   contrato de diseño, construye con código mínimo, se mira en escritorio y celular, y deriva el pulido a las
   skills compañeras. Usar al empezar una página o un rediseño, cuando el usuario pide "que quede lindo",
-  "más diseño", "landing", "dashboard", "tablero", "recorrido", "página", "frontend", "UI/UX", o con /kiln.
+  "más diseño", "landing", "dashboard", "tablero", "recorrido", "página", "frontend", "UI/UX", "armá el informe en
+  Word", "la presentación", "la planilla para el equipo", o con /kiln. La mecánica de cada formato de archivo la
+  ponen las skills de archivos de la plataforma.
   No decide si hace falta un tablero (`compass`) ni controla las cifras que muestra (`hallmark`).
 argument-hint: "[qué se construye]"
 license: MIT
@@ -16,6 +18,10 @@ license: MIT
 
 El horno donde el barro se vuelve pieza. Esta skill no repite lo que ya hacen las compañeras: decide **qué** se
 construye con el usuario, fija el **cómo** antes de tocar código, y no entrega nada que no se haya mirado.
+
+Es la dueña de la fase 5 para cualquier entregable. Lo que sigue está escrito para HTML; un documento, una planilla,
+una presentación o un PDF siguen los mismos pasos con lo que cambia en
+[referencias/archivos.md](referencias/archivos.md).
 
 ## 0. Compañeras
 
@@ -27,6 +33,7 @@ Mirá la lista de skills disponibles (no el disco) y usá las que estén:
 | `impeccable` | Paso 6: `polish` al terminar cada página, `audit` antes de entregar; `document` para el sistema. |
 | `ponytail` | Paso 4: todo el código. Si no está, aplicá sus reglas igual (ver paso 4). |
 | `developing-with-streamlit` | Si el proyecto es Streamlit. |
+| Skills de archivos (`docx`, `xlsx`, `pptx`, `pdf`) | Si el entregable es un archivo: ponen la mecánica del formato. |
 | `provenance` | Si la página muestra cifras de un modelo o un análisis. |
 | `compass` | Antes del paso 2 en un tablero: ¿hace falta una página, o la cifra ya está publicada en otro lado? |
 | `dataviz` | Al construir gráficos, paletas de series y fichas de cifras. |

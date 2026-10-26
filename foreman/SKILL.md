@@ -30,22 +30,26 @@ el para qué y el cómo se arma el trabajo. Las reglas de contenido son de las s
 2. **Se detiene siempre en estos puntos:**
    - la decisión de método (fase 2);
    - antes de una extracción grande (`quarry` estima consultas, peso y tiempo);
-   - antes de escribir en un sistema externo;
-   - antes de lanzar más de tres agentes (`tokenwise`);
-   - cuando `hallmark` dice «no sale»;
-   - antes de borrar, archivar o pisar algo del usuario.
+   - antes de escribir afuera o de borrar, archivar o pisar algo del usuario (lo ejecuta `herald`);
+   - cuando `hallmark` dice «no sale».
+
+   Esta lista es la única: los demás documentos la nombran, no la copian.
 
    **Vía libre.** Si el usuario delega las decisiones de método («decidí vos»), el primer corte se resuelve y se
    anota con su motivo. Los demás **no se delegan**: se consultan igual.
-3. **Habla con el usuario sólo cuando vale la pena:**
+3. **Aprueba los pedidos de delegación.** Cada oficio decide cuántos agentes necesita y lo pide con la ficha de
+   `tokenwise`; `foreman` lo aprueba si el análisis de costo y beneficio lo justifica, sin un número fijo de agentes
+   ni un tope rígido de tokens. No es un corte con el usuario: si el pedido consume una parte notable de la cuota, se
+   le avisa en una línea y el trabajo sigue.
+4. **Habla con el usuario sólo cuando vale la pena:**
    - un riesgo;
    - una decisión que es suya;
    - una tarea que se repite y podría ir a `foundry`.
 
    Lo demás va en la posdata del cierre.
-4. **Las mejoras se proponen, no se aplican.** Un cambio a una skill o al sistema va al buzón; se aplica cuando el
+5. **Las mejoras se proponen, no se aplican.** Un cambio a una skill o al sistema va al buzón; se aplica cuando el
    usuario lo aprueba.
-5. **Mirar el historial de trabajo requiere permiso.** Antes de revisar sesiones pasadas (para detectar tareas
+6. **Mirar el historial de trabajo requiere permiso.** Antes de revisar sesiones pasadas (para detectar tareas
    repetidas), dice qué va a leer y cuánto cuesta, y espera el visto bueno. Con el permiso lee y propone; nunca
    modifica.
 
@@ -53,8 +57,8 @@ el para qué y el cómo se arma el trabajo. Las reglas de contenido son de las s
 
 ### 1. Abrir
 
-- Leé la configuración del ambiente: dónde están el buzón y el registro de lentes, y el modo por defecto
-  ([referencias/ambiente-ejemplo.md](referencias/ambiente-ejemplo.md)). Si no hay configuración, usá los valores por
+- Leé la configuración del ambiente: el modo por defecto y dónde están los registros (buzón, lentes, delegaciones,
+  escrituras, automatizaciones) ([referencias/ambiente-ejemplo.md](referencias/ambiente-ejemplo.md)). Si no hay configuración, usá los valores por
   defecto que trae esa plantilla.
 - Fijá la carpeta del proyecto y trabajá con rutas absolutas: el directorio de trabajo puede cambiar a mitad de
   sesión, y un comando relativo escribe en otro lado.
@@ -63,8 +67,8 @@ el para qué y el cómo se arma el trabajo. Las reglas de contenido son de las s
 - Leé el `ESTADO.md` del proyecto si existe (la plantilla es de `provenance`). Si no existe pero hay documentos que ya
   son medio estado (traspasos, decisiones, revisiones, el historial de cambios), proponé armarlo desde ellos. En modo
   `charla` se **ofrece**, no se crea; en los otros modos se crea al cerrar si el trabajo dura más de una sesión.
-- Mirá el buzón. Si hay ideas nuevas, avisá en **una línea**: «Hay 3 ideas nuevas en el buzón; ¿las charlamos al
-  final?».
+- Mirá el buzón y el registro de automatizaciones. Si hay ideas nuevas o una medición vencida, avisá en **una
+  línea**: «Hay 3 ideas nuevas en el buzón y vence la medición de una automatización; ¿lo vemos al final?».
 
 ### 2. Leer el pedido y elegir el modo
 
@@ -94,17 +98,14 @@ Si una skill del plan no está instalada, decilo y aplicá sus reglas igual, des
 
 ### 4. Desplegar las lentes en sus puntos
 
-Las lentes y sus contratos están en [referencias/lentes.md](referencias/lentes.md). Se despliegan sólo en los puntos
-fijos de esa referencia.
-
-- Cada lente propone **por separado** y `foreman` sintetiza las propuestas en dos o tres opciones.
-- **Por defecto, en el mismo turno**, cada lente en su bloque. **Como agentes separados** sólo en rondas grandes,
-  aplicando `tokenwise` y diciendo el costo antes.
-- Anotá en el registro de lentes qué propuso cada una y cuál se usó.
+En los puntos fijos de `lenses` (fase 2 en una decisión grande, fase 6 en una ronda grande, una charla de ideas),
+convocá las lentes con esa skill y sintetizá sus propuestas en dos o tres opciones. Si `lenses` no está instalada,
+avisá y seguí sin lentes.
 
 ### 5. Ejecutar
 
-Cargá la skill de cada fase y seguila. Una fase que aplica no arranca sin la entrega de la anterior. Si `hallmark`
+Cargá la skill de cada fase y seguila. Si una fase pide agentes, aprobá su pedido según la regla 3 y anotalo en el
+registro de delegaciones. Una fase que aplica no arranca sin la entrega de la anterior. Si `hallmark`
 dice «no sale», el trabajo vuelve a la fase dueña del error, no siempre al análisis.
 
 ### 6. Cerrar
@@ -122,9 +123,11 @@ dice «no sale», el trabajo vuelve a la fase dueña del error, no siempre al an
 
 ## Cómo se combina
 
-`foreman` es el dueño del ciclo de fases y de las lentes. Las fases las ejecutan:
+`foreman` es el dueño del ciclo de fases, de los cortes con el usuario y de la aprobación de delegaciones. Las
+fases las ejecutan:
 - `provenance` (plantear, concluir y registrar);
-- `compass` y `tokenwise` (decidir);
-- `quarry` (extraer), `assay` (analizar), `kiln` y `dataviz` (construir), `hallmark` (verificar).
+- `compass` (decidir la técnica) con `tokenwise` (el costo y la ficha de delegación);
+- `quarry` (extraer), `assay` (analizar), `kiln` (construir cualquier entregable), `hallmark` (verificar).
 
+Fuera del ciclo: `lenses` en sus puntos fijos, `herald` para toda escritura externa y `sherpa` para ponerse al día.
 Las ramas nuevas las fabrica `foundry`. Las reglas y las skills de dominio del ambiente mandan sobre todas.

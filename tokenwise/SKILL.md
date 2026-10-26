@@ -38,24 +38,33 @@ necesita ya. Lo demás va en serie o se pospone.
 
 Un solo revisor crítico por ronda grande, no uno por tarea.
 
-### Equipo de especialistas: sólo con el aval del usuario
+### El pedido de delegación: el jefe pide, se aprueba lo que se justifica
 
-A veces una tarea pide varios oficios a la vez. Por ejemplo, una presentación
-de resultados puede necesitar un analista, alguien que redacte como
-periodista, un editor y un equipo rojo que la ataque como un auditor forense.
-Desplegar ese equipo como varios agentes **nunca es automático**:
+Cada oficio que trabaja (el «jefe» de su fase) decide cuántos agentes necesita: no hay un número fijo. Lo pide con
+una ficha corta:
 
-1. **Analizá primero si hace falta.** ¿Cada especialista aporta un juicio que
-   los otros no darían? ¿Sus partes son independientes? ¿El costo estimado
-   (agentes × modelo × material que lee cada uno) se justifica? La
-   alternativa barata casi siempre existe: un solo revisor fuerte al que se
-   le encargan varios verbos (auditar, editar, atacar la tesis).
-2. **Presentale al usuario el análisis y una recomendación argumentada:**
-   qué especialistas, para qué cada uno, con qué modelo, el costo aproximado
-   frente a la alternativa barata y qué se pierde con ella. Si no conviene,
-   decilo igual de claro.
-3. **Esperá su decisión.** Desplegar, achicar el equipo o no desplegar lo
-   decide el usuario. Sin respuesta explícita, no se lanza.
+| Campo | Qué dice |
+|---|---|
+| Para qué | La tarea y por qué no conviene hacerla directo (sección 1) |
+| Equipo | Cuántos agentes, qué hace cada uno, con qué modelo y esfuerzo |
+| Costo estimado | Agentes × modelo × material que lee cada uno; y el tiempo |
+| Alternativa barata | La opción con menos agentes (a menudo un solo revisor fuerte con varios verbos) y qué se pierde |
+| Beneficio | Qué mejora: calidad, tiempo, **retrabajo que se evita después** |
+
+**Cómo se evalúa.** Costo contra beneficio, mirando el total y no sólo esta tanda: una delegación que gasta más hoy
+pero evita rehacer el trabajo, o deja algo reutilizable, puede salir más barata en el global. No hay tope rígido de
+tokens; sí hay que poder decir por qué el gasto se paga.
+
+**Quién aprueba.**
+- Dentro de un trabajo de `foreman`, lo aprueba `foreman` y lo anota en el registro de delegaciones.
+- En un pedido de una sola fase, sin `foreman`, el mismo oficio aplica este criterio y lo anota igual.
+- Al usuario se le avisa en **una línea, sin frenar**, cuando el pedido consume una parte notable de la cuota. El
+  resto queda en el acta.
+- **Nunca entra en la aprobación**: escribir afuera, borrar algo del usuario (`herald`) ni gastar dinero real. Eso
+  sigue siendo un corte con el usuario.
+
+Con el tiempo, el registro de delegaciones (pedido, costo real, si se usó lo que trajeron) es el que permite decir si
+una clase de delegación se paga.
 
 ## 3. Cómo escribir el encargo (el ahorro está acá)
 
@@ -128,10 +137,8 @@ script. Cada agente de extracción devuelve archivos con su ficha. El procedimie
 
 ## 8. Antes de lanzar, en una línea
 
-Decile al usuario qué vas a repartir, a cuántos agentes y con qué modelo, y
-qué hacés vos mientras tanto. Si la tanda es grande (más de 3 agentes o una
-tarea larga), pedí el visto bueno. Un equipo de especialistas sigue siempre el
-procedimiento de la sección 2.
+Decí qué vas a repartir, a cuántos agentes y con qué modelo, y qué hacés vos
+mientras tanto. La aprobación sigue la ficha de la sección 2.
 
 ## 9. Con qué se combina
 

@@ -12,14 +12,13 @@ origen, cada entrega con su acta, cada decisión de método tomada por el usuari
 
 ## Lo que no se negocia
 
-Las reglas tienen un solo dueño (ver la columna «Oficio»); acá van sólo los cortes que cualquier plataforma tiene que
-respetar:
+Cada regla tiene un solo dueño y acá no se copia:
+- los cortes en los que se consulta al usuario son la regla 2 de [`foreman/SKILL.md`](foreman/SKILL.md);
+- toda escritura afuera, o borrar algo del usuario, pasa por [`herald/SKILL.md`](herald/SKILL.md);
+- un oficio que necesita agentes los pide con la ficha de [`tokenwise/SKILL.md`](tokenwise/SKILL.md) §2.
 
-- Las decisiones de método son del usuario: se muestran opciones, consecuencias y lo que no se sabe, y se espera.
-- Se frena antes de una extracción grande, antes de escribir en un sistema externo, antes de lanzar más de tres
-  agentes, antes de borrar algo del usuario y cuando el control final dice «no sale».
-- Las reglas del ambiente (el archivo de reglas del proyecto o del usuario) y sus skills de dominio mandan sobre este
-  repositorio.
+Las reglas del ambiente (el archivo de reglas del proyecto o del usuario) y sus skills de dominio mandan sobre este
+repositorio.
 
 ## Qué oficio y cuándo
 
@@ -28,13 +27,15 @@ respetar:
 | Empezar, retomar o cerrar un proyecto o un trabajo de varios pasos | `foreman` (el capataz) | [`foreman/SKILL.md`](foreman/SKILL.md) |
 | Plantear un trabajo con datos, interpretar un resultado, antes de concluir | `provenance` | [`provenance/SKILL.md`](provenance/SKILL.md) |
 | Elegir una técnica o herramienta, o decidir si hace falta | `compass` | [`compass/SKILL.md`](compass/SKILL.md) |
-| Repartir una tarea entre agentes, elegir modelo, cuidar el costo | `tokenwise` | [`tokenwise/SKILL.md`](tokenwise/SKILL.md) |
+| Pedir agentes para una tarea, elegir modelo, cuidar el costo | `tokenwise` | [`tokenwise/SKILL.md`](tokenwise/SKILL.md) |
+| Abrir opciones desde siete ángulos antes de una decisión grande | `lenses` | [`lenses/SKILL.md`](lenses/SKILL.md) |
 | Sacar datos de cualquier origen | `quarry` | [`quarry/SKILL.md`](quarry/SKILL.md) |
 | Calcular, modelar, pronosticar, comparar | `assay` | [`assay/SKILL.md`](assay/SKILL.md) |
-| Construir una página, un tablero o un informe en HTML | `kiln` | [`kiln/SKILL.md`](kiln/SKILL.md) |
+| Construir un entregable: página, tablero, documento, planilla, presentación | `kiln` | [`kiln/SKILL.md`](kiln/SKILL.md) |
 | Controlar un entregable con cifras antes de darlo | `hallmark` | [`hallmark/SKILL.md`](hallmark/SKILL.md) |
+| Escribir afuera (responder, publicar, cambiar un estado) o borrar algo | `herald` | [`herald/SKILL.md`](herald/SKILL.md) |
 | Una tarea que se repite y se quiere automatizar | `foundry` | [`foundry/SKILL.md`](foundry/SKILL.md) |
-| Ponerse al día con el chat, el correo y el calendario | `sherpa` | [`sherpa/SKILL.md`](sherpa/SKILL.md) |
+| Ponerse al día con las fuentes conectadas (chat, correo, calendario u otras) | `sherpa` | [`sherpa/SKILL.md`](sherpa/SKILL.md) |
 | Pulir o auditar una interfaz | `impeccable` (de terceros) | [`impeccable/SKILL.md`](impeccable/SKILL.md) |
 | Dirección visual sin aspecto de plantilla | `design-taste-frontend` (de terceros) | [`design-taste-frontend/SKILL.md`](design-taste-frontend/SKILL.md) |
 
