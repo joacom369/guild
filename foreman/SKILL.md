@@ -118,7 +118,8 @@ dice «no sale», el trabajo vuelve a la fase dueña del error, no siempre al an
 
    No se inventa otro formato de control.
 2. **ESTADO.md** actualizado (decisiones con antes, ahora y por qué; pendientes; lecciones de método).
-3. **El buzón:** ideas de mejora que aparecieron, cada una con fecha, área y por qué importa.
+3. **El buzón:** ideas de mejora que aparecieron, cada una con fecha, área y por qué importa; las descartadas, con su
+   motivo, para no volver a proponerlas sin un hecho nuevo.
 4. **Posdata:** lo que no fue urgente. Si se vio una tarea repetida, la propuesta de llevarla a `foundry`.
 
 ## Cómo se combina

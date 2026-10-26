@@ -29,7 +29,8 @@ Mirá la lista de skills disponibles (no el disco) y usá las que estén:
 
 | Skill | Cuándo |
 |---|---|
-| `design-taste-frontend` | Pasos 2 y 3: proponer direcciones y fijar la dirección visual de algo nuevo, sin defaults de plantilla. |
+| `design-taste-frontend` | Pasos 2 y 3: proponer direcciones y fijar la dirección visual de algo nuevo, sin defaults de plantilla. Viene marcada para no cargarse sola: leé su `SKILL.md` en la carpeta de skills (o pedile al usuario que la invoque por su nombre). |
+| Recursos visuales | Si el brief pide textura o movimiento: [referencias/recursos-visuales.md](referencias/recursos-visuales.md). |
 | `impeccable` | Paso 6: `polish` al terminar cada página, `audit` antes de entregar; `document` para el sistema. |
 | `ponytail` | Paso 4: todo el código. Si no está, aplicá sus reglas igual (ver paso 4). |
 | `developing-with-streamlit` | Si el proyecto es Streamlit. |
@@ -54,6 +55,9 @@ usuario. No se pregunta lo que el repositorio contesta.
 
 ## 2. Entender qué busca (entrevista corta)
 
+Antes de pensar en la forma, pasá el sustantivo a verbo: no «una presentación», sino «que el directorio entienda por
+qué cayó el margen y decida». Lo que se construye sale del verbo.
+
 - **Pedido claro:** enunciá tu lectura en una línea y avanzá. «Lo leo como: tablero de seguimiento para el
   equipo comercial, sobrio, oscuro, cifras protagonistas.»
 - **Pedido vago:** ofrecé 2 a 4 **direcciones concretas** con `AskUserQuestion`, cada una con vista previa (boceto
@@ -71,6 +75,8 @@ Antes del código, en pocas líneas que el usuario ve y puede corregir:
 - **Paleta** por roles (fondo, tinta, acento, estado) y **tipografía** (títulos, cuerpo, cifras).
 - **Estructura:** el esqueleto de la página y la figura dominante de cada sección.
 - **Movimiento y densidad**, y **qué se evita** (de [referencias/anti-defaults.md](referencias/anti-defaults.md)).
+- **Lo que afirma:** cada sección como una afirmación con su prueba (una cifra, una foto real, un caso). La
+  sección sin afirmación se saca.
 - **Referencias**, si las hay.
 
 Si existe `DESIGN.md`, el contrato lo extiende; no lo contradice sin decirlo.

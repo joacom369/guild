@@ -70,11 +70,14 @@ de punta a punta.
   (observado · calculado · reconstruido · supuesto · escenario · pendiente).
 - Lo que no se sabe está a la vista, no en una nota al pie.
 
-### Nivel 3 · Revisión independiente
+### Nivel 3 · Auditoría independiente
 
-Alguien que no vio tu plan ni tu razonamiento revisa el entregable contra sus fuentes. Un solo revisor por ronda
-grande, con un modelo fuerte. Antes de lanzarlo, pedilo con la ficha de delegación de `tokenwise`. Cómo armar el encargo y cómo
-tratar lo que devuelve, en [referencias/revisor.md](referencias/revisor.md).
+Alguien que no vio tu plan ni tu razonamiento revisa el trabajo contra lo que se pidió y contra sus fuentes. **Cada
+oficio pide su auditor**, especializado en lo que hizo (código, cifras, interfaz, modelo, extracción), con la ficha
+de delegación de `tokenwise`; en una ronda grande, además, una mirada cruzada final sobre el entregable completo. El
+contrato común (qué recibe, los dos ejes, cómo devuelve, cómo se verifica) está en
+[referencias/revisor.md](referencias/revisor.md); qué busca cada uno, en el catálogo
+[referencias/auditores.md](referencias/auditores.md).
 
 Sus hallazgos **se verifican antes de aceptarlos**: un revisor también se equivoca, y con la misma seguridad.
 
@@ -109,4 +112,4 @@ cambia lo que entiende el lector. Esa decisión se le muestra al usuario; **entr
 - `provenance`: qué es cada cifra y cuándo una conclusión es preliminar. Hallmark controla que el entregable lo respete.
 - `quarry`: la foto de datos con su ficha. Antes de recalcular, `ficha.py --verificar`.
 - `kiln`: en una página, el pulido y las capturas. Hallmark agrega las cifras y el acta.
-- `tokenwise`: el pedido de delegación del revisor del nivel 3 (el contenido del encargo es de esta skill).
+- `tokenwise`: el pedido de delegación de cada auditor (el contrato y el catálogo son de esta skill).

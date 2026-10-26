@@ -101,7 +101,7 @@ escalón después suele ser mejor que una alta de entrada.
 
 Con las skills de cada fase: `ponytail` para el código, `quarry` si hay que sacar datos, `kiln` si la salida es una
 página, `hallmark` para el control. La primera corrida se hace **con el usuario mirando**, contra el método manual del
-mismo día: lo que la automatización dejó afuera y la persona no, es el primer ajuste. Si la automatización es una
+mismo día: lo que la automatización dejó afuera y la persona no, es el primer ajuste. Si la automatización es una skill, se escribe con [referencias/escribir-skills.md](referencias/escribir-skills.md). Si la automatización es una
 skill, se prueba su disparo (`claude plugin eval`, si está disponible).
 
 ### 7. Registrar

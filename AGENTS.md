@@ -37,7 +37,7 @@ repositorio.
 | Una tarea que se repite y se quiere automatizar | `foundry` | [`foundry/SKILL.md`](foundry/SKILL.md) |
 | Ponerse al día con las fuentes conectadas (chat, correo, calendario u otras) | `sherpa` | [`sherpa/SKILL.md`](sherpa/SKILL.md) |
 | Pulir o auditar una interfaz | `impeccable` (de terceros) | [`impeccable/SKILL.md`](impeccable/SKILL.md) |
-| Dirección visual sin aspecto de plantilla | `design-taste-frontend` (de terceros) | [`design-taste-frontend/SKILL.md`](design-taste-frontend/SKILL.md) |
+| Dirección visual sin aspecto de plantilla (la usa `kiln`; no se carga sola) | `design-taste-frontend` (de terceros) | [`design-taste-frontend/SKILL.md`](design-taste-frontend/SKILL.md) |
 
 Un pedido de una sola fase va directo a su oficio; un trabajo de varias fases empieza por `foreman`, que arma el plan
 con la tabla de [`foreman/referencias/ciclo.md`](foreman/referencias/ciclo.md).

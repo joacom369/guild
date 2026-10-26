@@ -48,6 +48,10 @@ no existe, se crea la primera vez que hace falta escribir en él.
 |---|---|---|---|---|
 ```
 
+Una idea **descartada** lleva su motivo en el estado («descartada: licencia no abierta»). No se vuelve a proponer
+salvo que aparezca un hecho nuevo que cambie ese motivo; así el buzón también es el registro de lo que ya se
+evaluó.
+
 ## Lo que necesita un adaptador
 
 El núcleo pide que **al empezar una conversación** se revisen el buzón, las mediciones vencidas y el estado del

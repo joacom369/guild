@@ -87,7 +87,7 @@ sólo plantear, construir y la lectura final; una consulta rápida se contesta d
 | [`quarry`](quarry/SKILL.md) | Fase: extraer | Saca datos de cualquier origen sin romper la fuente: estimar, muestra, foto con ficha, perfil al llegar. Dueña de los conectores: que cada cuenta sea la del usuario. | `ficha.py`, `perfil.py`, `tablas.py` |
 | [`assay`](assay/SKILL.md) | Fase: analizar | Plan antes de ver resultados, pre-análisis, cálculo en corridas reproducibles, todos los intentos contados. | `corrida.py` |
 | [`kiln`](kiln/SKILL.md) | Fase: construir | Cualquier entregable pulido desde el primer intento: páginas y tableros, y también documentos, planillas y presentaciones. Se mira antes de mostrar. | `foto_pagina.py` |
-| [`hallmark`](hallmark/SKILL.md) | Fase: verificar | Cada cifra del entregable buscada en las salidas, identidades que cierran, lectura final, revisión independiente y acta. | `cifras.py` |
+| [`hallmark`](hallmark/SKILL.md) | Fase: verificar | Cada cifra del entregable buscada en las salidas, identidades que cierran, lectura final y acta. Dueña del contrato de los auditores: cada oficio pide el suyo, especializado, y se audita contra lo pedido y contra el oficio. | `cifras.py` |
 | [`herald`](herald/SKILL.md) | Escribir afuera | Responder, publicar, cambiar un estado o borrar, siempre con vista previa exacta, aprobación por acción, registro y cómo deshacer. | — |
 | [`foundry`](foundry/SKILL.md) | Fábrica | Convierte una tarea repetida en una automatización: relevar, calcular si vale la pena, lentes, opciones y registro con predicción. | — |
 | [`sherpa`](sherpa/SKILL.md) | Automatización | Resumen de inicio de jornada con las fuentes que el usuario conecte (chat, correo, calendario u otras), en una sola línea de tiempo y con un lector por fuente. Sólo lectura. Primera rama de `foundry`. | — |
@@ -201,7 +201,7 @@ guild/
 
 ## Mantener
 
-Editar la skill → `python empaquetar.py` → `claude plugin validate .` → si cambió una description, correr sus pruebas
+Editar la skill (con la guía [`foundry/referencias/escribir-skills.md`](foundry/referencias/escribir-skills.md)) → `python empaquetar.py` → `claude plugin validate .` → si cambió una description, correr sus pruebas
 de disparo → si cambió el mapa, actualizar `mapa.html` y la captura `docs/mapa.png` → commit y push.
 
 ## Licencia
@@ -217,4 +217,4 @@ por la versión nueva, con su `LICENSE` y su `NOTICE`.
 | Skill | Autor y licencia | Para qué |
 |---|---|---|
 | `impeccable` | Paul Bakaus, Apache 2.0 ([`LICENSE`](impeccable/LICENSE), [`NOTICE`](impeccable/NOTICE.md)), github.com/pbakaus/impeccable, v4.5.0 | Diseñar, pulir y auditar interfaces |
-| `design-taste-frontend` | Leonxlnx (taste-skill), MIT ([`LICENSE`](design-taste-frontend/LICENSE)) | Dirección visual sin defaults de plantilla |
+| `design-taste-frontend` | Leonxlnx, MIT ([`LICENSE`](design-taste-frontend/LICENSE)). Versión archivada `design-taste-frontend-v2-experimental` de github.com/Leonxlnx/taste-skill-classics (commit 5e08c93); se invoca por su nombre | Dirección visual sin defaults de plantilla |

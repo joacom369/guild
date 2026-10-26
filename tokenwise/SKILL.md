@@ -50,6 +50,7 @@ una ficha corta:
 | Costo estimado | Agentes × modelo × material que lee cada uno; y el tiempo |
 | Alternativa barata | La opción con menos agentes (a menudo un solo revisor fuerte con varios verbos) y qué se pierde |
 | Beneficio | Qué mejora: calidad, tiempo, **retrabajo que se evita después** |
+| Auditor | Si el trabajo es sustancial, su auditor externo especializado (catálogo de `hallmark`) |
 
 **Cómo se evalúa.** Costo contra beneficio, mirando el total y no sólo esta tanda: una delegación que gasta más hoy
 pero evita rehacer el trabajo, o deja algo reutilizable, puede salir más barata en el global. No hay tope rígido de

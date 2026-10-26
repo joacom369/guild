@@ -115,6 +115,8 @@ aplica al achicar las skills.
 | Identidad y permiso de un conector | `quarry` (`referencias/conectores.md`) | `sherpa` la nombra |
 | Configuración del ambiente y sus registros | `foreman` (`referencias/ambiente-ejemplo.md`) | cada oficio agrega su bloque |
 | Lentes: contratos, puntos y registro | `lenses` | `foreman` y `foundry` la convocan |
+| Contrato del auditor y catálogo por tipo de trabajo | `hallmark` (`referencias/revisor.md` y `auditores.md`) | cada oficio pide su auditor con la ficha de `tokenwise` |
+| Cómo se escribe una skill o un índice | `foundry` (`referencias/escribir-skills.md`) | todos al editar |
 | Qué skill trabaja y cuándo | `foreman` (+ índice corto en el archivo de reglas; `AGENTS.md` en la raíz) | las descriptions sólo dicen su momento, con caso negativo |
 | Sistemas del ambiente: sólo lectura, verdad de cada fuente | Las reglas del ambiente + sus skills de dominio | `quarry` las carga antes de extraer |
 
@@ -137,7 +139,8 @@ No hay un número fijo de agentes.
 | Investigar fuentes, precios, normas | Investigador liviano en segundo plano | `tokenwise` | existe |
 | Extracción grande repartida | Uno por origen; devuelve archivos con ficha | `quarry` + `tokenwise` | existe |
 | Pantallas aisladas | Agente en worktree | `tokenwise` | existe |
-| Revisión antes de entregar | Revisor independiente fuerte | `hallmark` nivel 3 | existe |
+| Auditoría de cada trabajo | Un auditor externo por oficio, especializado (código, cifras, interfaz, modelo, extracción, errores, seguridad) | `hallmark` (contrato y catálogo) | existe (2026-10-26) |
+| Mirada cruzada final | Un auditor sobre el entregable completo, en rondas grandes | `hallmark` nivel 3 | existe |
 | Puntos de decisión | Asesor (advisor) | `tokenwise` | existe |
 | Lentes | Una lente por agente, en los puntos fijos de `lenses` | `lenses` | existe |
 | Lectores de fuentes | Un lector por fuente; devuelve ítems normalizados, no resúmenes | `sherpa` | escrito, sin probar |

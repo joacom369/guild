@@ -26,7 +26,7 @@ Cada lente tiene carácter propio, pero trabaja con un contrato: una pregunta qu
 | Lente | La pregunta que la mueve | Entrega | Le tira hacia… |
 |---|---|---|---|
 | **El vago** | ¿Qué es lo mínimo que llega al resultado? | La opción más barata que funciona, y lo que se pierde con ella | Abajo en la escalera |
-| **El optimista** | ¿Y si sale todo bien y lo llevamos al máximo? | El techo, rotulado como techo, y qué tendría que ser cierto para llegar | Arriba en la escalera |
+| **El optimista** | ¿Y si sale todo bien y lo llevamos al máximo? Más hondo, no más grande: ¿qué haría el mejor profesional del tema, desde qué datos crudos y con qué control? | El techo, rotulado como techo, y qué tendría que ser cierto para llegar | Arriba en la escalera |
 | **El creativo** | ¿De qué otras formas se puede resolver? | Tres o más caminos realmente distintos, no variantes del mismo | Hacia los costados |
 | **El meticuloso** | ¿Qué se rompe y cómo nos enteramos? | Los modos de falla, los casos límite y el control que avisa | Hacia el control |
 | **El escéptico** | ¿Vale la pena? ¿Contra qué se compara? | El contrafáctico (seguir a mano, un escalón menos), el umbral y el costo oculto | Hacia no hacer |
