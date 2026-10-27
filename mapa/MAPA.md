@@ -117,6 +117,7 @@ aplica al achicar las skills.
 | Lentes: contratos, puntos y registro | `lenses` | `foreman` y `foundry` la convocan |
 | Contrato del auditor y catálogo por tipo de trabajo | `hallmark` (`referencias/revisor.md` y `auditores.md`) | cada oficio pide su auditor con la ficha de `tokenwise` |
 | Cómo se escribe una skill o un índice | `foundry` (`referencias/escribir-skills.md`) | todos al editar |
+| Piso de disparo (sólo sube) | Regla: `foundry` (`referencias/escribir-skills.md`). Control: `empaquetar.py` | el README lo nombra |
 | Qué skill trabaja y cuándo | `foreman` (+ índice corto en el archivo de reglas; `AGENTS.md` en la raíz) | las descriptions sólo dicen su momento, con caso negativo |
 | Sistemas del ambiente: sólo lectura, verdad de cada fuente | Las reglas del ambiente + sus skills de dominio | `quarry` las carga antes de extraer |
 
@@ -237,3 +238,10 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
    El registro de automatizaciones se mudó al ambiente (`~/.foreman/AUTOMATIZACIONES.md`): es propio de cada
    trabajo, no del núcleo. Quedan para después las repeticiones menores entre `provenance`, `hallmark`, `tokenwise` y `assay` sobre cómo se
    verifica.
+10. **Dos ideas tomadas del `AGENTS.md` de storytold/photocraft (2026-10-27):**
+    - `foreman` anota una línea por tramo en `ESTADO.md` (sección «Tramos» de la plantilla de `provenance`) y lo crea
+      al terminar el primer tramo, no al cerrar: si la sesión se corta, queda desde dónde retomar.
+    - Piso de disparo que sólo sube: `<skill>/evals/piso.json` y el control en `empaquetar.py`. El piso inicial
+      (12 skills, 49 casos, todos pasan con Sonnet) es **reconstruido**: sale de las últimas corridas guardadas en
+      esta PC, que no registran el texto de la description probada. Se supuso que es el de hoy porque ninguna
+      description cambió sin commit y los commits que la tocan son de minutos después de cada corrida.

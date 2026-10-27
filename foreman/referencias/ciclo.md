@@ -12,7 +12,7 @@
 | 4 Analizar | `assay` (con los axiomas de `provenance`) | Foto verificada y veredicto | Carpeta de corrida con `CORRIDA.json`, intentos contados | Si un supuesto cae o el diagnóstico falla |
 | 5 Construir | `kiln` · `dataviz` · `ponytail` | Las salidas | El entregable (página, informe, planilla) | En la dirección visual |
 | 6 Verificar | `hallmark` | Entregable y salidas | Acta: sale, sale con observaciones o no sale | Si no sale: entregar igual lo decide el usuario |
-| 7 Registrar | `provenance` (plantillas) + `foreman` | Acta y decisiones | ESTADO.md actualizado y la entrega (conclusión, opciones, lo que no se sabe) | — |
+| 7 Registrar | `provenance` (plantillas) + `foreman` | Acta y decisiones | ESTADO.md (una línea por tramo durante el trabajo, ordenado al cerrar) y la entrega (conclusión, opciones, lo que no se sabe) | — |
 
 ## Qué fases aplican según la tarea
 

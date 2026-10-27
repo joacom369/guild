@@ -1,0 +1,12 @@
+{
+  "modelo": "sonnet",
+  "fecha": "2026-10-27",
+  "ultima_corrida": "2026-10-25T14:05:01.312Z",
+  "description_sha256": "ca2e81d7dbfa63c08b004450524459315ade310c62ad0de2f02082c6c60873e9",
+  "casos": [
+    "no-ponerse-al-dia",
+    "no-repartir",
+    "si-delegar",
+    "si-reporte"
+  ]
+}

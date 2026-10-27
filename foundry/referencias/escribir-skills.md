@@ -15,6 +15,11 @@ material y en qué casos se busca. De eso depende que se cargue a tiempo.
   el momento a otra.
 - **Sin «: » suelto en el YAML** (rompe la lectura): usar el estilo `>` o comillas. Lo controla `empaquetar.py`.
 - Si cambia una description, se corren sus pruebas de disparo.
+- **El piso de disparo sólo sube.** Cada skill guarda en `evals/piso.json` los casos que pasan, el modelo y la huella
+  de la description probada. `empaquetar.py` no empaqueta si la description cambió sin volver a probarse, si falta un
+  caso del piso o si uno falla en su corrida más nueva. Con todo en verde, `python empaquetar.py --piso <skill>` lo
+  sube; bajarlo (borrar o cambiar un caso) se hace a mano, con el motivo en el mapa. Así una mejora no le roba en
+  silencio el momento a otra skill.
 
 ## Arriba lo que se hace, abajo lo que se consulta
 

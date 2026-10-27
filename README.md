@@ -197,13 +197,14 @@ guild/
 | Validación | El catálogo y los manifiestos | `claude plugin validate .` |
 | Descriptions | Que ninguna rompa el YAML (un error que la validación no ve) | `python empaquetar.py` |
 | Disparo | Que cada skill se cargue cuando debe y no cuando no: 4 casos por skill, 2 que deben disparar y 2 parecidos que no | `claude plugin eval <skill> --ablation none --runs 1 --model sonnet` |
+| Piso de disparo | Que la description sea la probada y ningún caso del piso falle; el piso sólo sube ([regla](foundry/referencias/escribir-skills.md)) | `python empaquetar.py` lo controla; `python empaquetar.py --piso <skill>` lo sube |
 | Scripts | Cada uno se probó con datos sembrados con fallas conocidas | Ver `mapa/MAPA.md` |
 | Plano | Que la página no tenga errores ni desborde en celular | `python kiln/scripts/foto_pagina.py file:///<ruta>/mapa/mapa.html <prefijo>` |
 
 ## Mantener
 
 Editar la skill (con la guía [`foundry/referencias/escribir-skills.md`](foundry/referencias/escribir-skills.md)) → `python empaquetar.py` → `claude plugin validate .` → si cambió una description, correr sus pruebas
-de disparo → si cambió el mapa, actualizar `mapa.html` y la captura `docs/mapa.png` → commit y push.
+de disparo y subir el piso (`python empaquetar.py --piso <skill>`) → si cambió el mapa, actualizar `mapa.html` y la captura `docs/mapa.png` → commit y push.
 
 ## Licencia
 

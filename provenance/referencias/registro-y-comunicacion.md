@@ -47,9 +47,9 @@ que no proyecta.
 ## Plantilla: archivo de estado (bitácora)
 
 Un proyecto de más de una sesión lleva un archivo de estado en su raíz (por
-ejemplo `ESTADO.md`). **Se lee al retomar**, antes de tocar nada, y **se
-actualiza al cerrar** la sesión. Corto: si pasa de una pantalla, lo viejo se
-archiva.
+ejemplo `ESTADO.md`). **Se lee al retomar**, antes de tocar nada; cuándo se
+escribe lo dice `foreman` (una línea por tramo y un orden al cerrar). Corto: si
+pasa de una pantalla, lo viejo se archiva.
 
 ```markdown
 # Estado · <proyecto> · actualizado <fecha>
@@ -64,6 +64,9 @@ Una o dos líneas: qué está hecho, qué está a medias, qué sigue.
 ## Cifras publicadas que cambiaron
 | Cifra | Era | Es | Qué la movió |
 |---|---|---|---|
+
+## Tramos
+- <fecha> · qué salió · cifras con su rótulo (observado, calculado…) · qué quedó abierto
 
 ## Pendientes
 - [ ] … (quién, para cuándo, qué lo destraba)

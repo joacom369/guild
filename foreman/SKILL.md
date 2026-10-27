@@ -66,7 +66,8 @@ el para qué y el cómo se arma el trabajo. Las reglas de contenido son de las s
   sumarlo a la configuración.
 - Leé el `ESTADO.md` del proyecto si existe (la plantilla es de `provenance`). Si no existe pero hay documentos que ya
   son medio estado (traspasos, decisiones, revisiones, el historial de cambios), proponé armarlo desde ellos. En modo
-  `charla` se **ofrece**, no se crea; en los otros modos se crea al cerrar si el trabajo dura más de una sesión.
+  `charla` se **ofrece**, no se crea; en los otros modos se crea al terminar el primer tramo si el trabajo puede durar
+  más de una sesión.
 - Mirá el buzón y el registro de automatizaciones. Si hay ideas nuevas o una medición vencida, avisá en **una
   línea**: «Hay 3 ideas nuevas en el buzón y vence la medición de una automatización; ¿lo vemos al final?».
 
@@ -108,6 +109,10 @@ Cargá la skill de cada fase y seguila. Si una fase pide agentes, aprobá su ped
 registro de delegaciones. Una fase que aplica no arranca sin la entrega de la anterior. Si `hallmark`
 dice «no sale», el trabajo vuelve a la fase dueña del error, no siempre al análisis.
 
+Al terminar cada tramo, sumá una línea a la sección «Tramos» de `ESTADO.md`: fecha, qué salió, cifras con su rótulo y
+qué quedó abierto. La sesión puede cortarse en cualquier momento, y lo anotado es lo que permite retomar; el cierre
+ordena, no reconstruye.
+
 ### 6. Cerrar
 
 1. **El acta.** Es la de `hallmark` si hubo cifras, más:
@@ -117,7 +122,8 @@ dice «no sale», el trabajo vuelve a la fase dueña del error, no siempre al an
    - qué no se verificó.
 
    No se inventa otro formato de control.
-2. **ESTADO.md** actualizado (decisiones con antes, ahora y por qué; pendientes; lecciones de método).
+2. **ESTADO.md** ordenado: «Dónde estamos» al día a partir de los tramos, decisiones con antes, ahora y por qué,
+   pendientes y lecciones de método.
 3. **El buzón:** ideas de mejora que aparecieron, cada una con fecha, área y por qué importa; las descartadas, con su
    motivo, para no volver a proponerlas sin un hecho nuevo.
 4. **Posdata:** lo que no fue urgente. Si se vio una tarea repetida, la propuesta de llevarla a `foundry`.
