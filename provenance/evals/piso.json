@@ -1,12 +1,32 @@
 {
   "modelo": "sonnet",
   "fecha": "2026-10-27",
-  "ultima_corrida": "2026-10-25T14:07:40.443Z",
-  "description_sha256": "9672a7b93d7995ad7a1d65f5660bb8abedb66783c4cf3aac1306e40b720e932b",
-  "casos": [
-    "no-extraer",
-    "no-trivial",
-    "si-concluir",
-    "si-plantear"
-  ]
+  "description_sha256": "48b842b6ae7be96139a420ebfd9ef75b409a2c3a6bf1a9630657fc5f339429bb",
+  "casos": {
+    "no-extraer": {
+      "tasa": 1.0,
+      "corridas": 3,
+      "sha256": "f0048880f5a532c41f8ee3ac6a62705eb048fc09108b79cd0706e34750d332ea"
+    },
+    "no-trivial": {
+      "tasa": 1.0,
+      "corridas": 3,
+      "sha256": "ad5e56d097d3409c6d8deb84e3fe45f78e78811eae38a6a1c612624b2e583167"
+    },
+    "si-concluir": {
+      "tasa": 1.0,
+      "corridas": 13,
+      "sha256": "3eaec36150ce81e94ec068f82b31a5e9f04f27676d1d9b65832db4aeec11bb67"
+    },
+    "si-plantear": {
+      "tasa": 1.0,
+      "corridas": 3,
+      "sha256": "d66b6b11ff04e738659cc39b3d86e9edcdf2b6abe56ad17cb16c9fc1de69f873"
+    },
+    "si-razon": {
+      "tasa": 0.0,
+      "corridas": 3,
+      "sha256": "558b5fbe8b482e76209aff0813a8f98f656a69dd3554563d4d1f27cbea65eed9"
+    }
+  }
 }

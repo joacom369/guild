@@ -15,11 +15,16 @@ material y en qué casos se busca. De eso depende que se cargue a tiempo.
   el momento a otra.
 - **Sin «: » suelto en el YAML** (rompe la lectura): usar el estilo `>` o comillas. Lo controla `empaquetar.py`.
 - Si cambia una description, se corren sus pruebas de disparo.
-- **El piso de disparo sólo sube.** Cada skill guarda en `evals/piso.json` los casos que pasan, el modelo y la huella
-  de la description probada. `empaquetar.py` no empaqueta si la description cambió sin volver a probarse, si falta un
-  caso del piso o si uno falla en su corrida más nueva. Con todo en verde, `python empaquetar.py --piso <skill>` lo
-  sube; bajarlo (borrar o cambiar un caso) se hace a mano, con el motivo en el mapa. Así una mejora no le roba en
-  silencio el momento a otra skill.
+- **El piso de disparo sólo sube.** Las pruebas de disparo son aleatorias: el mismo caso puede pasar 5 de 5 y después
+  1 de 3. Por eso cada skill guarda en `evals/piso.json` una **tasa por caso** medida con 3 corridas o más, además de
+  la huella de la description y de cada caso. `empaquetar.py` no empaqueta si la description o un caso cambiaron
+  desde que se midieron, si falta un caso o si la corrida más nueva de un caso (con 3 o más) queda más de un fallo
+  por debajo de su tasa; una corrida de 1 o 2 sólo avisa. `python empaquetar.py --piso <skill>` mide con las corridas
+  posteriores al último cambio del `SKILL.md` y nunca baja una tasa; borrar un caso se hace a mano, con el motivo en
+  el mapa. Un caso flojo conocido se deja en el piso con su tasa real (aunque sea 0%): así queda a la vista y sólo
+  puede subir.
+- **No ajustar la description a la letra del caso.** Si la description copia la frase de la prueba, la prueba pasa
+  y no dice nada. Se agrega un caso con otra redacción para ver si el disparo generaliza.
 
 ## Arriba lo que se hace, abajo lo que se consulta
 

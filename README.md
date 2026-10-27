@@ -196,8 +196,8 @@ guild/
 |---|---|---|
 | Validación | El catálogo y los manifiestos | `claude plugin validate .` |
 | Descriptions | Que ninguna rompa el YAML (un error que la validación no ve) | `python empaquetar.py` |
-| Disparo | Que cada skill se cargue cuando debe y no cuando no: 4 casos por skill, 2 que deben disparar y 2 parecidos que no | `claude plugin eval <skill> --ablation none --runs 1 --model sonnet` |
-| Piso de disparo | Que la description sea la probada y ningún caso del piso falle; el piso sólo sube ([regla](foundry/referencias/escribir-skills.md)) | `python empaquetar.py` lo controla; `python empaquetar.py --piso <skill>` lo sube |
+| Disparo | Que cada skill se cargue cuando debe y no cuando no: 4 o 5 casos por skill, la mitad que deben disparar y la otra mitad parecidos que no | `claude plugin eval <skill> --ablation none --runs 3 --model sonnet --trust-plugin` |
+| Piso de disparo | Que la description y los casos sean los medidos y ninguna tasa caiga más de un fallo; el piso sólo sube ([regla](foundry/referencias/escribir-skills.md)) | `python empaquetar.py` lo controla; `python empaquetar.py --piso <skill>` lo sube |
 | Scripts | Cada uno se probó con datos sembrados con fallas conocidas | Ver `mapa/MAPA.md` |
 | Plano | Que la página no tenga errores ni desborde en celular | `python kiln/scripts/foto_pagina.py file:///<ruta>/mapa/mapa.html <prefijo>` |
 

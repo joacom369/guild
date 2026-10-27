@@ -241,7 +241,16 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
 10. **Dos ideas tomadas del `AGENTS.md` de storytold/photocraft (2026-10-27):**
     - `foreman` anota una línea por tramo en `ESTADO.md` (sección «Tramos» de la plantilla de `provenance`) y lo crea
       al terminar el primer tramo, no al cerrar: si la sesión se corta, queda desde dónde retomar.
-    - Piso de disparo que sólo sube: `<skill>/evals/piso.json` y el control en `empaquetar.py`. El piso inicial
-      (12 skills, 49 casos, todos pasan con Sonnet) es **reconstruido**: sale de las últimas corridas guardadas en
-      esta PC, que no registran el texto de la description probada. Se supuso que es el de hoy porque ninguna
-      description cambió sin commit y los commits que la tocan son de minutos después de cada corrida.
+    - Piso de disparo que sólo sube: `<skill>/evals/piso.json` y el control en `empaquetar.py`. El primer piso
+      (todos los casos pasan en la última corrida) bloqueó por ruido: las pruebas son aleatorias. Quedó un piso de
+      **tasas por caso**, medidas con 3 corridas o más y con huella de la description y de cada caso.
+    - Piso **observado** (Sonnet, CLI 2.1.311): 12 skills, 50 casos. 48 casos al 100%; `assay/no-entrega` al 80%
+      (5 corridas) y `provenance/si-razon` al 0% (3).
+    - `provenance`: `si-concluir` fallaba (1 de 3) porque la description no cubría juzgar una conclusión ajena. Se
+      reescribió el caso con los datos en el pedido y se agregó esa rama al principio de la description: 13 de 13.
+      Pero la description usa la palabra del caso («se sostiene»), y `si-razon`, el mismo pedido con otra redacción
+      («¿tiene razón?»), da 0 de 3. Sonnet contesta solo las preguntas causales fáciles. Queda como caso flojo
+      conocido, en el piso con su 0%.
+    - Lo que no se probó: cada suite carga sólo su skill, así que no se mide si una skill le roba el momento a otra
+      cargada al mismo tiempo. `claude plugin eval` no trae una opción para cargar dos.
+    - Costo de las pruebas del día: USD 8,6 (calculado con los `costUsd` de las corridas).

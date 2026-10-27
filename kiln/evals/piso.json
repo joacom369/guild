@@ -1,13 +1,32 @@
 {
   "modelo": "sonnet",
   "fecha": "2026-10-27",
-  "ultima_corrida": "2026-10-26T15:52:51.068Z",
   "description_sha256": "70171ce224b0903c1e233cdc99acfcb142459030020668e55a69fdcdad9c42f8",
-  "casos": [
-    "no-cifras",
-    "no-hace-falta",
-    "si-landing",
-    "si-presentacion",
-    "si-tablero"
-  ]
+  "casos": {
+    "no-cifras": {
+      "tasa": 1.0,
+      "corridas": 3,
+      "sha256": "d840bb418d076bb300a96c171de7fd466d6edf8404b022ccefd70e4afb53d8cf"
+    },
+    "no-hace-falta": {
+      "tasa": 1.0,
+      "corridas": 3,
+      "sha256": "2a1add24ae2c38c8d59ae414be8845a6c505f45b6cdcb6bdbc5972f38c39f95d"
+    },
+    "si-landing": {
+      "tasa": 1.0,
+      "corridas": 3,
+      "sha256": "1d7291842b312815fa3800dfe9b4aedc8ec6ae48fa075ef1aa68ac6f588f396a"
+    },
+    "si-presentacion": {
+      "tasa": 1.0,
+      "corridas": 3,
+      "sha256": "18b56a32b6416510709c576bd50735675981231c1a3bc2b3a36dcecad4eaaadc"
+    },
+    "si-tablero": {
+      "tasa": 1.0,
+      "corridas": 3,
+      "sha256": "3b6f0b1bb295b10cadaf2fcd49cdf1fff87bae4776a3c165505307c60c4396be"
+    }
+  }
 }
