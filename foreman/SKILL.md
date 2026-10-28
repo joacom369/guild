@@ -138,3 +138,6 @@ fases las ejecutan:
 
 Fuera del ciclo: `lenses` en sus puntos fijos, `herald` para toda escritura externa y `sherpa` para ponerse al día.
 Las ramas nuevas las fabrica `foundry`. Las reglas y las skills de dominio del ambiente mandan sobre todas.
+
+Los límites de concurrencia de cada plataforma (cuántos agentes a la vez, qué herramienta es de a uno) viven en su
+adaptador. Acá se aprueba el pedido; esos límites no se copian.

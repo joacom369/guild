@@ -253,7 +253,7 @@ ol.next { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
     <h2 id="h-nucleo">Núcleo portable y adaptadores</h2>
     <div class="two">
       <p>Todo el sistema se lleva a otro trabajo u otra plataforma sin cambios. El <b>núcleo</b> es texto y Python: el mapa, las skills, los contratos, las lentes y los scripts. Lo propio de cada trabajo (qué chat, qué sistemas, qué es urgente) vive afuera, en la configuración del ambiente.</p>
-      <p>Cada plataforma tiene su <b>adaptador</b>: en Claude Code, hooks, agentes definidos, workflows y rutinas; en otras plataformas, <code>AGENTS.md</code> y lo que soporten (a verificar). El contrato que cumple cada adaptador está en <code>MAPA.md</code> §6 y el detalle, en <code>adaptadores/</code>. Nada del núcleo depende de una plataforma: si una skill necesita algo al abrir la sesión, lo dice como necesidad y cada adaptador lo resuelve.</p>
+      <p>Cada plataforma tiene su <b>adaptador</b>: en Claude Code, hooks, agentes definidos, workflows y rutinas; en otras plataformas, <code>AGENTS.md</code> y lo que soporten (a verificar). Grok Bot tiene adaptador diseñado y documentado, sin probar (<code>adaptadores/grok-bot.md</code>). El contrato que cumple cada adaptador está en <code>MAPA.md</code> §6 y el detalle, en <code>adaptadores/</code>. Nada del núcleo depende de una plataforma: si una skill necesita algo al abrir la sesión, lo dice como necesidad y cada adaptador lo resuelve.</p>
     </div>
   </section>
 
@@ -266,7 +266,7 @@ ol.next { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
         <li class="done">Construir foundry</li>
         <li class="done">Cerrar la fase «analizar» con assay</li>
         <li class="done">Probar sherpa con la cuenta correcta</li>
-        <li>Crear la rutina de sherpa y el bot propio</li>
+        <li>Probar el adaptador de Grok Bot y armar la rutina de sherpa</li>
         <li class="done">Construir foreman</li>
         <li>Adaptador de inicio de sesión para foreman (hook)</li>
         <li class="done">Pruebas de disparo de cada skill</li>
