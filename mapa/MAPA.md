@@ -1,6 +1,7 @@
 # Mapa de skills · v1 (estructura objetivo)
 
-Fecha: 2026-10-25, actualizado el 2026-10-26 (adaptadores, primera prueba de `sherpa`). Reemplaza a la v0. Se armó con la auditoría ([AUDITORIA.md](AUDITORIA.md)) y las decisiones sobre el
+Fecha: 2026-10-25, actualizado el 2026-10-28 (adaptador de Grok Bot diseñado y documentado, sin probar; harness de
+autoauditoría). Reemplaza a la v0. Se armó con la auditoría ([AUDITORIA.md](AUDITORIA.md)) y las decisiones sobre el
 cerebro ([CEREBRO.md](CEREBRO.md)). Marcas:
 - **(existe)**: ya está construido.
 - **(a construir)**: está decidido, falta hacerlo.
@@ -120,6 +121,7 @@ aplica al achicar las skills.
 | Piso de disparo (sólo sube) | Regla: `foundry` (`referencias/escribir-skills.md`). Control: `empaquetar.py` | el README lo nombra |
 | Qué skill trabaja y cuándo | `foreman` (+ índice corto en el archivo de reglas; `AGENTS.md` en la raíz) | las descriptions sólo dicen su momento, con caso negativo |
 | Sistemas del ambiente: sólo lectura, verdad de cada fuente | Las reglas del ambiente + sus skills de dominio | `quarry` las carga antes de extraer |
+| Límites de concurrencia de una plataforma (cuántos agentes a la vez, qué herramienta es de a uno) | El adaptador de esa plataforma | `foreman` y `tokenwise` apuntan; no se copian |
 
 ## 4. El laboratorio de lentes
 
@@ -155,15 +157,15 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
 
 | Necesidad del núcleo | Claude Code | Plataformas que leen `AGENTS.md` (Cursor, Codex y otras) | Bot en servidor propio (p. ej. Grok Bot) |
 |---|---|---|---|
-| Saber qué oficio cargar y cuándo | Descriptions de las skills + archivo de reglas (probado) | `AGENTS.md` (índice) | a verificar |
-| Cargar un procedimiento a demanda | Skill (`SKILL.md`) (probado) | Leer el `SKILL.md` por su ruta | a verificar |
-| Reglas que valen siempre | CLAUDE.md (probado) | `AGENTS.md` o las reglas del proyecto | a verificar |
-| Algo que pasa sí o sí al abrir la sesión (avisar del buzón, leer ESTADO.md) | Hook `SessionStart` (documentado, no instalado) | a verificar | a verificar |
-| Agente con una tarea y sus herramientas | Subagente (probado) | a verificar | a verificar |
-| Varios agentes en un orden fijo con verificación | Workflow (documentado) | a verificar | a verificar |
-| Correr solo, con horario | Rutina programada (documentado; la de `sherpa` falta) | a verificar | a verificar (corre 24/7) |
-| Conectores con la cuenta del usuario (chat, correo, calendario) | Conector por máquina o MCP local de lectura (probado) | a verificar | a recrear con la misma receta |
-| Pasos mecánicos | Scripts en Python | Los mismos scripts | Los mismos scripts |
+| Saber qué oficio cargar y cuándo | Descriptions de las skills + archivo de reglas (probado) | `AGENTS.md` (índice) | Descriptions si el Skill tool las carga; si no, `AGENTS.md` y el bloque del perfil (documentado) |
+| Cargar un procedimiento a demanda | Skill (`SKILL.md`) (probado) | Leer el `SKILL.md` por su ruta | Skill tool, o leer el `SKILL.md` por su ruta si el repo está (documentado) |
+| Reglas que valen siempre | CLAUDE.md (probado) | `AGENTS.md` o las reglas del proyecto | Perfil y memoria del bot, más las skills de dominio. No usa `CLAUDE.md` (documentado) |
+| Algo que pasa sí o sí al abrir la sesión (avisar del buzón, leer ESTADO.md) | Hook `SessionStart` (documentado, no instalado) | a verificar | No hay hook. Lo hace la primera respuesta, una `UpdateRoutine` o el mensaje de despertar (documentado) |
+| Agente con una tarea y sus herramientas | Subagente (probado) | a verificar | `Task`: `executor`, `knowledgeWork`, `computerUse` (documentado) |
+| Varios agentes en un orden fijo con verificación | Workflow (documentado) | a verificar | No hay workflow nativo. Se encadena el mismo `executor`; un fan-out pide permiso (documentado) |
+| Correr solo, con horario | Rutina programada (documentado; la de `sherpa` falta) | a verificar | `UpdateRoutine` (cron o disparo de Slack, GitHub o correo); corre 24/7 (documentado) |
+| Conectores con la cuenta del usuario (chat, correo, calendario) | Conector por máquina o MCP local de lectura (probado) | a verificar | MCP de la cuenta del usuario; la identidad, con la receta de `quarry` (documentado) |
+| Pasos mecánicos | Scripts en Python | Los mismos scripts | Los mismos scripts (documentado; no se corrieron en una box de bot) |
 
 **Patrones de portabilidad** (vistos en bases de conocimiento de empresa; sirven en cualquier ambiente):
 - El conocimiento vive en una base aparte (un concepto por archivo, con dueño y fecha). La skill sólo dice cómo
@@ -179,13 +181,16 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
 2. **Detección de repeticiones — decidido:** `foreman` pide permiso antes de mirar (qué va a leer y cuánto va a
    gastar). Con el visto bueno tiene vía libre para leer y proponer, pero **nunca modifica nada sin consentimiento**.
 3. **Adaptadores fuera de Claude Code:** `AGENTS.md` está escrito pero sin probar en Cursor ni en otra plataforma.
-4. **Bot propio y trabajo en vivo** (buzón, 2026-10-26; anotado, sin diseñar):
+   El adaptador de Grok Bot está diseñado y documentado (2026-10-28), sin probar en un bot:
+   [`adaptadores/grok-bot.md`](../adaptadores/grok-bot.md).
+4. **Bot propio y trabajo en vivo** (buzón, 2026-10-26). El adaptador de la plataforma quedó diseñado; sigue abierto
+   lo que ese diseño no cubre:
+   - probar el checklist de `adaptadores/grok-bot.md` en un bot de verdad;
    - un bot con nombre («sherpa») que mande el resumen al empezar la jornada, en lugar de un mensaje privado desde la
      cuenta del usuario;
+   - la rutina de `sherpa` (`UpdateRoutine` en Grok Bot; en Claude Code sigue sin instalar);
    - el «cerebro de bots»: bots que detectan en vivo cuando se mueve algo (un mensaje, un correo, un estado) y lo
-     resuelven o lo delegan en otro bot;
-   - el lugar natural es un bot en servidor propio (p. ej. Grok Bot), que corre sin depender de una computadora
-     prendida. Se diseña con `foundry`.
+     resuelven o lo delegan en otro bot.
 
 **Orden de trabajo:**
 1. Aprobar este mapa.
@@ -218,7 +223,8 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
    `claude plugin eval <skill> --ablation none --runs 1 --model sonnet`.
 6. ~~Página visual del mapa~~ **hecho:** [`mapa.html`](mapa.html), con una captura en `docs/`.
 7. **Adaptadores (2026-10-26):** contrato del adaptador (sección 6), `AGENTS.md` en la raíz y el adaptador de Claude
-   Code en `adaptadores/`. Falta probar `AGENTS.md` en otra plataforma y diseñar el bot en servidor propio.
+   Code en `adaptadores/`. Falta probar `AGENTS.md` en otra plataforma. El bot en servidor propio se diseñó el
+   2026-10-28 (Grok Bot, documentado, sin probar).
 8. **Primera prueba real de `sherpa` (2026-10-26):** chat, correo y calendario con la cuenta del usuario, entregado
    por mensaje privado. Lo aprendido quedó en la skill: identidad fuente por fuente, control positivo de menciones,
    una sola línea de tiempo y el bloque de calendario.
@@ -252,5 +258,9 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
       («¿tiene razón?»), da 0 de 3. Sonnet contesta solo las preguntas causales fáciles. Queda como caso flojo
       conocido, en el piso con su 0%.
     - Lo que no se probó: cada suite carga sólo su skill, así que no se mide si una skill le roba el momento a otra
-      cargada al mismo tiempo. `claude plugin eval` no trae una opción para cargar dos.
+      cargada al mismo tiempo. `claude plugin eval` no trae una opción para cargar dos. El harness estático
+      (`foundry/scripts/auditar_gremio.py`, 2026-10-28) marca solapes de palabras; no reemplaza esa prueba.
     - Costo de las pruebas del día: USD 8,6 (calculado con los `costUsd` de las corridas).
+11. **Adaptador Grok Bot y harness (2026-10-28):** el adaptador está diseñado y documentado, sin probar en un bot.
+    El harness se corrió en el repo (informe en [`AUDITORIA-ADAPTADOR-GROK.md`](AUDITORIA-ADAPTADOR-GROK.md)). Sigue
+    a mano decidir si un solape es un robo de momento de verdad, y probar el checklist del adaptador.

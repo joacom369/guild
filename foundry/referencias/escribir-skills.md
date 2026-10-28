@@ -25,6 +25,9 @@ material y en qué casos se busca. De eso depende que se cargue a tiempo.
   puede subir.
 - **No ajustar la description a la letra del caso.** Si la description copia la frase de la prueba, la prueba pasa
   y no dice nada. Se agrega un caso con otra redacción para ver si el disparo generaliza.
+- **Antes de empaquetar o de un PR**, el auditor estático del gremio. Qué mira y el ciclo de mejora están en
+  [harness-autoauditoria.md](harness-autoauditoria.md). El piso de tasas sigue siendo de esta página y de
+  `empaquetar.py`.
 
 ## Arriba lo que se hace, abajo lo que se consulta
 

@@ -26,6 +26,9 @@ Paralelizar acorta el tiempo, pero **no baja el consumo**: cuatro agentes a la
 vez gastan el límite más rápido. Lanzá en paralelo sólo lo que de verdad se
 necesita ya. Lo demás va en serie o se pospone.
 
+Cuántos agentes admite a la vez la plataforma, y qué herramienta suya no se comparte, lo dice el adaptador. Si hace
+falta repartir, el pedido es la ficha de la sección 2.
+
 ## 2. Quién hace qué
 
 | Tipo de tarea | Quién | Modelo |

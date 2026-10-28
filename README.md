@@ -120,7 +120,7 @@ lo resuelve un **adaptador**, que cumple el contrato de [`mapa/MAPA.md`](mapa/MA
 |---|---|---|
 | Claude Code y claude.ai | [`adaptadores/claude-code.md`](adaptadores/claude-code.md): clonar en `~/.claude/skills`, plugins o ZIP | En uso (el hook y la rutina, sin probar) |
 | Cualquiera que lea `AGENTS.md` (Cursor, Codex y otras) | Abrir el repositorio o apuntar las reglas a [`AGENTS.md`](AGENTS.md), el índice de oficios | Escrito, sin probar |
-| Bot en servidor propio (p. ej. Grok Bot) | El contrato del adaptador + los mismos oficios | A diseñar |
+| Bot en servidor propio (Grok Bot) | [`adaptadores/grok-bot.md`](adaptadores/grok-bot.md): perfil o memoria, skills o [`AGENTS.md`](AGENTS.md), `Task` y `UpdateRoutine` | Diseñado y documentado, sin probar |
 
 Instalación rápida en Claude Code:
 
@@ -198,12 +198,13 @@ guild/
 | Descriptions | Que ninguna rompa el YAML (un error que la validación no ve) | `python empaquetar.py` |
 | Disparo | Que cada skill se cargue cuando debe y no cuando no: 4 o 5 casos por skill, la mitad que deben disparar y la otra mitad parecidos que no | `claude plugin eval <skill> --ablation none --runs 3 --model sonnet --trust-plugin` |
 | Piso de disparo | Que la description y los casos sean los medidos y ninguna tasa caiga más de un fallo; el piso sólo sube ([regla](foundry/referencias/escribir-skills.md)) | `python empaquetar.py` lo controla; `python empaquetar.py --piso <skill>` lo sube |
+| Auditoría del gremio | Caso negativo, solapes de momento, reglas casi iguales, piso presente, dueños e índice. El ciclo está en [el harness](foundry/referencias/harness-autoauditoria.md) | `python foundry/scripts/auditar_gremio.py` |
 | Scripts | Cada uno se probó con datos sembrados con fallas conocidas | Ver `mapa/MAPA.md` |
 | Plano | Que la página no tenga errores ni desborde en celular | `python kiln/scripts/foto_pagina.py file:///<ruta>/mapa/mapa.html <prefijo>` |
 
 ## Mantener
 
-Editar la skill (con la guía [`foundry/referencias/escribir-skills.md`](foundry/referencias/escribir-skills.md)) → `python empaquetar.py` → `claude plugin validate .` → si cambió una description, correr sus pruebas
+Editar la skill (con la guía [`foundry/referencias/escribir-skills.md`](foundry/referencias/escribir-skills.md)) → `python foundry/scripts/auditar_gremio.py` → `python empaquetar.py` → `claude plugin validate .` → si cambió una description, correr sus pruebas
 de disparo y subir el piso (`python empaquetar.py --piso <skill>`) → si cambió el mapa, actualizar `mapa.html` y la captura `docs/mapa.png` → commit y push.
 
 ## Licencia

@@ -11,7 +11,7 @@ El contrato que cumple cada adaptador, con el estado de cada plataforma, está e
 |---|---|---|
 | Claude Code (y claude.ai para las skills sueltas) | [`claude-code.md`](claude-code.md) | En uso; el hook y la rutina, sin probar |
 | Cualquier plataforma que lea `AGENTS.md` (Cursor, Codex y otras) | [`../AGENTS.md`](../AGENTS.md) | Escrito, sin probar |
-| Bot en servidor propio (p. ej. Grok Bot) | — | A diseñar con `foundry` |
+| Bot en servidor propio (Grok Bot) | [`grok-bot.md`](grok-bot.md) | Diseñado y documentado, sin probar |
 
 ## Cómo se escribe un adaptador nuevo
 
