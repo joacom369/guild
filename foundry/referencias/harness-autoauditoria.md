@@ -22,6 +22,16 @@ python foundry/scripts/auditar_gremio.py --estricto
 cuando hay un error (skill propia sin caso negativo, o sin `evals/piso.json`). Sin esa bandera el script sale 0
 aunque haya avisos: el reporte es la salida.
 
+En cada pull request, en cada push a `main` y los lunes a las 09:00 (America/Buenos_Aires), GitHub Actions corre
+[`.github/workflows/gremio.yml`](../../.github/workflows/gremio.yml): las dos autopruebas, este script con
+`--estricto` y `empaquetar.py`.
+
+[`corregir_gremio.py`](../scripts/corregir_gremio.py) reescribe un enlace roto de la tabla de `AGENTS.md` sólo
+cuando hay un único archivo con ese nombre, y sube ese cambio. No edita una skill, no toca una description, no
+crea un `piso.json` y no cambia dueños. Esos errores dejan el check en rojo: son el corte. Los avisos (solape,
+regla casi igual) no bloquean y no se corrigen para silenciar el auditor. Un push a `main` sólo controla; no
+corrige sobre `main`. La rutina semanal, si hay un enlace así, abre un PR. El merge sigue siendo del usuario.
+
 Los cortes (cuántas palabras, qué ratio, qué tan rara tiene que ser una palabra) están al principio del script.
 Un aviso es una pista. Confirmarla sigue a mano.
 
@@ -97,8 +107,9 @@ Cada propuesta dice a qué clase pertenece:
    `foundry`). Si se adopta como hábito, la fila va al registro de automatizaciones del ambiente, con una
    predicción fechada: cuántos avisos por corrida resultan ser un solape real y cuántos son ruido. Sin esa
    medición no se sube de escalón. La fila no se escribe en este repositorio.
-4. **Antes de empaquetar o de abrir un PR** de oficios: `python foundry/scripts/auditar_gremio.py`. Un error (falta
-   el caso negativo o falta el piso) se mira antes de empaquetar. Los avisos se leen; no bloquean solos.
+4. **Antes de empaquetar o de abrir un PR** de oficios: `python foundry/scripts/auditar_gremio.py`. La CI de arriba
+   lo corre con `--estricto`. Un error (falta el caso negativo o falta el piso) se mira antes de empaquetar. Los
+   avisos se leen; no bloquean solos.
 5. **Después de un tramo de trabajo**, `python foundry/scripts/auditar_gremio.py --dinamico --trabajo <proyecto>`.
    Si la rutina está aceptada, `--al-buzon` deja las propuestas nuevas. Aplicarlas sigue siendo del usuario.
 6. **La autoprueba** se corre cuando se toca el script, para ver que los detectores siguen disparando. Incluye un

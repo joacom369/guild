@@ -198,7 +198,8 @@ guild/
 | Descriptions | Que ninguna rompa el YAML (un error que la validación no ve) | `python empaquetar.py` |
 | Disparo | Que cada skill se cargue cuando debe y no cuando no: 4 o 5 casos por skill, la mitad que deben disparar y la otra mitad parecidos que no | `claude plugin eval <skill> --ablation none --runs 3 --model sonnet --trust-plugin` |
 | Piso de disparo | Que la description y los casos sean los medidos y ninguna tasa caiga más de un fallo; el piso sólo sube ([regla](foundry/referencias/escribir-skills.md)) | `python empaquetar.py` lo controla; `python empaquetar.py --piso <skill>` lo sube |
-| Auditoría del gremio | Caso negativo, solapes de momento, reglas casi iguales, piso presente, dueños e índice. Con `--dinamico`, propuestas a partir de los registros de trabajo: no edita skills. El ciclo está en [el harness](foundry/referencias/harness-autoauditoria.md) | `python foundry/scripts/auditar_gremio.py` |
+| Auditoría del gremio | Caso negativo, solapes de momento, reglas casi iguales, piso presente, dueños e índice. Con `--dinamico`, propuestas a partir de los registros de trabajo: no edita skills. El ciclo está en [el harness](foundry/referencias/harness-autoauditoria.md) | `python foundry/scripts/auditar_gremio.py`. En el PR, en `main` y los lunes 09:00 (ART) lo corre [`.github/workflows/gremio.yml`](.github/workflows/gremio.yml) |
+| Corrección del índice | Un enlace roto de la tabla de `AGENTS.md` con un único archivo de ese nombre. No toca descriptions, pisos ni dueños: eso deja el check en rojo | `python foundry/scripts/corregir_gremio.py`; con `--aplicar` escribe. La CI lo sube en el PR o abre uno |
 | Scripts | Cada uno se probó con datos sembrados con fallas conocidas | Ver `mapa/MAPA.md` |
 | Plano | Que la página no tenga errores ni desborde en celular | `python kiln/scripts/foto_pagina.py file:///<ruta>/mapa/mapa.html <prefijo>` |
 

@@ -267,3 +267,12 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
     cubre con datos sembrados. No está instalada la rutina, no se leyeron sesiones reales y no se editó ninguna
     skill desde una propuesta. Sigue a mano decidir si un solape es un robo de momento de verdad, y probar el
     checklist del adaptador.
+12. **Corrección automática (2026-10-28).** El ciclo de auditar y corregir corre solo y se detiene en los cortes.
+    GitHub Actions (`.github/workflows/gremio.yml`) corre la autoprueba, `auditar_gremio.py --estricto` y
+    `empaquetar.py` en cada pull request, en cada push a `main` y los lunes a las 09:00 (America/Buenos_Aires).
+    `foundry/scripts/corregir_gremio.py` reescribe un enlace roto de la tabla de `AGENTS.md` sólo cuando el nombre
+    de archivo es único, y sube ese cambio en un PR. No reescribe skills: una description cambiada para callar un
+    aviso haría pasar el control sin medir el disparo. Un caso negativo ausente, un piso ausente o un dueño que no
+    está dejan el check rojo. Los avisos no bloquean. No se creó una automatización en el dashboard de Cursor:
+    el control que corre es Actions. La predicción, fuera del repo, es la fila de `~/.foreman/AUTOMATIZACIONES.md`
+    con medición el 2026-11-25.
