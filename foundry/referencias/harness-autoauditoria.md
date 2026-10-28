@@ -13,6 +13,7 @@ Desde la raíz del repositorio, con la biblioteca estándar:
 
 ```bash
 python foundry/scripts/auditar_gremio.py
+python foundry/scripts/auditar_gremio.py --dinamico [--registros DIR] [--trabajo DIR] [--al-buzon]
 python foundry/scripts/auditar_gremio.py --autoprueba
 python foundry/scripts/auditar_gremio.py --estricto
 ```
@@ -39,6 +40,41 @@ Las skills de terceros (`impeccable`, `design-taste-frontend`) no entran al piso
 Si una se carga sola, sí entra al solape de momento. `design-taste-frontend` declara que sólo se carga por nombre:
 el script lo anota y no la compara.
 
+## Paso dinámico
+
+El estático mira si los oficios se pisan entre sí. El dinámico mira el trabajo ya hecho y propone qué sumaría
+productividad a los subagentes, o un mejor resultado para el usuario. Se corre con `--dinamico`.
+
+Lee sólo los registros que el gremio ya escribe. Dónde viven lo fija `foreman` (`referencias/ambiente-ejemplo.md`):
+por defecto `~/.foreman/`.
+
+| Registro | Qué propuesta sale |
+|---|---|
+| `DELEGACIONES.md` | **Común:** varios encargos sin una comprobación que el agente pueda correr; el mismo pedido repetido; la misma herramienta faltante en más de un oficio. **Puntual:** un oficio cuyos resultados no se usaron, o al que siempre le falta lo mismo. Las columnas que reconoce son las que ya nombra `tokenwise`: pedido, oficio, si se usó, y si están, comprobación y qué faltó |
+| `ESTADO.md` (con `--trabajo`) | **Resultado:** un «quedó abierto» que se repite en los tramos. **Puntual:** una lección de método que nombra un oficio. El formato del estado es de `provenance` |
+| `AUTOMATIZACIONES.md` | Una predicción con la medición vencida. Compararla es de `foundry` |
+| `IDEAS.md` | Una idea descartada no se vuelve a proponer |
+
+`--al-buzon` agrega las propuestas nuevas a `IDEAS.md`, con estado `nueva`. No pisa las descartadas. No edita
+ninguna skill.
+
+### Por qué no es un subagente prendido siempre
+
+Un agente que estudie «constantemente» el trabajo de los demás lee sesiones enteras y gasta la cuota aunque no haya
+nada nuevo. Mirar ese historial pide permiso antes, diciendo qué se va a leer y cuánto cuesta: es la regla 6 de
+`foreman`, y acá no se copia. Los registros de arriba ya son el rastro del trabajo; alcanzan para ver el patrón.
+
+La cadencia la pone una rutina (escalón 7 de `foundry`): en Grok Bot, una `UpdateRoutine`. El script es el escalón
+3. Un subagente (escalón 4) entra sólo cuando una propuesta señala una carpeta demasiado grande para esta corrida.
+Eso es una ficha de `tokenwise`, la aprueba `foreman`, y lee esa carpeta. No queda un `Task` eterno.
+
+Cada propuesta dice a qué clase pertenece:
+
+- **Común.** El mismo hueco en más de un oficio, o un encargo que se repite. Sube la productividad de los
+  subagentes en general.
+- **Puntual.** El hueco es de un solo oficio. Mejora la herramienta o el resultado de ese agente para el usuario.
+- **Resultado.** Un tramo que queda abierto, o una predicción que ya había que medir.
+
 ## Qué queda a mano
 
 - Si un solape de palabras es un robo de momento de verdad. Hace falta cargar las dos skills a la vez.
@@ -48,6 +84,8 @@ el script lo anota y no la compara.
 - Si un dueño externo (`ponytail`, y `dataviz` cuando el mapa lo nombre en §3) tiene que entrar al repo.
 - El comportamiento de una plataforma. Eso lo prueba el checklist de su adaptador.
 - Que ninguna tasa del piso baje. Lo controla `empaquetar.py`.
+- Si una propuesta dinámica conviene aplicarla. El script la deja en el buzón; la skill cambia cuando el usuario la
+  aprueba.
 
 ## El ciclo, cada vuelta
 
@@ -61,7 +99,10 @@ el script lo anota y no la compara.
    medición no se sube de escalón. La fila no se escribe en este repositorio.
 4. **Antes de empaquetar o de abrir un PR** de oficios: `python foundry/scripts/auditar_gremio.py`. Un error (falta
    el caso negativo o falta el piso) se mira antes de empaquetar. Los avisos se leen; no bloquean solos.
-5. **La autoprueba** se corre cuando se toca el script, para ver que los detectores siguen disparando.
+5. **Después de un tramo de trabajo**, `python foundry/scripts/auditar_gremio.py --dinamico --trabajo <proyecto>`.
+   Si la rutina está aceptada, `--al-buzon` deja las propuestas nuevas. Aplicarlas sigue siendo del usuario.
+6. **La autoprueba** se corre cuando se toca el script, para ver que los detectores siguen disparando. Incluye un
+   trabajo sembrado: la propuesta común, la puntual, la descartada que no vuelve, y el buzón que no se duplica.
 
 ## Cómo se combina
 

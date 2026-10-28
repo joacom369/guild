@@ -27,4 +27,7 @@ Si hay novedad, una línea.
 Antes de un `Task`, aplicá la sección «Reglas anti-pisado» de `adaptadores/grok-bot.md`: un workstream es un
 `executor` reutilizado, sin fan-out sin permiso del usuario, `computerUse` de a uno, el código de un repo en
 CloudAgent, y escribir afuera sólo con `herald` (`DraftExternalMessage` hasta el sí).
+
+La rutina de mejora corre `python foundry/scripts/auditar_gremio.py --dinamico --al-buzon`. Propone en el buzón.
+No edita skills ni lee sesiones. El ciclo está en `foundry/referencias/harness-autoauditoria.md`.
 ```
