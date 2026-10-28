@@ -1,21 +1,28 @@
-"""Audita el gremio en estático: caso negativo, solapes de momento, reglas casi iguales y piso.
+"""Audita el gremio: estático (oficios) y, con --dinamico, propuestas a partir del trabajo hecho.
 
 Uso:
     python foundry/scripts/auditar_gremio.py [--raiz RUTA] [--estricto]
+    python foundry/scripts/auditar_gremio.py --dinamico [--registros DIR] [--trabajo DIR] [--al-buzon] [--hoy FECHA]
     python foundry/scripts/auditar_gremio.py --autoprueba
 
-Lee los SKILL.md, el índice AGENTS.md y la tabla de dueños de mapa/MAPA.md §3.
+El paso estático lee los SKILL.md, AGENTS.md y la tabla de dueños de mapa/MAPA.md §3.
 No mide tasas de disparo: eso lo controla empaquetar.py (el piso sólo sube).
+
+El paso dinámico lee los registros del ambiente (delegaciones, tramos, lecciones,
+automatizaciones, buzón). Propone mejoras comunes y puntuales. No edita skills y no
+abre sesiones: mirar el historial pide el permiso de foreman (su regla 6).
 
 Sale 0 si el reporte se pudo armar. Con --estricto sale 1 si hay un hallazgo de
 nivel error (falta el caso negativo o falta el piso en una skill propia).
---autoprueba siembra un gremio con fallas conocidas y sale 1 si un detector no dispara.
-Los solapes son avisos: una pista para leer, no un fallo cerrado.
+--autoprueba siembra fallas y un trabajo de ejemplo, y sale 1 si un detector no dispara.
+Los solapes y las propuestas son avisos: una pista para leer, no un fallo cerrado.
 """
 import re
 import sys
 import tempfile
 import unicodedata
+from collections import Counter
+from datetime import date
 from difflib import SequenceMatcher
 from pathlib import Path
 
@@ -31,6 +38,17 @@ MIN_CONTENIDO_VENTANA = 4
 # Un token entra al solape si aparece en pocas descriptions (no es muletilla del gremio).
 DF_MAX = 3
 MIN_TOKENS_AVISO = 2
+# El paso dinámico: cuántas veces tiene que repetirse un hecho para proponerlo.
+REPETICION_PEDIDO = 3
+REPETICION_FALTA = 2
+MIN_FILAS_SIN_COMPROBACION = 3
+ALIASES_DELEGACION = {
+    "pedido": ("pedido", "para que", "tarea"),
+    "oficio": ("oficio", "agente", "quien", "skill"),
+    "usado": ("se uso", "usado", "uso"),
+    "comprobacion": ("comprobacion", "prueba"),
+    "falto": ("que falto", "falto", "herramienta"),
+}
 
 STOP = {
     "para", "como", "cuando", "donde", "qué", "que", "cuál", "cual", "cuáles", "cuales",
@@ -565,6 +583,334 @@ def formatear(raiz, skills, hallazgos):
     return "\n".join(lineas).rstrip() + "\n"
 
 
+class Propuesta:
+    def __init__(self, clase, titulo, porque, evidencia, area):
+        self.clase = clase
+        self.titulo = titulo
+        self.porque = porque
+        self.evidencia = evidencia
+        self.area = area
+        self.omitida = ""
+
+    def linea(self):
+        if self.omitida:
+            return f"[info] omitida: {self.titulo}\n    ya estaba descartada ({self.omitida})"
+        return f"[aviso] {self.clase}: {self.titulo}\n    {self.porque} Evidencia: {self.evidencia}"
+
+
+def argumento(argv, nombre):
+    if nombre not in argv:
+        return None
+    i = argv.index(nombre)
+    if i + 1 >= len(argv) or argv[i + 1].startswith("--"):
+        return None
+    return argv[i + 1]
+
+
+def leer_tablas(texto):
+    """Tablas markdown como lista de filas (dict encabezado → celda)."""
+    tablas, bloque = [], []
+
+    def cerrar():
+        nonlocal bloque
+        if len(bloque) >= 2 and set(bloque[1].replace("|", "").replace(":", "")) <= set("- "):
+            encabezados = [c.strip() for c in bloque[0].strip().strip("|").split("|")]
+            filas = []
+            for linea in bloque[2:]:
+                celdas = [c.strip() for c in linea.strip().strip("|").split("|")]
+                celdas += [""] * (len(encabezados) - len(celdas))
+                filas.append(dict(zip(encabezados, celdas)))
+            if filas:
+                tablas.append(filas)
+        bloque = []
+
+    for linea in texto.splitlines():
+        if linea.startswith("|"):
+            bloque.append(linea)
+        else:
+            cerrar()
+    cerrar()
+    return tablas
+
+
+def campos_delegacion(fila):
+    campos = {}
+    for clave, valor in fila.items():
+        encabezado = plegar(clave)
+        for nombre, alias in ALIASES_DELEGACION.items():
+            if any(opcion == encabezado or opcion in encabezado for opcion in alias):
+                campos.setdefault(nombre, valor)
+    return campos
+
+
+def leer_texto(path):
+    path = Path(path)
+    if not path.exists():
+        return ""
+    return path.read_text(encoding="utf-8")
+
+
+def delegaciones(texto):
+    filas = []
+    for tabla in leer_tablas(texto):
+        for fila in tabla:
+            campos = campos_delegacion(fila)
+            if campos.get("pedido") or campos.get("oficio"):
+                filas.append(campos)
+    return filas
+
+
+def es_no(valor):
+    texto = plegar(valor or "").strip()
+    return texto in {"no", "no se uso", "no usado"} or texto.startswith("no ")
+
+
+def seccion(texto, titulo):
+    marca = f"## {titulo}"
+    inicio = texto.find(marca)
+    if inicio < 0:
+        return ""
+    resto = texto[inicio + len(marca):]
+    fin = resto.find("\n## ")
+    return resto if fin < 0 else resto[:fin]
+
+
+def ideas_descartadas(texto):
+    pares = []
+    for tabla in leer_tablas(texto):
+        for fila in tabla:
+            idea, estado = "", ""
+            for clave, valor in fila.items():
+                encabezado = plegar(clave)
+                if encabezado.startswith("idea"):
+                    idea = valor
+                elif "estado" in encabezado:
+                    estado = valor
+            if idea and "descartada" in plegar(estado):
+                pares.append((idea, estado))
+    return pares
+
+
+def ya_descartada(propuesta, descartadas):
+    texto = normalizar(propuesta.titulo)
+    for idea, estado in descartadas:
+        frase = normalizar(idea)
+        if len(frase) >= 12 and frase in texto:
+            return estado
+    return ""
+
+
+def propuestas_de_delegaciones(filas):
+    propuestas = []
+    if not filas:
+        return propuestas
+    sin_comprobacion = [f for f in filas if not (f.get("comprobacion") or "").strip()]
+    if len(sin_comprobacion) >= MIN_FILAS_SIN_COMPROBACION:
+        propuestas.append(Propuesta(
+            "común",
+            f"{len(sin_comprobacion)} encargos del registro no traen una comprobación que el agente pueda correr",
+            "Una comprobación en el encargo sube el resultado de todos los subagentes: se corrigen antes de devolver. Cómo se escribe el encargo es de `tokenwise` §3.",
+            f"{len(sin_comprobacion)} filas sin comprobación",
+            "común",
+        ))
+    pedidos = Counter(normalizar(f.get("pedido", "")) for f in filas if len(normalizar(f.get("pedido", ""))) >= 12)
+    for pedido, veces in sorted(pedidos.items()):
+        if veces >= REPETICION_PEDIDO:
+            propuestas.append(Propuesta(
+                "común",
+                f"El pedido «{pedido}» aparece {veces} veces",
+                "Es una tarea repetida. La mira `foundry`; este script no arma la automatización.",
+                f"{veces} delegaciones con el mismo pedido",
+                "común",
+            ))
+    faltas = {}
+    for fila in filas:
+        falta = normalizar(fila.get("falto", ""))
+        if len(falta) < 8:
+            continue
+        oficio = (fila.get("oficio") or "sin oficio").strip()
+        faltas.setdefault(falta, Counter())[oficio] += 1
+    for falta, por_oficio in sorted(faltas.items()):
+        oficios = [o for o, n in por_oficio.items() if n >= 1]
+        if len(oficios) >= 2:
+            propuestas.append(Propuesta(
+                "común",
+                f"En más de un oficio faltó «{falta}»",
+                "Una herramienta o un paso compartido les serviría a esos subagentes. No se agrega solo.",
+                ", ".join(f"{o} ×{por_oficio[o]}" for o in sorted(por_oficio)),
+                "común",
+            ))
+        else:
+            oficio, veces = next(iter(por_oficio.items()))
+            if veces >= REPETICION_FALTA:
+                propuestas.append(Propuesta(
+                    "puntual",
+                    f"`{oficio}`: faltó «{falta}» {veces} veces",
+                    "Una mejora en ese oficio cambiaría el resultado que recibe el usuario. No se editó la skill.",
+                    f"{oficio} ×{veces}",
+                    oficio,
+                ))
+    no_usados = Counter((f.get("oficio") or "").strip() for f in filas if es_no(f.get("usado", "")))
+    for oficio, veces in sorted(no_usados.items()):
+        if oficio and veces >= REPETICION_FALTA:
+            propuestas.append(Propuesta(
+                "puntual",
+                f"`{oficio}`: {veces} resultados no se usaron",
+                "El encargo está trayendo material que después no entra. Ajustar qué devuelve ese agente ahorra la cuota y mejora lo que llega al usuario. El formato del encargo es de `tokenwise` §3.",
+                f"{oficio}: se usó = no, {veces} veces",
+                oficio,
+            ))
+    return propuestas
+
+
+def propuestas_de_estado(texto, origen):
+    propuestas = []
+    abiertos = {}
+    for linea in seccion(texto, "Tramos").splitlines():
+        if not linea.strip().startswith("-"):
+            continue
+        marca = re.search(r"qued[oó] abierto\s+(.+)$", linea, re.I)
+        if not marca:
+            continue
+        frase = marca.group(1).strip()
+        clave = normalizar(frase)
+        veces, _ = abiertos.get(clave, (0, frase))
+        abiertos[clave] = (veces + 1, frase)
+    for clave, (veces, frase) in sorted(abiertos.items()):
+        if veces >= REPETICION_FALTA and len(clave) >= 8:
+            propuestas.append(Propuesta(
+                "resultado",
+                f"Quedó abierto «{frase}» en {veces} tramos",
+                "Es un hueco del resultado, no de un solo encargo. Cerrarlo cambia lo que el usuario recibe al final.",
+                f"{origen}, sección Tramos",
+                "resultado",
+            ))
+    for linea in seccion(texto, "Lecciones de método").splitlines():
+        if not linea.strip().startswith("-"):
+            continue
+        oficio = re.search(r"oficio\s+`?([a-z][a-z0-9-]*)`?", linea, re.I)
+        if not oficio:
+            continue
+        nombre = oficio.group(1)
+        propuestas.append(Propuesta(
+            "puntual",
+            f"`{nombre}`: {linea.strip().lstrip('-').strip()[:140]}",
+            "La lección ya está escrita como método. Pasarla al oficio, si el usuario la aprueba, mejora el trabajo de ese agente.",
+            f"{origen}, sección Lecciones de método",
+            nombre,
+        ))
+    return propuestas
+
+
+def mediciones_vencidas(texto, hoy):
+    propuestas = []
+    for tabla in leer_tablas(texto):
+        for fila in tabla:
+            nombre, medicion = "", ""
+            for clave, valor in fila.items():
+                encabezado = plegar(clave)
+                if "automatizacion" in encabezado or encabezado == "nombre":
+                    nombre = valor
+                elif "medicion" in encabezado:
+                    medicion = valor
+            marca = re.search(r"pendiente:\s*(\d{4}-\d{2}-\d{2})", medicion or "")
+            if not marca:
+                continue
+            cuando = date.fromisoformat(marca.group(1))
+            if cuando < hoy:
+                propuestas.append(Propuesta(
+                    "resultado",
+                    f"Medición vencida: {nombre or 'automatización'} (pendiente {cuando.isoformat()})",
+                    "`foundry` pide comparar la predicción con lo que pasó. Sin esa medición no se sube de escalón.",
+                    "AUTOMATIZACIONES.md",
+                    "foundry",
+                ))
+    return propuestas
+
+
+def auditar_dinamico(registros, trabajo=None, hoy=None):
+    """Propuestas a partir de los registros. No lee sesiones ni edita skills."""
+    registros = Path(registros)
+    hoy = hoy or date.today()
+    notas, propuestas = [], []
+    if not registros.exists() and not trabajo:
+        return [], [f"Sin registros en {registros}. No se leyeron sesiones. No hay propuestas."]
+    if registros.exists():
+        filas = delegaciones(leer_texto(registros / "DELEGACIONES.md"))
+        if filas:
+            propuestas.extend(propuestas_de_delegaciones(filas))
+        else:
+            notas.append("DELEGACIONES.md no está o no tiene filas reconocibles.")
+        propuestas.extend(mediciones_vencidas(leer_texto(registros / "AUTOMATIZACIONES.md"), hoy))
+        descartadas = ideas_descartadas(leer_texto(registros / "IDEAS.md"))
+    else:
+        notas.append(f"Sin registros en {registros}.")
+        descartadas = []
+    if trabajo:
+        camino = Path(trabajo)
+        estados = [camino] if camino.is_file() else sorted(camino.rglob("ESTADO.md"))
+        if not estados:
+            notas.append(f"No hay ESTADO.md en {camino}.")
+        for estado in estados:
+            propuestas.extend(propuestas_de_estado(leer_texto(estado), estado.name))
+    for propuesta in propuestas:
+        propuesta.omitida = ya_descartada(propuesta, descartadas)
+    return propuestas, notas
+
+
+def formatear_dinamico(registros, propuestas, notas):
+    lineas = [
+        "## Dinámico",
+        f"Registros: {registros}",
+        "No se leyeron sesiones ni se editó ninguna skill. Cada propuesta espera el buzón y la aprobación.",
+        "",
+    ]
+    for nota in notas:
+        lineas.append(nota)
+    if not propuestas:
+        lineas.append("Sin propuestas.")
+    else:
+        for propuesta in propuestas:
+            lineas.append(propuesta.linea())
+            lineas.append("")
+    lineas.append(
+        "Común: el mismo hueco en más de un oficio, o un encargo que se repite. "
+        "Puntual: un solo oficio. Resultado: un tramo que queda abierto o una medición vencida."
+    )
+    return "\n".join(lineas).rstrip() + "\n"
+
+
+ENCABEZADO_BUZON = (
+    "| Fecha | Área | Idea | Por qué importa | Estado (nueva / charlada / aprobada / aplicada / descartada) |\n"
+    "|---|---|---|---|---|\n"
+)
+
+
+def volcar_buzon(archivo, propuestas, hoy):
+    """Agrega al buzón las propuestas nuevas. No toca las descartadas ni edita skills."""
+    archivo = Path(archivo)
+    archivo.parent.mkdir(parents=True, exist_ok=True)
+    previo = archivo.read_text(encoding="utf-8") if archivo.exists() else ""
+    if "| Fecha |" not in previo:
+        previo = (previo.rstrip() + "\n\n" + ENCABEZADO_BUZON) if previo.strip() else ENCABEZADO_BUZON
+    plano = normalizar(previo)
+    nuevas = []
+    for propuesta in propuestas:
+        if propuesta.omitida:
+            continue
+        titulo = propuesta.titulo.replace("|", "/")
+        if normalizar(titulo) in plano:
+            continue
+        porque = propuesta.porque.replace("|", "/")
+        nuevas.append(
+            f"| {hoy.isoformat()} | {propuesta.area} | {titulo} | {porque} | nueva |\n"
+        )
+        plano += " " + normalizar(titulo)
+    if nuevas:
+        archivo.write_text(previo.rstrip() + "\n" + "".join(nuevas), encoding="utf-8")
+    return len(nuevas)
+
+
 def autoprueba():
     """Siembra fallas conocidas y comprueba que cada detector las ve."""
     fallo = []
@@ -636,7 +982,90 @@ def autoprueba():
             for item in fallo:
                 print(" -", item)
             return 1
-    print("Autoprueba: los detectores vieron las fallas sembradas (caso negativo, piso, solape, regla duplicada, dueños, índice).")
+    if autoprueba_dinamica():
+        return 1
+    print("Autoprueba: los detectores vieron las fallas sembradas (caso negativo, piso, solape, regla duplicada, dueños, índice, propuestas dinámicas).")
+    return 0
+
+
+def autoprueba_dinamica():
+    """Un trabajo sembrado: mejoras comunes, puntuales, una descartada y el buzón que no pisa."""
+    fallo = []
+    hoy = date(2026, 10, 28)
+    with tempfile.TemporaryDirectory() as tmp:
+        registros = Path(tmp) / "foreman"
+        registros.mkdir()
+        (registros / "DELEGACIONES.md").write_text(
+            "| Fecha | Oficio | Pedido | Se usó | Comprobación | Qué faltó |\n"
+            "|---|---|---|---|---|---|\n"
+            "| 2026-10-01 | quarry | extraer lotes del norte | no | | |\n"
+            "| 2026-10-02 | quarry | cruzar lotes del sur | no | | |\n"
+            "| 2026-10-03 | kiln | armar la pagina del lote | sí | | exportar a planilla |\n"
+            "| 2026-10-04 | hallmark | revisar la pagina del lote | sí | | exportar a planilla |\n"
+            "| 2026-10-05 | assay | revisar el parte diario | sí | | |\n"
+            "| 2026-10-06 | kiln | revisar el parte diario | sí | | |\n"
+            "| 2026-10-07 | herald | revisar el parte diario | sí | | |\n"
+            "| 2026-10-08 | assay | calcular el margen semanal | sí | | |\n"
+            "| 2026-10-09 | kiln | calcular el margen semanal | sí | | |\n"
+            "| 2026-10-10 | quarry | calcular el margen semanal | sí | | |\n",
+            encoding="utf-8",
+        )
+        (registros / "IDEAS.md").write_text(
+            "| Fecha | Área | Idea | Por qué importa | Estado (nueva / charlada / aprobada / aplicada / descartada) |\n"
+            "|---|---|---|---|---|\n"
+            "| 2026-09-01 | foundry | calcular el margen semanal | ya se miró | descartada: no se repite de verdad |\n",
+            encoding="utf-8",
+        )
+        (registros / "AUTOMATIZACIONES.md").write_text(
+            "| Fecha | Automatización | Escalón | Tarea que reemplaza | Predicción (fechada) | Lentes que aportaron | Medición |\n"
+            "|---|---|---|---|---|---|---|\n"
+            "| 2026-09-01 | resumen diario | 7 rutina | repaso | Ahorra 10 min | vago | pendiente: 2026-10-01 |\n",
+            encoding="utf-8",
+        )
+        estado = Path(tmp) / "ESTADO.md"
+        estado.write_text(
+            "# Estado\n\n## Tramos\n"
+            "- 2026-10-20 · salió el perfil · quedó abierto el cruce de lotes\n"
+            "- 2026-10-27 · salió la página · quedó abierto el cruce de lotes\n\n"
+            "## Lecciones de método\n"
+            "- El oficio kiln entregó la página sin la cifra de origen.\n",
+            encoding="utf-8",
+        )
+        propuestas, _ = auditar_dinamico(registros, estado, hoy)
+        texto = formatear_dinamico(registros, propuestas, [])
+
+        def espera(fragmento, porque):
+            if fragmento not in texto:
+                fallo.append(f"{porque}: no apareció «{fragmento}»")
+
+        espera("No se leyeron sesiones ni se editó ninguna skill", "el dinámico no edita")
+        espera("[aviso] común: ", "mejora común")
+        espera("comprobación que el agente pueda correr", "comprobación")
+        espera("exportar a planilla", "herramienta compartida")
+        espera("revisar el parte diario", "tarea repetida")
+        espera("[aviso] puntual: `quarry`:", "resultados no usados")
+        espera("[aviso] puntual: `kiln`:", "lección de un oficio")
+        espera("[aviso] resultado: Quedó abierto «el cruce de lotes»", "tramo abierto")
+        espera("Medición vencida: resumen diario", "predicción vencida")
+        espera("[info] omitida:", "no repetir descartada")
+        if any("calcular el margen semanal" in p.titulo and not p.omitida for p in propuestas):
+            fallo.append("se volvió a proponer un pedido descartado")
+        escritas = volcar_buzon(registros / "IDEAS.md", propuestas, hoy)
+        otra = volcar_buzon(registros / "IDEAS.md", propuestas, hoy)
+        buzon = (registros / "IDEAS.md").read_text(encoding="utf-8")
+        if escritas < 5:
+            fallo.append(f"el buzón recibió {escritas} filas, se esperaban varias")
+        if otra != 0:
+            fallo.append("la segunda volcada duplicó propuestas")
+        if buzon.count("descartada:") != 1:
+            fallo.append("se pisó la idea descartada")
+        if "exportar a planilla" not in buzon:
+            fallo.append("la mejora común no llegó al buzón")
+    if fallo:
+        print("AUTOPRUEBA DINÁMICA FALLÓ")
+        for item in fallo:
+            print(" -", item)
+        return 1
     return 0
 
 
@@ -646,9 +1075,22 @@ def main(argv):
     estricto = "--estricto" in argv
     raiz = raiz_por_defecto()
     if "--raiz" in argv:
-        raiz = Path(argv[argv.index("--raiz") + 1])
+        raiz = Path(argumento(argv, "--raiz"))
     skills, hallazgos = auditar(raiz)
     sys.stdout.write(formatear(raiz, skills, hallazgos))
+    if "--dinamico" in argv:
+        registros = Path(argumento(argv, "--registros") or (Path.home() / ".foreman"))
+        hoy_texto = argumento(argv, "--hoy")
+        hoy = date.fromisoformat(hoy_texto) if hoy_texto else date.today()
+        propuestas, notas = auditar_dinamico(registros, argumento(argv, "--trabajo"), hoy)
+        sys.stdout.write("\n")
+        sys.stdout.write(formatear_dinamico(registros, propuestas, notas))
+        if "--al-buzon" in argv:
+            if registros.exists():
+                n = volcar_buzon(registros / "IDEAS.md", propuestas, hoy)
+                sys.stdout.write(f"Buzón: {n} propuestas nuevas. Ninguna skill se editó.\n")
+            else:
+                sys.stdout.write(f"Buzón: no se escribió; no está {registros}.\n")
     errores = [h for h in hallazgos if h.nivel == "error"]
     if not skills:
         return 2

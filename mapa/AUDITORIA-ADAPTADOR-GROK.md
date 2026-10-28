@@ -140,6 +140,21 @@ El detalle y el motivo están en la sección «Reglas anti-pisado» de
   subagente no envía.
 - El código de un repositorio va a CloudAgent. No se clona el repo en la box del bot para editarlo.
 
+## Paso dinámico (misma fecha, después)
+
+El harness también propone mejoras a partir del trabajo hecho, no sólo errores de estructura. La decisión de
+mecanismo: una rutina que corre `python foundry/scripts/auditar_gremio.py --dinamico`, no un subagente residente.
+Un `Task` eterno leería sesiones y gastaría la cuota; mirar ese historial pide el permiso de la regla 6 de
+`foreman`. El script lee delegaciones, tramos, lecciones, automatizaciones y el buzón. Clasifica en común (sirve a
+más de un oficio), puntual (un oficio) y resultado (un tramo que queda abierto o una medición vencida). `--al-buzon`
+agrega las nuevas. No edita skills.
+
+La autoprueba dinámica pasó con registros sembrados: vio la comprobación ausente, la herramienta compartida, el
+pedido repetido, el oficio con resultados no usados, la lección de un oficio, el tramo abierto, la medición vencida,
+y no volvió a proponer una idea descartada. La segunda escritura al buzón no duplicó filas.
+
+En esta máquina no hay `~/.foreman/`. No se corrió `--dinamico` sobre trabajo real y no se instaló la `UpdateRoutine`.
+
 ## Qué no se verificó
 
 - No se pegó el índice en un perfil, no se lanzó un `Task`, no se creó una `UpdateRoutine` y no se armó un

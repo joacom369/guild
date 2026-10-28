@@ -133,7 +133,12 @@ Dueño: este adaptador. `foreman` y `tokenwise` apuntan acá y no las copian. La
 Los scripts del núcleo son los mismos. En la box del bot se corren con Shell sin `machineId`. Si hace falta un
 archivo de la máquina del usuario, o Chrome para `kiln/scripts/foto_pagina.py`, el Shell lleva `machineId`.
 
-`python foundry/scripts/auditar_gremio.py` usa la biblioteca estándar. `foto_pagina.py` necesita Chrome y
+`python foundry/scripts/auditar_gremio.py` usa la biblioteca estándar. Con `--dinamico` lee los registros de
+`~/.foreman/` (y un `ESTADO.md` si se le pasa `--trabajo`) y propone mejoras; con `--al-buzon` las agrega al buzón.
+No edita skills y no abre sesiones. La cadencia, si se quiere que corra solo, es una `UpdateRoutine`: no está
+creada. El ciclo está en
+[`foundry/referencias/harness-autoauditoria.md`](../foundry/referencias/harness-autoauditoria.md).
+`foto_pagina.py` necesita Chrome y
 `websockets`; `openpyxl` hace falta para `.xlsx`. No se miró qué hay instalado en una box de Grok Bot. La corrida del
 auditor que figura en el informe se hizo en la máquina donde se escribió este adaptador, no en una box de bot.
 
@@ -156,3 +161,5 @@ Nada de esta lista se hizo. Marcar «probado» en el contrato pide un uso real.
 - [ ] Antes de leer un conector, se verifica la identidad de esa cuenta.
 - [ ] Una escritura afuera queda en `DraftExternalMessage` hasta un sí explícito.
 - [ ] Una `UpdateRoutine` de `sherpa` dispara sola y no escribe en otra parte sin la autorización permanente acotada.
+- [ ] Una `UpdateRoutine` corre `python foundry/scripts/auditar_gremio.py --dinamico --al-buzon` y deja propuestas
+      en el buzón, sin editar skills y sin leer sesiones.

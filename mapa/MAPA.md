@@ -262,5 +262,8 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
       (`foundry/scripts/auditar_gremio.py`, 2026-10-28) marca solapes de palabras; no reemplaza esa prueba.
     - Costo de las pruebas del día: USD 8,6 (calculado con los `costUsd` de las corridas).
 11. **Adaptador Grok Bot y harness (2026-10-28):** el adaptador está diseñado y documentado, sin probar en un bot.
-    El harness se corrió en el repo (informe en [`AUDITORIA-ADAPTADOR-GROK.md`](AUDITORIA-ADAPTADOR-GROK.md)). Sigue
-    a mano decidir si un solape es un robo de momento de verdad, y probar el checklist del adaptador.
+    El harness se corrió en el repo (informe en [`AUDITORIA-ADAPTADOR-GROK.md`](AUDITORIA-ADAPTADOR-GROK.md)). El
+    paso `--dinamico` propone mejoras comunes y puntuales a partir de los registros de trabajo; la autoprueba lo
+    cubre con datos sembrados. No está instalada la rutina, no se leyeron sesiones reales y no se editó ninguna
+    skill desde una propuesta. Sigue a mano decidir si un solape es un robo de momento de verdad, y probar el
+    checklist del adaptador.
