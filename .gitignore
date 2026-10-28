@@ -2,6 +2,8 @@
 # y synced/ (lo descarga claude.ai y lo pisa en cada sincronización) quedan afuera.
 /*
 !/.gitignore
+!/.github/
+!/.github/**
 !/README.md
 !/provenance/
 !/tokenwise/
