@@ -6,6 +6,15 @@ alguien use el checklist de abajo en un bot de verdad.
 
 El núcleo no nombra a Grok Bot. Las diferencias de la plataforma están en este archivo.
 
+## Piloto Agent SDK
+
+Hay un agente llamado **foreman** en [`bots/foreman`](../bots/foreman). Es un proyecto de Agent SDK
+(Cursor), no un bot ya corriendo en la box de Grok Bot. La rutina `automejora` (09:00 Buenos Aires)
+pide el auditor del gremio si el repo está en el host y guarda propuestas en el buzón durable del
+agente. No edita skills. El 2026-10-28 se validó y se probó la herramienta de registro en local.
+No se desplegó: en esa máquina no había `CURSOR_SERVICE_ACCOUNT_KEY`. Sin ese despliegue la rutina
+no empieza sola.
+
 ## Instalar
 
 Hay tres maneras de tener los oficios. Se pueden combinar.
