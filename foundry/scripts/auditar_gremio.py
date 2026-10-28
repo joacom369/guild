@@ -18,6 +18,7 @@ nivel error (falta el caso negativo o falta el piso en una skill propia).
 Los solapes y las propuestas son avisos: una pista para leer, no un fallo cerrado.
 """
 import re
+import subprocess
 import sys
 import tempfile
 import unicodedata
@@ -177,11 +178,24 @@ def valor_clave(crudo, clave):
     return ""
 
 
+def ignoradas_por_git(raiz, carpetas):
+    """Las carpetas que el .gitignore deja afuera: skills de terceros instaladas al lado, que no son del gremio.
+    Fuera de un repositorio (la autoprueba) no se ignora ninguna."""
+    try:
+        r = subprocess.run(["git", "check-ignore", *[c.name for c in carpetas]], cwd=raiz,
+                           capture_output=True, text=True, encoding="utf-8")
+    except OSError:
+        return set()
+    return set(r.stdout.split()) if r.returncode in (0, 1) else set()
+
+
 def cargar_skills(raiz):
     skills = []
-    for carpeta in sorted(p for p in raiz.iterdir() if p.is_dir()):
+    carpetas = sorted(p for p in raiz.iterdir() if p.is_dir())
+    afuera = ignoradas_por_git(raiz, carpetas)
+    for carpeta in carpetas:
         archivo = carpeta / "SKILL.md"
-        if not archivo.exists():
+        if carpeta.name in afuera or not archivo.exists():
             continue
         texto = archivo.read_text(encoding="utf-8")
         crudo, cuerpo = partir_frontmatter(texto)

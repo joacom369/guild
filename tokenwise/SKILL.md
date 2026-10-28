@@ -106,6 +106,8 @@ El encargo debe ser autocontenido y corto:
 - Leer sólo el fragmento necesario (`offset` y `limit`, `grep` antes de `Read`).
 - No releer lo que acabás de editar.
 - Procesos largos en segundo plano. No hacer polling: esperar el aviso.
+- Una edición no viaja junto con un proceso largo en segundo plano: se aplica antes, se lee su salida y recién después
+  se lanza el proceso. Si su resultado queda enterrado en el registro del proceso, no se informa como hecha.
 - Agrupar los cambios relacionados antes de recalcular.
 - Respuestas al usuario en proporción a lo que pidió. Las tablas, cuando
   ordenan; no por costumbre.
