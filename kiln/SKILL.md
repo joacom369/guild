@@ -29,8 +29,9 @@ Mirá la lista de skills disponibles (no el disco) y usá las que estén:
 
 | Skill | Cuándo |
 |---|---|
-| `design-taste-frontend` | Pasos 2 y 3: proponer direcciones y fijar la dirección visual de algo nuevo, sin defaults de plantilla. Viene marcada para no cargarse sola: leé su `SKILL.md` en la carpeta de skills (o pedile al usuario que la invoque por su nombre). |
-| Recursos visuales | Si el brief pide textura o movimiento: [referencias/recursos-visuales.md](referencias/recursos-visuales.md). |
+| `design-taste-frontend` | Pasos 2 y 3: proponer direcciones y fijar la dirección visual de algo nuevo, sin defaults de plantilla. Viene marcada para no cargarse sola: leé su `SKILL.md` en la carpeta de skills (o pedile al usuario que la invoque por su nombre; en Antigravity figura como `design-taste-frontend-v2-experimental`). |
+| Estándar AAA y widgets | Paso 4 y widgets/gadgets reales: piso HTML/CSS, referencias *clean-room*, estados e invariantes en [referencias/estandar-aaa.md](referencias/estandar-aaa.md). |
+| Recursos visuales | Si el brief pide textura o movimiento, o referencias AAA curadas: [referencias/recursos-visuales.md](referencias/recursos-visuales.md). |
 | `impeccable` | Paso 6: `polish` al terminar cada página, `audit` antes de entregar; `document` para el sistema. |
 | `ponytail` | Paso 4: todo el código. Si no está, aplicá sus reglas igual (ver paso 4). |
 | `developing-with-streamlit` | Si el proyecto es Streamlit. |
@@ -65,6 +66,9 @@ qué cayó el margen y decida». Lo que se construye sale del verbo.
   siempre puede elegir «Otro» y describir lo suyo: eso es parte del diseño, no un desvío.
 - Máximo 1 a 3 preguntas, y sólo las que cambian el resultado (propósito, público, tono, densidad). Sin la
   herramienta, las mismas opciones en texto, numeradas.
+- En páginas nuevas o grandes (si el usuario quiere confirmar el rumbo antes de programar todo), mostrar una vista
+  previa en imagen según [referencias/direcciones.md](referencias/direcciones.md) (por defecto, *style tile* / primer
+  viewport en HTML+CSS capturado).
 - Las direcciones salen del catálogo: [referencias/direcciones.md](referencias/direcciones.md).
 
 ## 3. Contrato de dirección
@@ -87,6 +91,8 @@ El diseño apunta alto; el código, al mínimo que lo resuelve entero (reglas de
 
 - Lo que el proyecto ya tiene (componentes, tokens, utilidades) antes que lo nuevo. CSS nativo antes que una
   librería. Ninguna dependencia por unas pocas líneas; si se agrega, con versión fija.
+- Piso AAA de HTML/CSS, widgets y gadgets reales con identidad propia (sin controles muertos ni copias de referencias):
+  [referencias/estandar-aaa.md](referencias/estandar-aaa.md).
 - Sin abstracciones, opciones ni código «para después». Comentarios sólo del porqué.
 - Tokens en `:root` (color, espacio, tipo); los valores no se repiten sueltos.
 - Datos reales o verosímiles, nunca «Lorem ipsum» ni «Item 1». Con cifras de un modelo:
@@ -106,9 +112,10 @@ compleja. Pereza no es recortar el piso; ambición no es sumar lo que nadie pidi
 
 ## 5. Mirarse antes de mostrar (una ronda, acotada)
 
-Con [scripts/foto_pagina.py](scripts/foto_pagina.py): escritorio y celular **juntos**, en una sola ronda. Revisá
-las capturas contra el contrato y la lista de anti-defaults, más el informe de errores y desborde del script.
-Corregí todo en un solo lote, confirmá con **una** ronda más como máximo, y pará. Las pruebas en verde no
+Con [scripts/foto_pagina.py](scripts/foto_pagina.py): escritorio y celular **juntos**, en una sola ronda (captura,
+desborde, red/imágenes, controles muertos/tapados, `AXTree`, `prefers-reduced-motion` y, si hay widgets complejos,
+`--interacciones <plan.json>`). Revisá las capturas contra el contrato y la lista de anti-defaults, más el informe del
+script. Corregí todo en un solo lote, confirmá con **una** ronda más como máximo, y pará. Las pruebas en verde no
 alcanzan: una página puede pasar todas y verse rota. Detalle en
 [referencias/verificacion-y-entrega.md](referencias/verificacion-y-entrega.md).
 
