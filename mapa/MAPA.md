@@ -1,7 +1,7 @@
 # Mapa de skills · v1 (estructura objetivo)
 
 Fecha: 2026-10-25, actualizado el 2026-10-28 (adaptador de Grok Bot diseñado y documentado, sin probar; harness de
-autoauditoría). Reemplaza a la v0. Se armó con la auditoría ([AUDITORIA.md](AUDITORIA.md)) y las decisiones sobre el
+autoauditoría) y el 2026-11-23 (adaptador de Google Antigravity, parcialmente probado). Reemplaza a la v0. Se armó con la auditoría ([AUDITORIA.md](AUDITORIA.md)) y las decisiones sobre el
 cerebro ([CEREBRO.md](CEREBRO.md)). Marcas:
 - **(existe)**: ya está construido.
 - **(a construir)**: está decidido, falta hacerlo.
@@ -155,17 +155,17 @@ No hay un número fijo de agentes.
 Esta tabla es **el contrato del adaptador**: lo que cualquier plataforma tiene que darle al núcleo. Cada adaptador
 dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). En cada celda, «probado» es lo que se usó de verdad y «documentado» lo que está descrito pero no se usó.
 
-| Necesidad del núcleo | Claude Code | Plataformas que leen `AGENTS.md` (Cursor, Codex y otras) | Bot en servidor propio (p. ej. Grok Bot) |
-|---|---|---|---|
-| Saber qué oficio cargar y cuándo | Descriptions de las skills + archivo de reglas (probado) | `AGENTS.md` (índice) | Descriptions si el Skill tool las carga; si no, `AGENTS.md` y el bloque del perfil (documentado) |
-| Cargar un procedimiento a demanda | Skill (`SKILL.md`) (probado) | Leer el `SKILL.md` por su ruta | Skill tool, o leer el `SKILL.md` por su ruta si el repo está (documentado) |
-| Reglas que valen siempre | CLAUDE.md (probado) | `AGENTS.md` o las reglas del proyecto | Perfil y memoria del bot, más las skills de dominio. No usa `CLAUDE.md` (documentado) |
-| Algo que pasa sí o sí al abrir la sesión (avisar del buzón, leer ESTADO.md) | Hook `SessionStart` (documentado, no instalado) | a verificar | No hay hook. Lo hace la primera respuesta, una `UpdateRoutine` o el mensaje de despertar (documentado) |
-| Agente con una tarea y sus herramientas | Subagente (probado) | a verificar | `Task`: `executor`, `knowledgeWork`, `computerUse` (documentado) |
-| Varios agentes en un orden fijo con verificación | Workflow (documentado) | a verificar | No hay workflow nativo. Se encadena el mismo `executor`; un fan-out pide permiso (documentado) |
-| Correr solo, con horario | Rutina programada (documentado; la de `sherpa` falta) | a verificar | `UpdateRoutine` (cron o disparo de Slack, GitHub o correo); corre 24/7 (documentado) |
-| Conectores con la cuenta del usuario (chat, correo, calendario) | Conector por máquina o MCP local de lectura (probado) | a verificar | MCP de la cuenta del usuario; la identidad, con la receta de `quarry` (documentado) |
-| Pasos mecánicos | Scripts en Python | Los mismos scripts | Los mismos scripts (documentado; no se corrieron en una box de bot) |
+| Necesidad del núcleo | Claude Code | Plataformas que leen `AGENTS.md` (Cursor, Codex y otras) | Bot en servidor propio (p. ej. Grok Bot) | Google Antigravity (2.0 / IDE / CLI) |
+|---|---|---|---|---|
+| Saber qué oficio cargar y cuándo | Descriptions de las skills + archivo de reglas (probado) | `AGENTS.md` (índice) | Descriptions si el Skill tool las carga; si no, `AGENTS.md` y el bloque del perfil (documentado) | Descriptions en `~/.gemini/config/skills/` (probado) + índice en `GEMINI.md` / `AGENTS.md` (documentado) |
+| Cargar un procedimiento a demanda | Skill (`SKILL.md`) (probado) | Leer el `SKILL.md` por su ruta | Skill tool, o leer el `SKILL.md` por su ruta si el repo está (documentado) | Skill (`SKILL.md` y `referencias/`) en `~/.gemini/config/skills/` o `.agents/skills/` (probado) |
+| Reglas que valen siempre | CLAUDE.md (probado) | `AGENTS.md` o las reglas del proyecto | Perfil y memoria del bot, más las skills de dominio. No usa `CLAUDE.md` (documentado) | `GEMINI.md` / `AGENTS.md` jerárquicos (24.000 bytes/archivo, 20.000 tokens agregados) (documentado) |
+| Algo que pasa sí o sí al abrir la sesión (avisar del buzón, leer ESTADO.md) | Hook `SessionStart` (documentado, no instalado) | a verificar | No hay hook. Lo hace la primera respuesta, una `UpdateRoutine` o el mensaje de despertar (documentado) | `hooks.json` `SessionStart` (`type: "command"`, JSON camelCase; no instalado) (documentado) |
+| Agente con una tarea y sus herramientas | Subagente (probado) | a verificar | `Task`: `executor`, `knowledgeWork`, `computerUse` (documentado) | `invoke_subagent` (4 alias) o `swarm` (23 IDs modelo+esfuerzo en 3 pools; `swarm models` probado, workers documentados) |
+| Varios agentes en un orden fijo con verificación | Workflow (documentado) | a verificar | No hay workflow nativo. Se encadena el mismo `executor`; un fan-out pide permiso (documentado) | `run_workflow` (Python) o `swarm` con tablero compartido (documentado) |
+| Correr solo, con horario | Rutina programada (documentado; la de `sherpa` falta) | a verificar | `UpdateRoutine` (cron o disparo de Slack, GitHub o correo); corre 24/7 (documentado) | `schedule` (`CronExpression` 5 campos + `IsDaemon: true`; timers con `DurationSeconds`) (documentado) |
+| Conectores con la cuenta del usuario (chat, correo, calendario) | Conector por máquina o MCP local de lectura (probado) | a verificar | MCP de la cuenta del usuario; la identidad, con la receta de `quarry` (documentado) | `mcp_config.json` (global o plugin; `${X}` en `variables`) + verificación de identidad `quarry` (documentado) |
+| Pasos mecánicos | Scripts en Python | Los mismos scripts | Los mismos scripts (documentado; no se corrieron en una box de bot) | Los mismos scripts Python (probado) |
 
 **Patrones de portabilidad** (vistos en bases de conocimiento de empresa; sirven en cualquier ambiente):
 - El conocimiento vive en una base aparte (un concepto por archivo, con dueño y fecha). La skill sólo dice cómo
@@ -183,6 +183,8 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
 3. **Adaptadores fuera de Claude Code:** `AGENTS.md` está escrito pero sin probar en Cursor ni en otra plataforma.
    El adaptador de Grok Bot está diseñado y documentado (2026-10-28), sin probar en un bot:
    [`adaptadores/grok-bot.md`](../adaptadores/grok-bot.md).
+   El adaptador de Google Antigravity está diseñado y documentado (2026-11-23), con skills globales y lectura de cuotas probadas y el resto documentado:
+   [`adaptadores/antigravity.md`](../adaptadores/antigravity.md).
 4. **Bot propio y trabajo en vivo** (buzón, 2026-10-26). El adaptador de la plataforma quedó diseñado; sigue abierto
    lo que ese diseño no cubre:
    - probar el checklist de `adaptadores/grok-bot.md` en un bot de verdad;
