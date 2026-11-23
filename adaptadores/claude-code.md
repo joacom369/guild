@@ -89,6 +89,12 @@ claude mcp list                                                                 
 
 Después de agregar un servidor, `/reload-plugins` y una lectura real para verificar de quién es la cuenta.
 
+## Compactación intra-sesión y cuidado del contexto
+
+- **Antes de `/compact`:** dejar asentados en `ESTADO.md` (o archivo de trabajo) el tramo actual, cifras/rutas verificadas, decisiones aprobadas y lo pendiente.
+- **Al compactar:** pasar foco explícito (`/compact conservar reglas de CLAUDE.md, rutas verificadas, decisiones del usuario y errores recientes`) para no borrar restricciones ni errores previos. Entre tramos independientes conviene `/clear` y releer `ESTADO.md` antes que arrastrar contexto viejo.
+- **Hook `SessionStart`:** sigue *opt-in*; decidir en esta PC si se instala en `~/.claude/settings.json` o se descarta tras compararlo con Antigravity.
+
 ## Notas de Windows (PowerShell 5.1)
 
 - **UTF-8 sin BOM:** `Get-Content` sin `-Encoding UTF8` seguido de `Out-File` (o `>`) rompe acentos de archivos UTF-8 sin BOM; usar `[IO.File]::ReadAllText` / `[IO.File]::WriteAllText` (con `[Text.UTF8Encoding]::new($false)`) o Python con `encoding="utf-8"`.

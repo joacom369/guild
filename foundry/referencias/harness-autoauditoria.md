@@ -13,13 +13,16 @@ Desde la raíz del repositorio, con la biblioteca estándar:
 
 ```bash
 python foundry/scripts/auditar_gremio.py
+python foundry/scripts/auditar_gremio.py --solo-versionadas --estricto
 python foundry/scripts/auditar_gremio.py --dinamico [--registros DIR] [--trabajo DIR] [--al-buzon]
 python foundry/scripts/auditar_gremio.py --autoprueba
 python foundry/scripts/auditar_gremio.py --estricto
 ```
 
 `--autoprueba` siembra un gremio con fallas conocidas y falla si un detector no las ve. `--estricto` sale con 1
-cuando hay un error (skill propia sin caso negativo, o sin `evals/piso.json`). Sin esa bandera el script sale 0
+cuando hay un error (skill propia sin caso negativo, YAML inválido o sin `evals/piso.json`). Con `--solo-versionadas`
+(en local, donde `.gitignore` deja afuera skills opcionales como `ponytail*` o `developing-with-streamlit`), lee sólo
+las carpetas versionadas en git e incluye las de terceros registradas (`impeccable`, `design-taste-frontend`). Sin `--estricto` el script sale 0
 aunque haya avisos: el reporte es la salida.
 
 En cada pull request, en cada push a `main` y los lunes a las 09:00 (America/Buenos_Aires), GitHub Actions corre
@@ -39,12 +42,13 @@ Un aviso es una pista. Confirmarla sigue a mano.
 
 | Chequeo | Qué cuenta como hallazgo |
 |---|---|
+| Frontmatter YAML | Con `PyYAML` instalado, frontmatter inválido o que no parsea como diccionario (error) |
 | Caso negativo | Una skill propia cuya `description` no dice cuándo no cargarla, o no nombra al otro oficio entre comillas invertidas |
 | Robo de momento | Palabras del «Usar…» (y anclas raras del preámbulo) compartidas por dos skills. Si el caso negativo ya nombra a la otra, es info |
 | Regla duplicada | Un enunciado casi igual en dos `SKILL.md`, o una ventana de palabras idéntica |
 | Piso presente | Una skill propia sin `evals/piso.json`. No mira las tasas |
 | Dueños | La tabla de [`mapa/MAPA.md`](../../mapa/MAPA.md) §3: la misma regla en dos filas, o un dueño que no está en el repo ni en la lista de oficios externos |
-| Índice | [`AGENTS.md`](../../AGENTS.md): enlace roto, skill propia fuera de la tabla, dos momentos con las mismas palabras |
+| Índice y presupuesto | [`AGENTS.md`](../../AGENTS.md): enlace roto, skill propia fuera de la tabla, dos momentos con las mismas palabras; además informa bytes y tokens aproximados de `AGENTS.md` + `description`s activas |
 
 Las skills de terceros (`impeccable`, `design-taste-frontend`) no entran al piso ni al caso negativo del gremio.
 Si una se carga sola, sí entra al solape de momento. `design-taste-frontend` declara que sólo se carga por nombre:
@@ -85,6 +89,20 @@ Cada propuesta dice a qué clase pertenece:
 - **Puntual.** El hueco es de un solo oficio. Mejora la herramienta o el resultado de ese agente para el usuario.
 - **Resultado.** Un tramo que queda abierto, o una predicción que ya había que medir.
 
+## Optimización guiada de una description floja
+
+Cuando un caso de `evals/piso.json` queda bajo el piso deseado (por ejemplo `provenance/si-razon` en 0%):
+
+1. Juntar 3 a 5 paráfrasis realistas *near-miss* (pedidos positivos que deberían disparar sin copiar la letra de `evals/`, más parecidos negativos que no deberían).
+2. Diagnosticar por qué falla el disparo: disparador al final del párrafo, rama faltante o vocabulario que compite con otro oficio.
+3. Proponer el ajuste exacto de `description:` al usuario (`foreman` regla 5; **nunca editar en silencio** porque invalida `description_sha256`), manteniendo el caso negativo y sin `": "` suelto.
+4. Con la aprobación, correr las pruebas de disparo (`claude plugin eval` en Claude Code; en Antigravity todavía no hay runner equivalente) y actualizar el piso con `python empaquetar.py --piso <skill>`.
+
+## Análisis de errores y suite E2E (opt-in)
+
+- **Análisis de errores sobre sesiones reales:** pide permiso previo al usuario declarando qué sesiones se leerán y el costo estimado (`foreman` regla 6). Se revisa una muestra acotada de fallas, se clasifican las causas concretas en categorías binarias (pasa / falla, nunca escalas blandas 1–5) y las fallas repetidas se convierten en reglas o casos de prueba propuestos en `IDEAS.md`.
+- **Suite E2E `quarry → assay → hallmark` (sólo *opt-in*):** evalúa que las skills no sólo disparen, sino que ejecuten completas sin perder trazabilidad. Nunca corre en cada push ni en CI por costo en tokens/USD; antes de correrla se estima el consumo con `tokenwise`. Sobre una carpeta fixture, un evaluador determinista en Python verifica: existencia y hash válido de `FICHA.json`, `CORRIDA.json`, salida 0 de `cifras.py` (0 huérfanas) y acta final de `hallmark`, midiendo consistencia en `k = 3` corridas (`pass^k`).
+
 ## Qué queda a mano
 
 - Si un solape de palabras es un robo de momento de verdad. Hace falta cargar las dos skills a la vez.
@@ -93,6 +111,7 @@ Cada propuesta dice a qué clase pertenece:
   registro del ambiente).
 - Si un dueño externo (`ponytail`, y `dataviz` cuando el mapa lo nombre en §3) tiene que entrar al repo.
 - El comportamiento de una plataforma. Eso lo prueba el checklist de su adaptador.
+- Validar compatibilidad de campos `license` / `compatibility` con `claude plugin validate` y evaluar `skills-ref` (`agentskills.io`) fijado por versión/SHA antes de sumarlo a `.github/workflows/gremio.yml` (tiene `contents: write`).
 - Que ninguna tasa del piso baje. Lo controla `empaquetar.py`.
 - Si una propuesta dinámica conviene aplicarla. El script la deja en el buzón; la skill cambia cuando el usuario la
   aprueba.

@@ -19,7 +19,7 @@ El núcleo no nombra a Antigravity ni copia sus límites de concurrencia o pools
 | Saber qué oficio cargar y cuándo | `description` con carga progresiva en `~/.gemini/config/skills/` + índice en `GEMINI.md` / `AGENTS.md` | probado (skills) / documentado (índice) |
 | Cargar un procedimiento a demanda | Skill (`SKILL.md` y `referencias/`) desde `~/.gemini/config/skills/` o `.agents/skills/` | probado |
 | Reglas que valen siempre | `GEMINI.md` / `AGENTS.md` jerárquicos (24.000 bytes/archivo, 20.000 tokens agregados) | documentado |
-| Algo que pasa al abrir la sesión | `hooks.json` evento `SessionStart` (`type: "command"`, devuelve `injectSteps` → `systemMessage` en JSON camelCase; **no instalado**: es decisión del usuario) | documentado |
+| Algo que pasa al abrir la sesión | `hooks.json` evento `SessionStart` (`type: "command"`, devuelve `injectSteps` → `systemMessage` en JSON camelCase; instalado en local en `~/.gemini/config/hooks.json`, dry-run OK, prueba en vivo pendiente) | documentado |
 | Agente con una tarea | `invoke_subagent` (4 alias: `inherit`, `flash_lite`, `flash`, `pro`; `research` sin red; `browser` en `flash`) o `swarm` (23 IDs explícitos modelo+esfuerzo, `workspace: inherit\|share\|branch`, cambio en caliente con `action: "model"`) | documentado (`swarm models` probado) |
 | Varios agentes en un orden fijo | `run_workflow` (Python: `agent`, `parallel`, `pipeline`, `phase`) o `swarm` con tablero compartido | documentado |
 | Correr solo, con horario | `schedule` (`CronExpression` de 5 campos + `IsDaemon: true` para tareas permanentes; timers con `DurationSeconds`) | documentado |
@@ -50,7 +50,7 @@ El núcleo no nombra a Antigravity ni copia sus límites de concurrencia o pools
   - `Gemini 4 Argon` (Low / Medium / High): salida ampliada a 1M; DeepSWE v1.1: 77,9%, Terminal-Bench 4.0: ~57,4%, ERQA: 87% (`blog.google`, `deepmind.google`, `googleblog.com`).
   - `Orchestrator (Argon)`.
 
-*(Observación: `Gemini 4 Carbon` figura en publicaciones de Google pero no está expuesto entre los 23 endpoints de esta instancia. Sobre **Orchestrator**: empareja un planificador —`Neon` o `Argon`— con un ejecutor rápido —`Hydrogen`—; la referencia publicada por Google, medida frente a Carbon solo, reporta éxito cercano a frontera con ~24% menos cuota y ~19% más rápido — `blog.google`, `antigravity.google`, **preliminar sobre referencias** para `Neon`/`Argon`.)*
+*(Observación: en la lectura inicial había 23 endpoints; una lectura posterior del 2026-11-23 19:04 mostró **27 endpoints**, incorporando `Gemini 4 Carbon` y `Orchestrator (Carbon)`, y `Argon` compartiendo ventana corta de Gemini. Sobre **Orchestrator**: empareja un planificador —`Neon` o `Argon`— con un ejecutor rápido —`Hydrogen`—; la referencia publicada por Google, medida frente a Carbon solo, reporta éxito cercano a frontera con ~24% menos cuota y ~19% más rápido — `blog.google`, `antigravity.google`, **preliminar sobre referencias** para `Neon`/`Argon`.)*
 
 ## Distribución costo/beneficio por oficio (aprobada el 2026-11-23 · nivel preliminar sobre referencias)
 
@@ -73,6 +73,13 @@ El núcleo no nombra a Antigravity ni copia sus límites de concurrencia o pools
 
 **Calibración empírica en `~/.foreman/DELEGACIONES.md`:** al cerrar cada delegación o ronda sustancial, anotar `pool`, `modelo/esfuerzo`, `% antes → % después` (leído de `swarm models` o `/usage`) y si hubo retrabajo, para pasar la matriz de *preliminar sobre referencias* a *observado*.
 
+## Compactación intra-sesión y cuidado del contexto
+
+Para evitar *context rot* en sesiones largas sin perder reglas activas:
+- **Checkpoint antes de compactar o abrir otro chat:** anotar el tramo actual, rutas/hashes verificados, decisiones del usuario y bloqueos en `ESTADO.md` (o en scratch de la conversación).
+- **Qué tiene que sobrevivir a la compactación:** reglas de Capa 0 (`AGENTS.md` / `GEMINI.md` personales), alcance del frente personal, restricciones confirmadas y últimos errores observados (mantener visibles las fallas recientes evita repetirlas).
+- **Estabilidad de prefijo:** mantener estable `AGENTS.md`, configurar `.antigravityignore` en repos grandes y no mutar reglas globales a mitad de sesión para no invalidar caché implícito. Estas reglas viven acá y no dentro de `foreman` ni `tokenwise`.
+
 ## Lo que no da igual (límites de plataforma)
 
 - **`invoke_subagent` vs `swarm`:** `invoke_subagent` sólo expone 4 alias (`inherit`, `flash_lite`, `flash`, `pro`), `research` corre sin acceso a red y `browser` usa `flash` por defecto. `swarm` permite elegir cualquiera de los 23 IDs explícitos y cambiar de modelo en caliente (`action: "model"`) conservando la conversación. Los workers en paralelo multiplican el consumo instantáneo del pool; en `waiting` cuestan 0.
@@ -82,9 +89,9 @@ El núcleo no nombra a Antigravity ni copia sus límites de concurrencia o pools
 - **`hooks.json`:** sólo soporta `type: "command"` y corre de forma síncrona (bloquea el loop del agente; timeout por defecto de 30 s).
 - **Sin `claude plugin eval`:** las pruebas de disparo de `evals/` siguen en Claude Code; el control estático local es `python foundry/scripts/auditar_gremio.py`.
 
-## Hook de inicio de sesión (opcional, sin instalar ni probar)
+## Hook de inicio de sesión (opcional)
 
-Para que Antigravity avise al abrir una sesión si hay ideas nuevas en `~/.foreman/IDEAS.md`, se puede declarar en `hooks.json` (el ejemplo está documentado, **no instalado ni probado**):
+Para que Antigravity avise al abrir una sesión si hay ideas nuevas en `~/.foreman/IDEAS.md`, se puede declarar en `hooks.json` usando esquema plano en `SessionStart` (instalado en `~/.gemini/config/hooks.json` y validado con dry-run local; pendiente confirmar en el arranque de un chat nuevo):
 
 ```json
 {
@@ -102,8 +109,8 @@ Para que Antigravity avise al abrir una sesión si hay ideas nuevas en `~/.forem
 
 ## Checklist para marcar «probado»
 
-- [ ] Cargar el índice en `GEMINI.md` / `AGENTS.md` y confirmar disparo correcto de los oficios en una sesión real.
-- [ ] Instalar y probar el hook `SessionStart` en `hooks.json` verificando el aviso de buzón al iniciar conversación.
-- [ ] Correr un `swarm` con auditor independiente en Pool 1 (`Claude Sonnet 5.5 High`) registrando `pool`, `modelo/esfuerzo` y `% antes → % después` en `~/.foreman/DELEGACIONES.md`.
+- [x] Cargar el índice en `AGENTS.md` global y confirmar disparo correcto de los oficios en sesión real (verificado el 2026-11-23).
+- [ ] Confirmar en vivo el hook `SessionStart` en `~/.gemini/config/hooks.json` verificando el aviso de buzón al iniciar una conversación nueva (`dry-run` local OK).
+- [x] Correr un `swarm` con auditor independiente en Pool 1 (`Claude Sonnet 5.5 High`) registrando `pool`, `modelo/esfuerzo` y `% antes → % después` en `~/.foreman/DELEGACIONES.md` (verificado el 2026-11-23: Pool 1 `100% → 83%`, Pool 2 `3× Hydrogen Medium` `-9%` en relevamiento).
 - [ ] Probar una rutina programada (`schedule` con `IsDaemon: true`) para `sherpa` o auditoría periódica.
 - [ ] Conectar un servidor MCP en `mcp_config.json` y verificar la identidad de la cuenta con una lectura real (`quarry`).

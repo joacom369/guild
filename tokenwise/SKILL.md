@@ -98,8 +98,8 @@ El encargo debe ser autocontenido y corto:
   por cambio (cómo se verifica: `hallmark`).
 - Nunca dos procesos sobre el mismo recurso a la vez (Excel, una base, un
   servidor).
-- Si el proyecto tiene pruebas o un control de paridad, se corren antes de dar
-  algo por terminado, y su resultado se informa tal como salió.
+- Las pruebas y controles de paridad del proyecto se corren al cierre y se informan tal como salieron
+  (`hallmark` nivel 2).
 
 ## 5. Ahorros de rutina
 

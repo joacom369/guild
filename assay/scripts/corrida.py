@@ -16,6 +16,7 @@ import hashlib
 import json
 import os
 import platform
+import shutil
 import subprocess
 import sys
 import time
@@ -36,6 +37,8 @@ def sha256(ruta):
 def verificar_entrada(carpeta):
     """Devuelve la descripción de la entrada; se detiene si su FICHA.json no coincide con los archivos."""
     carpeta = Path(carpeta)
+    if not carpeta.exists():
+        sys.exit(f"No existe la carpeta de entrada: {carpeta}")
     ficha = carpeta / FICHA
     if not ficha.exists():
         return {"carpeta": carpeta.as_posix(), "ficha": None, "nota": "sin FICHA.json: entrada no verificada"}
@@ -70,8 +73,12 @@ def correr(a, comando):
     env = dict(os.environ, CORRIDA_DIR=str(carpeta.resolve()), CORRIDA_SEMILLA=str(a.semilla),
                PYTHONHASHSEED=str(a.semilla))
     t0 = time.time()
-    with open(carpeta / "log.txt", "w", encoding="utf-8") as log:
-        proc = subprocess.run(comando, env=env, stdout=log, stderr=subprocess.STDOUT, text=True)
+    try:
+        with open(carpeta / "log.txt", "w", encoding="utf-8") as log:
+            proc = subprocess.run(comando, env=env, stdout=log, stderr=subprocess.STDOUT, text=True)
+    except FileNotFoundError:
+        shutil.rmtree(carpeta, ignore_errors=True)
+        sys.exit(f"No se encontró el ejecutable {comando[0]!r}. Revisá el comando o el entorno virtual.")
     ficha = {
         "nombre": a.nombre, "comando": comando, "inicio": inicio.isoformat(timespec="seconds"),
         "duracion_s": round(time.time() - t0, 1), "codigo_salida": proc.returncode, "semilla": a.semilla,
@@ -86,7 +93,10 @@ def correr(a, comando):
 
 def verificar(carpeta):
     carpeta = Path(carpeta)
-    ficha = json.loads((carpeta / CORRIDA).read_text(encoding="utf-8"))
+    archivo = carpeta / CORRIDA
+    if not archivo.exists():
+        sys.exit(f"No hay {CORRIDA} en {carpeta}; verificá la ruta de la corrida.")
+    ficha = json.loads(archivo.read_text(encoding="utf-8"))
     esperado = {d["archivo"]: d["sha256"] for d in ficha["salidas"]}
     actual = {d["archivo"]: d["sha256"] for d in salidas_de(carpeta)}
     problemas = [f"CAMBIÓ  {n}" for n in esperado if n in actual and actual[n] != esperado[n]]

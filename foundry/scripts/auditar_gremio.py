@@ -1,11 +1,13 @@
 """Audita el gremio: estático (oficios) y, con --dinamico, propuestas a partir del trabajo hecho.
 
 Uso:
-    python foundry/scripts/auditar_gremio.py [--raiz RUTA] [--estricto]
+    python foundry/scripts/auditar_gremio.py [--raiz RUTA] [--estricto] [--solo-versionadas]
     python foundry/scripts/auditar_gremio.py --dinamico [--registros DIR] [--trabajo DIR] [--al-buzon] [--hoy FECHA]
     python foundry/scripts/auditar_gremio.py --autoprueba
 
 El paso estático lee los SKILL.md, AGENTS.md y la tabla de dueños de mapa/MAPA.md §3.
+--solo-versionadas limita las skills leídas a las carpetas con SKILL.md versionado en git
+(útil para correr --estricto en local cuando hay skills ignoradas por .gitignore).
 No mide tasas de disparo: eso lo controla empaquetar.py (el piso sólo sube).
 
 El paso dinámico lee los registros del ambiente (delegaciones, tramos, lecciones,
@@ -17,7 +19,9 @@ nivel error (falta el caso negativo o falta el piso en una skill propia).
 --autoprueba siembra fallas y un trabajo de ejemplo, y sale 1 si un detector no dispara.
 Los solapes y las propuestas son avisos: una pista para leer, no un fallo cerrado.
 """
+import math
 import re
+import subprocess
 import sys
 import tempfile
 import unicodedata
@@ -147,11 +151,47 @@ def sin_cercas(texto):
 
 def partir_frontmatter(texto):
     if not texto.startswith("---"):
-        return {}, texto
+        return "", texto
     fin = texto.find("\n---", 3)
     if fin < 0:
-        return {}, texto
+        return "", texto
     return texto[3:fin], texto[fin + 4:]
+
+
+def parsear_frontmatter(crudo):
+    """Devuelve (dict | None, error_str) usando PyYAML si está disponible."""
+    if not crudo:
+        return None, ""
+    try:
+        import yaml
+    except ImportError:
+        return None, ""
+    try:
+        datos = yaml.safe_load(crudo)
+    except yaml.YAMLError as e:
+        return None, f"YAML inválido en frontmatter: {e}"
+    if datos is None:
+        return {}, ""
+    if not isinstance(datos, dict):
+        return None, "el frontmatter YAML no es un diccionario"
+    return datos, ""
+
+
+def carpetas_versionadas(raiz):
+    """Carpetas de primer nivel cuyo SKILL.md está versionado en git."""
+    proc = subprocess.run(
+        ["git", "-C", str(raiz), "ls-files", "--", "*/SKILL.md"],
+        capture_output=True, text=True, encoding="utf-8", errors="replace",
+    )
+    if proc.returncode != 0:
+        msg = proc.stderr.strip() or f"código {proc.returncode}"
+        raise SystemExit(f"--solo-versionadas requiere un repositorio git válido ({msg})")
+    carpetas = set()
+    for linea in proc.stdout.splitlines():
+        partes = Path(linea.strip()).parts
+        if len(partes) == 2 and partes[1] == "SKILL.md":
+            carpetas.add(partes[0])
+    return carpetas
 
 
 def valor_clave(crudo, clave):
@@ -177,23 +217,37 @@ def valor_clave(crudo, clave):
     return ""
 
 
-def cargar_skills(raiz):
+def cargar_skills(raiz, solo_versionadas=False):
+    permitidas = carpetas_versionadas(raiz) if solo_versionadas else None
     skills = []
     for carpeta in sorted(p for p in raiz.iterdir() if p.is_dir()):
+        if permitidas is not None and carpeta.name not in permitidas:
+            continue
         archivo = carpeta / "SKILL.md"
         if not archivo.exists():
             continue
         texto = archivo.read_text(encoding="utf-8")
         crudo, cuerpo = partir_frontmatter(texto)
-        nombre = valor_clave(crudo, "name") or carpeta.name
+        datos, err_yaml = parsear_frontmatter(crudo)
+        if datos is not None:
+            nombre = str(datos.get("name") or carpeta.name)
+            desc_raw = datos.get("description") or ""
+            desc = re.sub(r"\s+", " ", str(desc_raw)).strip() if isinstance(desc_raw, str) else ""
+            dmi = datos.get("disable-model-invocation")
+            solo_por_nombre = dmi is True or str(dmi).lower() == "true"
+        else:
+            nombre = valor_clave(crudo, "name") or carpeta.name
+            desc = valor_clave(crudo, "description")
+            solo_por_nombre = valor_clave(crudo, "disable-model-invocation").lower() == "true"
         skills.append({
             "nombre": carpeta.name,
             "nombre_frontmatter": nombre,
             "carpeta": carpeta.name,
-            "description": valor_clave(crudo, "description"),
+            "description": desc,
             "cuerpo": cuerpo,
-            "solo_por_nombre": valor_clave(crudo, "disable-model-invocation").lower() == "true",
+            "solo_por_nombre": solo_por_nombre,
             "tercero": carpeta.name in TERCEROS,
+            "error_frontmatter": err_yaml,
             "evals": carpeta / "evals",
             "piso": carpeta / "evals" / "piso.json",
         })
@@ -523,13 +577,29 @@ def indice(raiz, skills):
     return hallazgos
 
 
-def auditar(raiz):
+def metrica_indice(raiz, skills):
+    agentes = raiz / "AGENTS.md"
+    agentes_bytes = len(agentes.read_text(encoding="utf-8").encode("utf-8")) if agentes.exists() else 0
+    activas = [s for s in skills if not s["solo_por_nombre"]]
+    desc_bytes = sum(len(s["description"].encode("utf-8")) for s in activas)
+    total_bytes = agentes_bytes + desc_bytes
+    tok = lambda b: math.ceil(b / 4) if b else 0
+    return (
+        f"Índice siempre cargado: AGENTS.md {agentes_bytes} B (~{tok(agentes_bytes)} tok aprox.) + "
+        f"{len(activas)} descriptions {desc_bytes} B (~{tok(desc_bytes)} tok aprox.) = "
+        f"{total_bytes} B (~{tok(total_bytes)} tok aprox.)"
+    )
+
+
+def auditar(raiz, solo_versionadas=False):
     raiz = Path(raiz)
-    skills = cargar_skills(raiz)
+    skills = cargar_skills(raiz, solo_versionadas=solo_versionadas)
     hallazgos = []
     if not skills:
         hallazgos.append(Hallazgo("error", "raíz", str(raiz), "no hay carpetas con SKILL.md"))
     for skill in skills:
+        if skill.get("error_frontmatter"):
+            hallazgos.append(Hallazgo("error", "frontmatter", skill["nombre"], skill["error_frontmatter"]))
         hallazgo = caso_negativo(skill)
         if hallazgo:
             hallazgos.append(hallazgo)
@@ -548,7 +618,9 @@ def formatear(raiz, skills, hallazgos):
     def contar(tipo, nivel=None):
         return sum(1 for h in hallazgos if h.tipo == tipo and (nivel is None or h.nivel == nivel))
 
+    fm_err = f"frontmatter: {contar('frontmatter')} error; " if contar("frontmatter") else ""
     resumen = (
+        fm_err +
         f"caso negativo: {contar('caso negativo')} error; "
         f"piso: {contar('piso')} error; "
         f"robo de momento: {contar('robo de momento', 'aviso')} aviso, {contar('robo de momento', 'info')} info; "
@@ -560,6 +632,7 @@ def formatear(raiz, skills, hallazgos):
         "Auditoría del gremio",
         f"Raíz: {raiz}",
         f"Skills leídas: {len(skills)} ({', '.join(s['nombre'] for s in skills)})",
+        metrica_indice(raiz, skills),
         "Resumen: " + resumen,
         "",
     ]
@@ -958,13 +1031,16 @@ def autoprueba():
             "## Herramientas\n",
             encoding="utf-8",
         )
-        _, hallazgos = auditar(raiz)
+        skills, hallazgos = auditar(raiz)
         texto = "\n".join(h.linea() for h in hallazgos)
+        reporte = formatear(raiz, skills, hallazgos)
 
         def espera(fragmento, porque):
             if fragmento not in texto:
                 fallo.append(f"{porque}: no apareció «{fragmento}»")
 
+        if "Índice siempre cargado:" not in reporte:
+            fallo.append("métrica de índice: no apareció en el reporte")
         espera("[error] caso negativo: alfa", "caso negativo")
         espera("[error] piso: alfa", "piso ausente")
         espera("[aviso] robo de momento: beta × gamma", "solape de momento")
@@ -976,6 +1052,19 @@ def autoprueba():
         espera("[aviso] índice solapado: beta × gamma", "momentos del índice")
         if "ponytail" in texto and "[aviso] dueño: ponytail" in texto:
             fallo.append("ponytail está en la lista de externos y no debería avisarse")
+        try:
+            import yaml  # noqa: F401
+        except ImportError:
+            pass
+        else:
+            (raiz / "delta").mkdir()
+            (raiz / "delta" / "SKILL.md").write_text(
+                "---\nname: delta\ndescription: Usar si el usuario pide: algo roto\n---\n\n# Delta\n",
+                encoding="utf-8",
+            )
+            _, h_yaml = auditar(raiz)
+            if not any(h.tipo == "frontmatter" and h.titulo == "delta" for h in h_yaml):
+                fallo.append("frontmatter YAML roto: PyYAML no marcó [error] frontmatter: delta")
         if fallo:
             print(texto)
             print("AUTOPRUEBA FALLÓ")
@@ -1073,10 +1162,11 @@ def main(argv):
     if "--autoprueba" in argv:
         return autoprueba()
     estricto = "--estricto" in argv
+    solo_versionadas = "--solo-versionadas" in argv
     raiz = raiz_por_defecto()
     if "--raiz" in argv:
         raiz = Path(argumento(argv, "--raiz"))
-    skills, hallazgos = auditar(raiz)
+    skills, hallazgos = auditar(raiz, solo_versionadas=solo_versionadas)
     sys.stdout.write(formatear(raiz, skills, hallazgos))
     if "--dinamico" in argv:
         registros = Path(argumento(argv, "--registros") or (Path.home() / ".foreman"))

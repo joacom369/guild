@@ -16,6 +16,7 @@ def _texto(ruta):
             return ruta.read_text(encoding=cod)
         except UnicodeDecodeError:
             continue
+    raise SystemExit(f"No se pudo leer {ruta.name} como texto UTF-8 ni Latin-1.")
 
 
 def _csv(ruta, sep=None):
@@ -58,6 +59,8 @@ def _xlsx(ruta, hoja=None):
     except ImportError:
         raise SystemExit("Para leer .xlsx hace falta openpyxl: pip install openpyxl")
     libro = openpyxl.load_workbook(ruta, read_only=True, data_only=True)
+    if hoja and hoja not in libro.sheetnames:
+        raise SystemExit(f"No existe la hoja {hoja!r} en {ruta.name}. Hojas disponibles: {', '.join(libro.sheetnames)}")
     h = libro[hoja] if hoja else libro.worksheets[0]
     filas = h.iter_rows(values_only=True)
     encabezado = [str(c) if c is not None else f"col{i + 1}" for i, c in enumerate(next(filas, []))]
@@ -70,12 +73,19 @@ def _parquet(ruta):
         import pandas as pd
     except ImportError:
         raise SystemExit("Para leer .parquet hace falta pandas y pyarrow: pip install pandas pyarrow")
-    df = pd.read_parquet(ruta)
+    try:
+        df = pd.read_parquet(ruta)
+    except ImportError:
+        raise SystemExit("Para leer .parquet hace falta pyarrow o fastparquet: pip install pyarrow")
     return list(df.columns), df.astype(object).where(df.notna(), None).to_dict("records")
 
 
 def leer(ruta, hoja=None, sep=None):
     ruta = Path(ruta)
+    if not ruta.exists():
+        raise SystemExit(f"No existe el archivo: {ruta}")
+    if ruta.is_dir():
+        raise SystemExit(f"{ruta} es una carpeta; pasá un archivo tabular.")
     ext = ruta.suffix.lower()
     if ext in (".csv", ".tsv", ".txt"):
         return _csv(ruta, sep)
