@@ -11,7 +11,7 @@ El contrato que cumple cada adaptador, con el estado de cada plataforma, está e
 |---|---|---|
 | Claude Code (y claude.ai para las skills sueltas) | [`claude-code.md`](claude-code.md) | En uso; el hook y la rutina, sin probar |
 | Google Antigravity (2.0 / IDE / CLI) | [`antigravity.md`](antigravity.md) | Diseñado y documentado; skills globales y cuotas probadas |
-| Cualquier plataforma que lea `AGENTS.md` (Cursor, Codex y otras) | [`../AGENTS.md`](../AGENTS.md) | Escrito, sin probar |
+| Cualquier plataforma que lea `AGENTS.md` (Cursor, Codex y otras) | [`../AGENTS.md`](../AGENTS.md) | Escrito, sin probar (manifiestos [`.agents/skills.json`](../.agents/skills.json), [`.codex-plugin/plugin.json`](../.codex-plugin/plugin.json) y [`.cursor-plugin/plugin.json`](../.cursor-plugin/plugin.json), documentados) |
 | Bot en servidor propio (Grok Bot) | [`grok-bot.md`](grok-bot.md) | Diseñado y documentado, sin probar |
 
 ## Cómo se escribe un adaptador nuevo

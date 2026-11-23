@@ -34,7 +34,7 @@ python scripts/cifras.py informe.md --fuentes salidas/ --decimal ,
 python scripts/cifras.py tablero.html resumen.docx --fuentes salidas/ resultados.xlsx --decimal , --escala 1000
 ```
 
-Saca cada número del entregable (Markdown, texto, HTML, Word, Excel, CSV, JSON) y lo busca en las salidas (la
+Saca cada número del entregable (Markdown, texto, HTML, Word, Excel, CSV, JSON, LaTeX `.tex` sin comentarios `%` y `.pdf`) y lo busca en las salidas (la
 carpeta de la corrida de `assay`, si el análisis pasó por ahí), con el
 redondeo que muestra el entregable: «0,59» coincide con 0.587 y «0,52» no. Agrupa en **encontradas**, **huérfanas**
 (no hay valor compatible), **ambiguas** (el formato no encaja con el separador declarado) y **triviales** (años y
@@ -42,6 +42,7 @@ enteros de un dígito, que se listan sin verificar).
 
 - `--decimal` es obligatorio: «1.234» es otro número según el separador, y no se adivina.
 - Los sufijos (mil, M, MM) no se escalan solos; se declaran con `--escala`.
+- `--ignorar <regex>` (repetible) excluye números no analíticos en el entregable (normas, secciones, marcas de eje); queda informado en la cabecera.
 - Cada huérfana se resuelve: o sale de un cálculo que hay que agregar a las salidas, o está mal. Una cifra que el
   texto deriva a mano («la diferencia es 12 %») también es huérfana hasta que su cálculo esté en las salidas.
 - Límite: una cifra corta encuentra pareja con facilidad. Para las que importan, mirá en qué archivo y fila apareció.

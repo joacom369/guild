@@ -1,0 +1,10 @@
+{
+  "name": "guild",
+  "description": "Guild: un gremio de skills para trabajar en cualquier proyecto, con cualquier IA.",
+  "author": {
+    "name": "Joaquín Milanesio"
+  },
+  "skills": "./",
+  "repository": "https://github.com/joacom369/guild",
+  "license": "MIT"
+}

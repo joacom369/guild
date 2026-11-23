@@ -25,6 +25,7 @@ significa cada campo), **cargalas antes del paso 1**: esta skill pone el procedi
    filtro, un permiso, una página truncada o un sistema caído. Se reporta como lo que es.
 4. **Una corrida nueva no pisa la anterior.** Cada foto lleva fecha en el nombre de la carpeta.
 5. **Un intento fallido queda anotado como caso**, con el error tal como salió. No se ofrece como dato.
+6. **Quien lee, deja ficha.** La obligación de guardar foto y ficha vale igual cuando extrae o verifica el orquestador directo en la sesión que cuando lo hace un subagente: un dato leído al paso sin respaldo registrado no entra al análisis ni al entregable.
 
 **Conectores personales.** Antes de leer una fuente del usuario (chat, correo, calendario, repositorio), verificá
 que la cuenta del conector sea la suya: [referencias/conectores.md](referencias/conectores.md). Una lectura liviana,

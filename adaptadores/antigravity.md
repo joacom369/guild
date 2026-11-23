@@ -10,6 +10,7 @@ El núcleo no nombra a Antigravity ni copia sus límites de concurrencia o pools
 - **Por proyecto (documentado):** `.agents/skills/` o `skills.json` en la raíz del repositorio.
 - **Reglas siempre activas (documentado):** `GEMINI.md` o `AGENTS.md` jerárquicos (límite de **24.000 bytes** por archivo y presupuesto agregado de **20.000 tokens**; las reglas que superan el presupuesto se degradan a punteros de ruta).
 - **Plugins (documentado):** alternativa para empaquetar oficios + reglas + MCP en `~/.gemini/config/plugins/<nombre>/plugin.json`. Nunca editar `~/.gemini/config/config.json` a mano.
+- **Manifiestos multi-plataforma (documentado):** este repo incluye [`.agents/skills.json`](../.agents/skills.json) (heredable desde `~/.gemini/config/skills.json` sin copiar carpetas) y manifiestos para Codex y Cursor. No se agrega `plugin.json` en la raíz porque Antigravity espera las skills dentro de `skills/<oficio>/`, mientras `Guild` las mantiene en la raíz para compatibilidad con Claude Code.
 
 ## Cómo resuelve el contrato
 
@@ -76,7 +77,8 @@ El núcleo no nombra a Antigravity ni copia sus límites de concurrencia o pools
 
 - **`invoke_subagent` vs `swarm`:** `invoke_subagent` sólo expone 4 alias (`inherit`, `flash_lite`, `flash`, `pro`), `research` corre sin acceso a red y `browser` usa `flash` por defecto. `swarm` permite elegir cualquiera de los 23 IDs explícitos y cambiar de modelo en caliente (`action: "model"`) conservando la conversación. Los workers en paralelo multiplican el consumo instantáneo del pool; en `waiting` cuestan 0.
 - **`herald` no se delega:** ninguna escritura externa ni borrado se ejecuta desde un subagente o worker autónomo.
-- **Sandbox de terminal y Windows PowerShell 5.1:** `gh` necesita salir del sandbox (red y keyring). En PowerShell 5.1, no redirigir UTF-8 con `>` (escribe UTF-16LE con BOM y rompe acentos) ni usar comillas dobles dentro de `--jq`.
+- **Sandbox de terminal y Windows PowerShell 5.1:** `gh` necesita salir del sandbox (red y keyring). En PowerShell 5.1: (a) `Get-Content` sin `-Encoding UTF8` más `Out-File` —o redirecciones con `>`— corrompen archivos UTF-8 sin BOM (usar `[IO.File]::ReadAllText`/`WriteAllText` con `[Text.UTF8Encoding]::new($false)` o Python con `encoding="utf-8"`); (b) no nombrar `R` a una función auxiliar (choca con el alias de `Invoke-History` y falla en silencio; usar nombres largos); (c) no usar comillas dobles dentro de `--jq`; y (d) la skill externa `pptx` (`scripts/office/validate.py`) falla en Windows al no encontrar sus esquemas XSD (verificar abriendo en PowerPoint o corriendo en Linux/WSL y declararlo en el acta de `hallmark`).
+- **Documentación viva (`llms.txt` / MCP `search_docs`):** antes de escribir código contra APIs o SDKs que cambian rápido (Antigravity, `google-genai`, etc.), consultar `https://antigravity.google/llms.txt` (o el `llms.txt` del proveedor) o la herramienta MCP de documentación si está activa, en lugar de depender de memoria o inflar skills.
 - **`hooks.json`:** sólo soporta `type: "command"` y corre de forma síncrona (bloquea el loop del agente; timeout por defecto de 30 s).
 - **Sin `claude plugin eval`:** las pruebas de disparo de `evals/` siguen en Claude Code; el control estático local es `python foundry/scripts/auditar_gremio.py`.
 
