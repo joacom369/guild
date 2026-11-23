@@ -91,13 +91,9 @@ Para que Antigravity avise al abrir una sesión si hay ideas nuevas en `~/.forem
   "foreman-buzon": {
     "SessionStart": [
       {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python -c \"import json,pathlib,sys;sys.stdout.reconfigure(encoding='utf-8');p=pathlib.Path.home()/'.foreman'/'IDEAS.md';n=sum('| nueva |' in l for l in p.read_text(encoding='utf-8').splitlines()) if p.exists() else 0;print(json.dumps({'injectSteps':[{'systemMessage':{'systemMessage':f'foreman: hay {n} ideas nuevas en el buzón'}}]} if n else {}, ensure_ascii=False))\"",
-            "timeout": 10
-          }
-        ]
+        "type": "command",
+        "command": "python -c \"import json,pathlib,sys;sys.stdout.reconfigure(encoding='utf-8');p=pathlib.Path.home()/'.foreman'/'IDEAS.md';n=sum('| nueva |' in l for l in p.read_text(encoding='utf-8').splitlines()) if p.exists() else 0;print(json.dumps({'injectSteps':[{'systemMessage':{'systemMessage':f'foreman: hay {n} ideas nuevas en el buzón'}}]} if n else {}, ensure_ascii=False))\"",
+        "timeout": 10
       }
     ]
   }
