@@ -88,3 +88,9 @@ claude mcp list                                                                 
 ```
 
 Después de agregar un servidor, `/reload-plugins` y una lectura real para verificar de quién es la cuenta.
+
+## Notas de Windows (PowerShell 5.1)
+
+- **UTF-8 sin BOM:** `Get-Content` sin `-Encoding UTF8` seguido de `Out-File` (o `>`) rompe acentos de archivos UTF-8 sin BOM; usar `[IO.File]::ReadAllText` / `[IO.File]::WriteAllText` (con `[Text.UTF8Encoding]::new($false)`) o Python con `encoding="utf-8"`.
+- **Alias `R`:** una función auxiliar llamada `R` choca con el alias integrado de `Invoke-History` y falla en silencio sin tocar archivos; usar nombres largos.
+- **Skill externa `pptx`:** `scripts/office/validate.py` falla en Windows al no hallar sus esquemas XSD; validar abriendo en PowerPoint o en Linux/WSL y dejarlo asentado en el acta de `hallmark`.

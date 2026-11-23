@@ -44,3 +44,5 @@ En orden, del más simple al más trabajoso:
   Lo que prueba la conexión es una lectura real con la cuenta verificada.
 - **Se anota en la configuración del ambiente:** qué conector se usa para cada fuente, de quién es y cuándo se
   verificó.
+- **Variables de entorno pisan credenciales:** antes de leer o facturar en una API/CLI, comprobar qué credencial ganó (una variable exportada como `GEMINI_API_KEY` o `GH_TOKEN` puede pisar el llavero o perfil local y operar en otra cuenta).
+- **Errores sin secretos en scripts propios:** cualquier script que llame APIs externas limpia parámetros de consulta de las URL (`strip_query_params`) y redacta claves o tokens antes de imprimir errores (`sanitize_error`).

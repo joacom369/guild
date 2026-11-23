@@ -19,6 +19,9 @@
 !/herald/
 !/mapa/
 !/.claude-plugin/
+!/.agents/
+!/.codex-plugin/
+!/.cursor-plugin/
 !/dist/
 !/empaquetar.py
 !/LICENSE

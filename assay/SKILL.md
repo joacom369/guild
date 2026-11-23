@@ -26,7 +26,7 @@ nivel se concluye, cómo se valida) son de `provenance`; acá van **los pasos**.
 ### 1. Partir de lo verificado
 
 - La técnica viene del veredicto de `compass`; si no hay veredicto y la técnica no es obvia, se pide.
-- Los datos son una foto con ficha (de `quarry`). Si vienen de otro lado, se les hace la ficha antes de empezar.
+- Los datos son una foto con ficha (de `quarry`). Si vienen de otro lado, se les hace la ficha antes de empezar, incluidos los que el orquestador verificó directo en la sesión.
 
 ### 2. Escribir el plan (`PLAN.md` en el proyecto)
 
@@ -61,6 +61,8 @@ python scripts/corrida.py --verificar salidas/2026-10-25_101500_ventas-por-regio
 `CORRIDA.json` con el comando, la semilla, la versión de Python, el commit del repositorio, las entradas verificadas
 y el hash de cada salida, y `log.txt` con la salida del script. Las salidas son archivos (CSV, JSON), no texto
 impreso: de ahí las va a buscar `hallmark`.
+
+Si el entregable es en LaTeX, el mismo script puede generar un archivo de macros (`cifras.tex`, una macro por cifra calculada) e incluirlo con `\input`: así ninguna cifra calculada se tipea a mano y cada recálculo actualiza todo el informe.
 
 ### 5. Si hay un modelo
 
