@@ -211,9 +211,10 @@ def valores_fuente(rutas, decimal):
     archivos = []
     for r in map(Path, rutas):
         archivos += sorted(p for p in r.rglob("*") if p.is_file()) if r.is_dir() else [r]
-    for a in archivos:
-        if a.suffix.lower() not in LEIBLES:
-            continue
+    legibles = [a for a in archivos if a.suffix.lower() in LEIBLES]
+    if not legibles:
+        print("Aviso: no se encontraron archivos legibles en las fuentes indicadas.", file=sys.stderr)
+    for a in legibles:
         for v, _, n, _ in numeros(a, decimal):
             if v is not None:
                 valores.append(v[0])
@@ -252,6 +253,10 @@ def main():
             ignorar.append(re.compile(patron))
         except re.error as e:
             raise SystemExit(f"Expresión regular inválida en --ignorar ({patron!r}): {e}")
+
+    for r in map(Path, [*a.entregables, *a.fuentes]):
+        if not r.exists():
+            raise SystemExit(f"No existe la ruta: {r}. Revisá el nombre o el directorio de trabajo.")
 
     valores, donde = valores_fuente(a.fuentes, a.decimal_fuentes)
     grupos = {"huérfanas": [], "ambiguas": [], "encontradas": [], "triviales": []}

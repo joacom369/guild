@@ -50,7 +50,7 @@ Ante la duda, entra.
    - si se puede deshacer y cómo.
 3. **Aprobación explícita** de esa acción. Sin respuesta, no se ejecuta. Si el usuario cambia algo, vuelve al paso 2.
 4. **Ejecutar** una sola vez, sin reintentos ciegos: si falla, se informa el error y se pregunta.
-5. **Registrar** en el registro de escrituras que fija la configuración del ambiente:
+5. **Dejar constancia** en la bitácora de escrituras (por defecto `~/.foreman/ESCRITURAS.md`; ubicación en `foreman`):
 
    ```markdown
    | Fecha y hora | Dónde | Qué (una línea) | Enlace | Autorizó | Cómo se deshace |

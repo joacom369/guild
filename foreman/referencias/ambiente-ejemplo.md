@@ -28,15 +28,17 @@ valores por defecto.
 
 ## Registros y valores por defecto
 
-| Qué | Por defecto | Lo escribe |
-|---|---|---|
-| Modo | `propone` | — |
-| Buzón de ideas | `~/.foreman/IDEAS.md` | `foreman` |
-| Registro de lentes | `~/.foreman/LENTES.md` | `lenses` |
-| Registro de delegaciones | `~/.foreman/DELEGACIONES.md` | `foreman` (con la ficha de `tokenwise`) |
-| Registro de escrituras | `~/.foreman/ESCRITURAS.md` | `herald` |
-| Registro de automatizaciones | `~/.foreman/AUTOMATIZACIONES.md` | `foundry`; `foreman` mira las mediciones vencidas |
-| Estado de cada proyecto | `ESTADO.md` en la raíz del proyecto | `foreman` (la plantilla es de `provenance`) |
+La taxonomía de memoria (`Semántica`, `Episódica`, `Procedural`) y su higiene viven en `provenance` (`referencias/registro-y-comunicacion.md`).
+
+| Qué | Por defecto | Memoria | Lo escribe |
+|---|---|---|---|
+| Modo | `propone` | Semántica | — |
+| Buzón de ideas | `~/.foreman/IDEAS.md` | Procedural | `foreman` |
+| Registro de lentes | `~/.foreman/LENTES.md` | Episódica | `lenses` |
+| Registro de delegaciones | `~/.foreman/DELEGACIONES.md` | Episódica | `foreman` (con la ficha de `tokenwise`) |
+| Registro de escrituras | `~/.foreman/ESCRITURAS.md` | Episódica | `herald` |
+| Registro de automatizaciones | `~/.foreman/AUTOMATIZACIONES.md` | Episódica / Predicción | `foundry`; `foreman` mira las mediciones vencidas |
+| Estado de cada proyecto | `ESTADO.md` en la raíz del proyecto | Semántica + Episódica | `foreman` (la plantilla es de `provenance`) |
 
 Todo fuera de los proyectos y del repositorio de skills, salvo el estado: es personal y no ensucia nada. Si un archivo
 no existe, se crea la primera vez que hace falta escribir en él.
@@ -58,3 +60,11 @@ El núcleo pide que **al empezar una conversación** se revisen el buzón, las m
 proyecto, y que se avise en una línea si hay novedades. Una skill sola no corre al abrir la sesión; cada plataforma
 lo resuelve a su manera (un hook de inicio, su mecanismo de reglas o de arranque). Los adaptadores están en
 `adaptadores/` del repositorio de skills. Instalar un adaptador es decisión del usuario.
+
+## Observabilidad estructurada (opt-in)
+
+Si un adaptador agrega una traza JSONL de sesiones o herramientas, no se habilita por defecto y exige cuatro condiciones previas:
+1. **Emisor explícito:** definir en el adaptador qué hook (p. ej. post-herramienta o cierre de turno) escribe la traza.
+2. **Filtro de privacidad:** registrar evento, timestamp, modelo, oficio y estado/duración sin guardar prompts completos, secretos ni datos privados de otros frentes.
+3. **Codificación explícita:** UTF-8 sin BOM también en Windows.
+4. **Lectura con permiso:** inspeccionar trazas históricas sigue pidiendo aprobación previa al usuario (`foreman` regla 6, declarando qué se lee y cuánto cuesta).

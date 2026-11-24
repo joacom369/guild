@@ -18,8 +18,6 @@ import tempfile
 import time
 from pathlib import Path
 
-import websockets
-
 CANDIDATOS = [
     r"C:\Program Files\Google\Chrome\Application\chrome.exe",
     r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
@@ -37,9 +35,17 @@ def navegador():
     raise SystemExit("No encontré Chrome, Chromium ni Edge.")
 
 
-async def capturar(ws_url, url, salida, ancho, alto, a):
+def _cargar_websockets():
+    try:
+        import websockets
+        return websockets
+    except ImportError:
+        raise SystemExit("Falta la dependencia 'websockets'. Instalala con: pip install websockets")
+
+
+async def capturar(ws_mod, ws_url, url, salida, ancho, alto, a):
     errores, n = [], 0
-    async with websockets.connect(ws_url, max_size=2 ** 28) as ws:
+    async with ws_mod.connect(ws_url, max_size=2 ** 28) as ws:
         async def cmd(metodo, params=None):
             nonlocal n
             n += 1
@@ -94,6 +100,7 @@ async def capturar(ws_url, url, salida, ancho, alto, a):
 
 
 async def principal(a):
+    ws_mod = _cargar_websockets()
     exe = navegador()
     for nombre, medida in (("escritorio", a.escritorio), ("celular", a.celular)):
         ancho, alto = map(int, medida.lower().split("x"))
@@ -115,7 +122,7 @@ async def principal(a):
             ws_url = next(p["webSocketDebuggerUrl"] for p in pestanas if p["type"] == "page")
             salida = f"{a.prefijo}-{nombre}.png"
             # Un bucle de animación puede colgar la captura: el límite mata el navegador igual.
-            errores, desborde = await asyncio.wait_for(capturar(ws_url, a.url, salida, ancho, alto, a), a.limite)
+            errores, desborde = await asyncio.wait_for(capturar(ws_mod, ws_url, a.url, salida, ancho, alto, a), a.limite)
             print(f"{nombre} {ancho}x{alto}: {salida}")
             print(f"  desborde horizontal: {'no' if desborde <= 0 else f'SÍ, {desborde} px'}")
             print(f"  errores de consola: {len(errores) or 'ninguno'}")

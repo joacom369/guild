@@ -183,7 +183,7 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
 3. **Adaptadores fuera de Claude Code:** `AGENTS.md` está escrito pero sin probar en Cursor ni en otra plataforma.
    El adaptador de Grok Bot está diseñado y documentado (2026-10-28), sin probar en un bot:
    [`adaptadores/grok-bot.md`](../adaptadores/grok-bot.md).
-   El adaptador de Google Antigravity está diseñado y documentado (2026-11-23), con skills globales y lectura de cuotas probadas y el resto documentado:
+   El adaptador de Google Antigravity está documentado (2026-11-23), con skills globales, índice en `AGENTS.md`, `swarm` en Pool 1 y scripts locales probados, y `SessionStart`/`schedule`/MCP pendientes en vivo:
    [`adaptadores/antigravity.md`](../adaptadores/antigravity.md).
 4. **Bot propio y trabajo en vivo** (buzón, 2026-10-26). El adaptador de la plataforma quedó diseñado; sigue abierto
    lo que ese diseño no cubre:
@@ -205,7 +205,7 @@ dice cómo lo resuelve; el detalle está en [`adaptadores/`](../adaptadores/). E
 
    Quedan abiertos:
    - el protocolo de modelado de `compass` (insumo para decidir la fase 4);
-   - `kiln/reference/` contra `referencias/`;
+   - ~~`kiln/reference/` contra `referencias/`~~ (resuelto: sólo existe `kiln/referencias/`);
    - ~~los casos de una empresa nombrados en `compass`~~ (resuelto: ahora son genéricos).
 3. ~~Construir `foundry`~~ **hecho (2026-10-25).**
 4. ~~Construir `foreman`~~ **hecho (2026-10-25).** Falta el adaptador de inicio de sesión (hook), que es decisión del usuario.

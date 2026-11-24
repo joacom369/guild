@@ -48,6 +48,8 @@ def describir(carpeta, ruta):
 
 def escribir(a):
     carpeta = Path(a.carpeta)
+    if not carpeta.is_dir():
+        sys.exit(f"No existe la carpeta: {carpeta}")
     destino = carpeta / FICHA
     if destino.exists():
         sys.exit(f"Ya existe {destino}. Una corrida nueva va en otra carpeta; no se pisa la ficha.")
@@ -73,7 +75,12 @@ def escribir(a):
 
 def verificar(a):
     carpeta = Path(a.carpeta)
-    ficha = json.loads((carpeta / FICHA).read_text(encoding="utf-8"))
+    if not carpeta.is_dir():
+        sys.exit(f"No existe la carpeta: {carpeta}")
+    archivo_ficha = carpeta / FICHA
+    if not archivo_ficha.exists():
+        sys.exit(f"No hay {FICHA} en {carpeta}; creala primero con --origen ...")
+    ficha = json.loads(archivo_ficha.read_text(encoding="utf-8"))
     esperado = {d["archivo"]: d["sha256"] for d in ficha["archivos"]}
     actual = {p.relative_to(carpeta).as_posix(): p for p in archivos(carpeta)}
     problemas = []

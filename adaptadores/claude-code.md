@@ -66,6 +66,12 @@ No está instalado ni probado dentro de `settings.json`; sólo se probó el coma
 }
 ```
 
+## Hooks por proyecto (`PreToolUse` y `PostToolUse`, *opt-in*)
+
+Sin instalar salvo que el proyecto lo pida. En `.claude/settings.json` del proyecto se pueden agregar dos guardias deterministas:
+- **`PreToolUse` (`Read|Edit|Write|Bash`):** bloquear acceso a secretos (`.env`, `token.json`, `client_secret*.json`) y archivos protegidos antes de correr la herramienta.
+- **`PostToolUse` (`Edit|Write`):** correr `format` / `lint` / `typecheck` tras cada edición para detectar roturas al instante sin depender de la memoria del modelo.
+
 ## Conectores con la cuenta del usuario
 
 En una cuenta de claude.ai compartida, sus conectores pueden ser de otra persona. Lo que funcionó (2026-10-26):
@@ -88,6 +94,12 @@ claude mcp list                                                                 
 ```
 
 Después de agregar un servidor, `/reload-plugins` y una lectura real para verificar de quién es la cuenta.
+
+## Compactación intra-sesión y cuidado del contexto
+
+- **Antes de `/compact`:** dejar asentados en `ESTADO.md` (o archivo de trabajo) el tramo actual, cifras/rutas verificadas, decisiones aprobadas y lo pendiente.
+- **Al compactar:** pasar foco explícito (`/compact conservar reglas de CLAUDE.md, rutas verificadas, decisiones del usuario y errores recientes`) para no borrar restricciones ni errores previos. Entre tramos independientes conviene `/clear` y releer `ESTADO.md` antes que arrastrar contexto viejo.
+- **Hook `SessionStart`:** sigue *opt-in*; decidir en esta PC si se instala en `~/.claude/settings.json` o se descarta tras compararlo con Antigravity.
 
 ## Notas de Windows (PowerShell 5.1)
 
