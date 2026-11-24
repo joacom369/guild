@@ -3,12 +3,25 @@
 ## Una ronda, acotada
 
 ```bash
-python scripts/foto_pagina.py http://127.0.0.1:8000/ capturas/inicio
+python scripts/foto_pagina.py http://127.0.0.1:8000/ capturas/inicio --estricto
 python scripts/foto_pagina.py http://127.0.0.1:8000/ capturas/inicio --oscuro --selector "#tablero"
+python scripts/foto_pagina.py http://127.0.0.1:8000/ capturas/inicio --interacciones plan.json --json capturas/reporte.json --estricto
 ```
 
-Saca escritorio (1440×900) y celular (390×844) en la misma corrida, y reporta errores de consola y desborde
-horizontal. Leé las dos capturas y el informe, anotá todo lo que falla, corregilo en un lote y confirmá con una
+Saca escritorio (`1440×900`) y celular (`390×844`) en la misma corrida y corre una sonda automática AAA (se puede
+desactivar con `--sin-sonda`):
+- errores de consola, excepciones JS y recursos HTTP `>= 400` o fallidos (ignora `/favicon.ico`);
+- desborde horizontal (`scrollWidth - clientWidth > 0`);
+- imágenes rotas (`naturalWidth === 0`) y enlaces muertos (`href=""`, `href="#"`, `javascript:`);
+- controles interactivos tapados en viewport (`elementFromPoint`), targets móviles `< 44×44 px` y controles sin
+  nombre accesible en `Accessibility.getFullAXTree`;
+- elementos visibles atascados en `opacity: 0` tanto en render normal como bajo `prefers-reduced-motion: reduce`.
+
+Con `--interacciones plan.json` (inspirado en `storytold/photocraft`) ejecuta pasos (`click`, `fill`, `focus`, `key`
+con `Escape`/`Tab`/`Enter`/flechas, `wait`) y valida relaciones (`visible`, `hidden`, `changed`, `text_contains`, `attr`,
+`focused`, `count_min`). Con `--estricto`, cualquier defecto o fallo de interacción devuelve código `1`.
+
+Leé las dos capturas y el informe, anotá todo lo que falla, corregilo en un lote y confirmá con una
 ronda más como máximo.
 
 Qué mirar en las capturas:

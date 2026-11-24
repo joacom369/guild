@@ -28,6 +28,19 @@ Un boceto ASCII del primer viewport (10 a 15 líneas) y una línea con paleta y 
 Fondo blanco roto frío · tinta casi negra · un acento verde · títulos grotesca, cifras tabulares
 ```
 
+## Vista previa en imagen antes de construir (páginas nuevas o grandes)
+
+Para ajustes chicos alcanza el boceto ASCII. En **páginas nuevas, landings, portfolios o tableros grandes** (o cuando
+el usuario pide ver el rumbo antes de programar todo), mostrar una vista previa en imagen y esperar confirmación
+(«me gusta» o qué cambiar) antes de construir el entregable completo:
+
+- **Por defecto — *Style tile* o primer viewport real en HTML+CSS + captura:** armar una pieza mínima con los `:root`
+  tokens reales, la tipografía real y `1` widget/gadget representativo, capturarla con `foto_pagina.py` (o render
+  inline) y mostrársela al usuario. Todo lo que aprueba es 100% reproducible y queda como base del código final.
+- **Opcional — *Moodboard* conceptual (`image-generator`, si existe en la plataforma):** usar sólo cuando el brief es
+  muy artístico, editorial o 3D y conviene explorar clima y composición rápido antes de escribir CSS. Aclarar siempre
+  que la imagen generada es referencia de atmósfera/paleta y no plano literal de tipografía ni de píxeles.
+
 ## Perillas para afinar (después de elegir)
 
 - **Densidad:** aireada · media · compacta.

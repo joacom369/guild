@@ -31,6 +31,6 @@ en escritorio y en celular.
 
 ## Gráficos
 
-- SVG o una librería ya presente en el proyecto; una nueva sólo si el gráfico lo exige (con versión fija).
+- SVG o una librería ya presente en el proyecto; una nueva sólo si el gráfico lo exige (con versión fija). En proyectos React donde SVG nativo no alcanza, `Recharts` (MIT) es la opción por defecto, siempre bajo [datos-en-pantalla.md](datos-en-pantalla.md).
 - Mismos tokens de color que la página; texto del gráfico como texto, no dentro de una imagen.
 - Tabla alternativa o `aria-label` con la lectura del gráfico.
