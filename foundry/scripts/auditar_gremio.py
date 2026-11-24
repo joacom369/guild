@@ -6,8 +6,8 @@ Uso:
     python foundry/scripts/auditar_gremio.py --autoprueba
 
 El paso estático lee los SKILL.md, AGENTS.md y la tabla de dueños de mapa/MAPA.md §3.
---solo-versionadas limita las skills leídas a las carpetas con SKILL.md versionado en git
-(útil para correr --estricto en local cuando hay skills ignoradas por .gitignore).
+En un repositorio git salta automáticamente las carpetas que `.gitignore` excluye; `--solo-versionadas`
+restringe explícitamente a las carpetas con `SKILL.md` versionado.
 No mide tasas de disparo: eso lo controla empaquetar.py (el piso sólo sube).
 
 El paso dinámico lee los registros del ambiente (delegaciones, tramos, lecciones,
@@ -217,10 +217,33 @@ def valor_clave(crudo, clave):
     return ""
 
 
+def ignoradas_por_git(raiz, carpetas):
+    """Las carpetas que .gitignore deja afuera (skills de terceros instaladas al lado, no versionadas).
+
+    Fuera de un repositorio (por ejemplo en la autoprueba) devuelve conjunto vacío.
+    """
+    if not carpetas:
+        return set()
+    try:
+        r = subprocess.run(
+            ["git", "-C", str(raiz), "check-ignore", "--", *[c.name for c in carpetas]],
+            capture_output=True, text=True, encoding="utf-8", errors="replace",
+        )
+    except OSError:
+        return set()
+    if r.returncode != 0:
+        return set()
+    return {line.strip().rstrip("/") for line in r.stdout.splitlines() if line.strip()}
+
+
 def cargar_skills(raiz, solo_versionadas=False):
     permitidas = carpetas_versionadas(raiz) if solo_versionadas else None
+    carpetas = sorted(p for p in raiz.iterdir() if p.is_dir())
+    afuera = ignoradas_por_git(raiz, carpetas)
     skills = []
-    for carpeta in sorted(p for p in raiz.iterdir() if p.is_dir()):
+    for carpeta in carpetas:
+        if carpeta.name in afuera:
+            continue
         if permitidas is not None and carpeta.name not in permitidas:
             continue
         archivo = carpeta / "SKILL.md"
