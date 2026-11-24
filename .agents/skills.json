@@ -1,0 +1,21 @@
+{
+  "entries": [
+    {
+      "path": ".",
+      "include_only": [
+        "assay",
+        "compass",
+        "foreman",
+        "foundry",
+        "hallmark",
+        "herald",
+        "kiln",
+        "lenses",
+        "provenance",
+        "quarry",
+        "sherpa",
+        "tokenwise"
+      ]
+    }
+  ]
+}

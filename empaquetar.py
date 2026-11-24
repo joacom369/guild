@@ -1,7 +1,8 @@
 """Arma dist/<skill>.zip para subir cada skill en claude.ai (Configuración > Capacidades > Skills).
 
-Uso: python empaquetar.py [skill ...]   (sin argumentos: las skills propias)
-     python empaquetar.py --piso skill  (sube el piso de disparo desde las corridas locales)
+Uso: python empaquetar.py [skill ...]        (sin argumentos: las skills propias y dist/SHA256SUMS)
+     python empaquetar.py --piso skill       (sube el piso de disparo desde las corridas locales)
+     python empaquetar.py --verificar-sha256 [DIR]  (compara archivos fuente contra dist/SHA256SUMS)
 El ZIP lleva la carpeta de la skill en la raíz, como pide claude.ai.
 
 Antes de empaquetar controla el piso de disparo de cada skill (<skill>/evals/piso.json). Las pruebas de disparo son
@@ -20,10 +21,90 @@ from pathlib import Path
 RAIZ = Path(__file__).parent
 PROPIAS = ["kiln", "provenance", "tokenwise", "compass", "quarry", "assay", "hallmark", "foundry", "sherpa", "foreman", "lenses", "herald"]
 MINIMO = 3  # corridas por caso para medir o controlar una tasa
+TEXTO_SHA = {".md", ".py", ".json", ".txt", ".sh", ".yml", ".yaml", ".html", ".css", ".js"}
 
 
 def huella(texto):
     return hashlib.sha256(texto.encode("utf-8")).hexdigest()
+
+
+def huella_archivo(ruta):
+    datos = ruta.read_bytes()
+    if ruta.suffix.lower() in TEXTO_SHA:
+        datos = datos.replace(b"\r\n", b"\n")
+    return hashlib.sha256(datos).hexdigest()
+
+
+def archivos_skill(carpeta):
+    return sorted(f for f in carpeta.rglob("*") if f.is_file() and "__pycache__" not in f.parts and "evals" not in f.parts)
+
+
+def validar_frontmatter(nombre, carpeta):
+    """Valida el bloque YAML inicial de SKILL.md (con PyYAML si está instalado, más el corte de ': ')."""
+    texto = (carpeta / "SKILL.md").read_text(encoding="utf-8")
+    fin = texto.find("\n---", 3)
+    assert texto.startswith("---") and fin >= 0, f"{nombre}: falta frontmatter YAML válido (---)"
+    crudo = texto[3:fin]
+    # «: » dentro de una description sin comillas rompe el YAML y la skill se anuncia sin description;
+    # claude plugin validate no lo detecta.
+    for linea in crudo.splitlines():
+        clave, _, valor = linea.partition(": ")
+        roto = clave == "description" and valor[:1] not in "\"'>|" and ": " in valor
+        assert not roto, f"{nombre}: la description tiene «: » sin comillas; cambialo por «; » o «,»"
+    try:
+        import yaml
+    except ImportError:
+        return
+    try:
+        datos = yaml.safe_load(crudo)
+    except yaml.YAMLError as e:
+        raise SystemExit(f"{nombre}: YAML inválido en frontmatter: {e}")
+    assert isinstance(datos, dict), f"{nombre}: el frontmatter YAML no es un diccionario"
+    assert isinstance(datos.get("description"), str) and datos["description"].strip(), (
+        f"{nombre}: falta una 'description' de texto en el frontmatter"
+    )
+
+
+def escribir_sha256sums(nombres):
+    destino = RAIZ / "dist" / "SHA256SUMS"
+    destino.parent.mkdir(exist_ok=True)
+    lineas = ["# SHA-256 de archivos fuente (texto normalizado a LF para paridad Windows/Linux)\n"]
+    for nombre in sorted(nombres):
+        carpeta = RAIZ / nombre
+        for f in archivos_skill(carpeta):
+            lineas.append(f"{huella_archivo(f)}  {f.relative_to(RAIZ).as_posix()}\n")
+    with open(destino, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write("".join(lineas))
+    print(f"{destino.relative_to(RAIZ).as_posix()}: {len(lineas) - 1} archivos fuente")
+
+
+def verificar_sha256(raiz_destino=None):
+    manifiesto = RAIZ / "dist" / "SHA256SUMS"
+    if not manifiesto.exists():
+        sys.exit(f"No existe {manifiesto}. Corré primero `python empaquetar.py`.")
+    objetivo = Path(raiz_destino) if raiz_destino else RAIZ
+    if not objetivo.is_dir():
+        sys.exit(f"No existe la carpeta a verificar: {objetivo}")
+    esperados = []
+    for linea in manifiesto.read_text(encoding="utf-8").splitlines():
+        linea = linea.strip()
+        if not linea or linea.startswith("#"):
+            continue
+        digest, _, rel = linea.partition("  ")
+        if not digest or not rel:
+            sys.exit(f"Línea inválida en {manifiesto.name}: {linea}")
+        esperados.append((digest, rel))
+    problemas = []
+    for digest, rel in esperados:
+        ruta = objetivo / rel
+        if not ruta.exists():
+            problemas.append(f"FALTA   {rel}")
+        elif huella_archivo(ruta) != digest:
+            problemas.append(f"CAMBIÓ  {rel}")
+    if problemas:
+        print("\n".join(problemas))
+        sys.exit(1)
+    print(f"OK: {len(esperados)} archivos fuente coinciden con dist/SHA256SUMS")
 
 
 def description(carpeta):
@@ -134,16 +215,16 @@ if sys.argv[1:2] == ["--piso"]:
         subir_piso(nombre)
     sys.exit()
 
+if sys.argv[1:2] == ["--verificar-sha256"]:
+    verificar_sha256(sys.argv[2] if len(sys.argv) > 2 else None)
+    sys.exit()
+
+objetivos = sys.argv[1:] or PROPIAS
 bloqueadas = []
-for nombre in sys.argv[1:] or PROPIAS:
+for nombre in objetivos:
     carpeta = RAIZ / nombre
     assert (carpeta / "SKILL.md").exists(), f"{nombre}: no tiene SKILL.md"
-    # «: » dentro de una description sin comillas rompe el YAML y la skill se anuncia sin description;
-    # claude plugin validate no lo detecta.
-    for linea in (carpeta / "SKILL.md").read_text(encoding="utf-8").split("---")[1].splitlines():
-        clave, _, valor = linea.partition(": ")
-        roto = clave == "description" and valor[:1] not in "\"'>|" and ": " in valor
-        assert not roto, f"{nombre}: la description tiene «: » sin comillas; cambialo por «; » o «,»"
+    validar_frontmatter(nombre, carpeta)
     errores, avisos, resumen = controlar_piso(nombre, carpeta)
     for aviso in avisos:
         print(f"  aviso {nombre}: {aviso}")
@@ -155,10 +236,12 @@ for nombre in sys.argv[1:] or PROPIAS:
     destino = RAIZ / "dist" / f"{nombre}.zip"
     destino.parent.mkdir(exist_ok=True)
     with zipfile.ZipFile(destino, "w", zipfile.ZIP_DEFLATED) as z:
-        for f in sorted(carpeta.rglob("*")):
-            if f.is_file() and "__pycache__" not in f.parts and "evals" not in f.parts:
-                z.write(f, f.relative_to(RAIZ).as_posix())
+        for f in archivos_skill(carpeta):
+            z.write(f, f.relative_to(RAIZ).as_posix())
     print(f"{destino.relative_to(RAIZ)}: {destino.stat().st_size // 1024} KB; disparo: {resumen}")
 
 if bloqueadas:
     sys.exit(f"No se empaquetaron: {', '.join(bloqueadas)}")
+
+if not sys.argv[1:]:
+    escribir_sha256sums(objetivos)

@@ -65,6 +65,16 @@ Se repite como palabra, no como explicación, y ancla la misma conducta cada vez
 - **Un comportamiento nuevo, ¿pide una skill nueva?** Si se arma combinando lo que ya existe, no: se escribe en la
   skill dueña.
 
+## Seguridad antes de sumar una skill de terceros
+
+Antes de instalar, copiar o versionar cualquier skill ajena:
+
+1. **Licencia explícita y compatible:** comprobar el archivo `LICENSE` del origen; sin licencia abierta explícita (o con términos *source-available* / restrictivos) queda sólo como referencia externa, nunca copiada.
+2. **Lectura completa:** revisar `SKILL.md`, `referencias/` y scripts buscando instrucciones ocultas (*prompt injection*), exfiltración de datos/tokens, comandos destructivos o telemetría activa por defecto.
+3. **Mínimo privilegio:** auditar `allowed-tools`, hooks de arranque/edición y binarios o descargas que dispare al ejecutarse.
+4. **Cuidar el disparo del gremio:** correr `auditar_gremio.py` para ver solapes de `description`; si la skill se invoca sólo por nombre, verificar o evaluar `disable-model-invocation: true`.
+5. **Consentimiento:** proponer al usuario qué agrega, licencia y costo/riesgo antes de instalarla o habilitar sus hooks.
+
 ---
 
 Adaptado de la skill `writing-for-agents` de Matt Pocock (github.com/mattpocock/skills, licencia MIT), con

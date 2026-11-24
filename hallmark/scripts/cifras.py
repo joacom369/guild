@@ -2,13 +2,15 @@
 
 Uso:
     python cifras.py ENTREGABLE [ENTREGABLE ...] --fuentes SALIDA [SALIDA ...] --decimal ,
-                     [--decimal-fuentes .] [--escala 1000 --escala 1e6] [--todas]
+                     [--decimal-fuentes .] [--escala 1000 --escala 1e6] [--ignorar REGEX ...] [--todas]
 
-Entregable: .md, .txt, .html, .docx, .xlsx, .csv, .json. Fuentes: archivos o carpetas con las salidas (CSV, JSON,
-logs, texto, .xlsx). Se recorren las carpetas.
+Entregable: .md, .txt, .html, .docx, .xlsx, .csv, .json, .tex (sin comentarios %), .pdf (requiere pypdf,
+PyMuPDF o pdftotext). Fuentes: archivos o carpetas con las salidas (CSV, JSON, logs, texto, .xlsx). Se recorren
+las carpetas.
 
 --decimal es el separador decimal del entregable y es obligatorio: «1.234» es mil doscientos treinta y cuatro con
 «,» y uno coma dos con «.». No se adivina. --decimal-fuentes es el de las salidas («.» por defecto).
+--ignorar excluye coincidencias de una expresión regular en el entregable (p. ej. normas o secciones).
 
 Una cifra coincide si algún valor de las fuentes, redondeado a los decimales que muestra el entregable, da esa cifra:
 «0,59» coincide con 0.587; «0,52» no. Un porcentaje también se compara como fracción (45 % ↔ 0.45). Los sufijos
@@ -26,13 +28,15 @@ import bisect
 import csv
 import json
 import re
+import shutil
+import subprocess
 import sys
 import zipfile
 from html.parser import HTMLParser
 from pathlib import Path
 
 LEIBLES = {".md", ".txt", ".csv", ".tsv", ".json", ".jsonl", ".log", ".html", ".htm", ".xml", ".sql", ".py", ".r",
-           ".docx", ".xlsx", ".xlsm", ".yaml", ".yml", ".tex"}
+           ".docx", ".xlsx", ".xlsm", ".yaml", ".yml", ".tex", ".pdf"}
 FECHAS = re.compile(r"\b\d{4}-\d{2}-\d{2}(?:[T ]\d{2}:\d{2}(?::\d{2})?)?\b|\b\d{1,2}/\d{1,2}/\d{2,4}\b")
 NUMERO = re.compile(r"(?<![\w.,])[-−+]?\d[\d.,]*(?:\s?%)?(?![\w])")
 
@@ -67,6 +71,31 @@ def texto_de(ruta):
         xml = zipfile.ZipFile(ruta).read("word/document.xml").decode("utf-8")
         xml = re.sub(r"</w:p>", "\n", xml)
         return re.sub(r"<[^>]+>", "", xml)
+    if ext == ".tex":
+        texto = ruta.read_text(encoding="utf-8", errors="replace")
+        texto = re.sub(r"(?<!\\)((?:\\\\)*)%.*$", r"\1", texto, flags=re.M)
+        return texto.replace(r"\%", "%")
+    if ext == ".pdf":
+        try:
+            from pypdf import PdfReader
+            return "\n".join(page.extract_text() or "" for page in PdfReader(str(ruta)).pages)
+        except ImportError:
+            pass
+        try:
+            import fitz
+            with fitz.open(str(ruta)) as doc:
+                return "\n".join(page.get_text() for page in doc)
+        except ImportError:
+            pass
+        if shutil.which("pdftotext"):
+            try:
+                return subprocess.run(
+                    ["pdftotext", str(ruta), "-"],
+                    capture_output=True, text=True, encoding="utf-8", errors="replace", check=True
+                ).stdout
+            except subprocess.CalledProcessError as e:
+                raise SystemExit(f"No se pudo leer {ruta.name} con pdftotext: {e}")
+        raise SystemExit("Para leer .pdf hace falta pypdf (pip install pypdf), PyMuPDF o pdftotext")
     return ruta.read_text(encoding="utf-8", errors="replace")
 
 
@@ -137,17 +166,17 @@ def interpretar(token, decimal):
     return signo * float(f"{entero}.{frac or 0}"), len(frac), pct
 
 
-def numeros(ruta, decimal):
+def numeros(ruta, decimal, ignorar=()):
     """Itera (valor, token, lugar, contexto). Un archivo estructurado se lee celda por celda: un número nativo se toma
     tal cual y una celda de texto se interpreta con el separador declarado. La prosa pasa por la expresión regular."""
     if ruta.suffix.lower() not in ESTRUCTURADOS:
-        yield from numeros_texto(texto_de(ruta), decimal)
+        yield from numeros_texto(texto_de(ruta), decimal, ignorar)
         return
     try:
         lista = list(celdas(ruta))
     except (json.JSONDecodeError, csv.Error) as e:
         print(f"Aviso: {ruta.name} no se pudo leer como {ruta.suffix} ({e}); se lee como texto.", file=sys.stderr)
-        yield from numeros_texto(texto_de(ruta), decimal)
+        yield from numeros_texto(texto_de(ruta), decimal, ignorar)
         return
     for lugar, c in lista:
         if c is None or isinstance(c, bool):
@@ -156,17 +185,21 @@ def numeros(ruta, decimal):
             yield nativo(c), repr(c), lugar, repr(c)
             continue
         c = str(c).strip()
+        if ignorar and any(pat.search(c) for pat in ignorar):
+            continue
         if NUMERO.fullmatch(c):
             yield interpretar(c, decimal), c, lugar, c
         else:
-            for v, token, _, ctx in numeros_texto(c, decimal):
+            for v, token, _, ctx in numeros_texto(c, decimal, ignorar):
                 yield v, token, lugar, ctx
 
 
-def numeros_texto(texto, decimal):
+def numeros_texto(texto, decimal, ignorar=()):
     """Itera (valor, token, número de línea, contexto) en prosa."""
     for n, linea in enumerate(texto.splitlines(), 1):
         limpia = FECHAS.sub(lambda m: " " * len(m.group()), linea)
+        for pat in ignorar:
+            limpia = pat.sub(lambda m: " " * len(m.group()), limpia)
         for m in NUMERO.finditer(limpia):
             token = m.group().rstrip(".,")  # un punto o una coma final es puntuación de la frase
             ctx = linea[max(0, m.start() - 30):m.end() + 30].strip()
@@ -178,9 +211,10 @@ def valores_fuente(rutas, decimal):
     archivos = []
     for r in map(Path, rutas):
         archivos += sorted(p for p in r.rglob("*") if p.is_file()) if r.is_dir() else [r]
-    for a in archivos:
-        if a.suffix.lower() not in LEIBLES:
-            continue
+    legibles = [a for a in archivos if a.suffix.lower() in LEIBLES]
+    if not legibles:
+        print("Aviso: no se encontraron archivos legibles en las fuentes indicadas.", file=sys.stderr)
+    for a in legibles:
         for v, _, n, _ in numeros(a, decimal):
             if v is not None:
                 valores.append(v[0])
@@ -208,13 +242,26 @@ def main():
     p.add_argument("--decimal", choices=[".", ","], required=True)
     p.add_argument("--decimal-fuentes", choices=[".", ","], default=".")
     p.add_argument("--escala", type=float, action="append", default=[])
+    p.add_argument("--ignorar", action="append", default=[],
+                   help="expresión regular a ignorar en el entregable (repetible)")
     p.add_argument("--todas", action="store_true", help="lista también las encontradas")
     a = p.parse_args()
+
+    ignorar = []
+    for patron in a.ignorar:
+        try:
+            ignorar.append(re.compile(patron))
+        except re.error as e:
+            raise SystemExit(f"Expresión regular inválida en --ignorar ({patron!r}): {e}")
+
+    for r in map(Path, [*a.entregables, *a.fuentes]):
+        if not r.exists():
+            raise SystemExit(f"No existe la ruta: {r}. Revisá el nombre o el directorio de trabajo.")
 
     valores, donde = valores_fuente(a.fuentes, a.decimal_fuentes)
     grupos = {"huérfanas": [], "ambiguas": [], "encontradas": [], "triviales": []}
     for ent in map(Path, a.entregables):
-        for v, token, n, ctx in numeros(ent, a.decimal):
+        for v, token, n, ctx in numeros(ent, a.decimal, ignorar):
             lugar = f"{ent.name}:{n}"
             if v is None:
                 grupos["ambiguas"].append((token, lugar, ctx, ""))
@@ -234,8 +281,9 @@ def main():
                 grupos["huérfanas"].append((token, lugar, ctx, ""))
 
     print(f"# Cifras: {', '.join(Path(e).name for e in a.entregables)}\n")
+    nota_ignorar = f", ignorando {len(ignorar)} patrón(es)" if ignorar else ""
     print(f"Fuentes: {len(valores)} valores numéricos. Decimal del entregable «{a.decimal}», "
-          f"de las fuentes «{a.decimal_fuentes}»" + (f", escalas {a.escala}" if a.escala else "") + ".\n")
+          f"de las fuentes «{a.decimal_fuentes}»" + (f", escalas {a.escala}" if a.escala else "") + nota_ignorar + ".\n")
     print(" · ".join(f"{k}: {len(v)}" for k, v in grupos.items()) + "\n")
     for nombre in ("huérfanas", "ambiguas") + (("encontradas",) if a.todas else ()):
         if grupos[nombre]:

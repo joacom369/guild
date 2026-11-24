@@ -66,6 +66,12 @@ No está instalado ni probado dentro de `settings.json`; sólo se probó el coma
 }
 ```
 
+## Hooks por proyecto (`PreToolUse` y `PostToolUse`, *opt-in*)
+
+Sin instalar salvo que el proyecto lo pida. En `.claude/settings.json` del proyecto se pueden agregar dos guardias deterministas:
+- **`PreToolUse` (`Read|Edit|Write|Bash`):** bloquear acceso a secretos (`.env`, `token.json`, `client_secret*.json`) y archivos protegidos antes de correr la herramienta.
+- **`PostToolUse` (`Edit|Write`):** correr `format` / `lint` / `typecheck` tras cada edición para detectar roturas al instante sin depender de la memoria del modelo.
+
 ## Conectores con la cuenta del usuario
 
 En una cuenta de claude.ai compartida, sus conectores pueden ser de otra persona. Lo que funcionó (2026-10-26):
@@ -88,3 +94,15 @@ claude mcp list                                                                 
 ```
 
 Después de agregar un servidor, `/reload-plugins` y una lectura real para verificar de quién es la cuenta.
+
+## Compactación intra-sesión y cuidado del contexto
+
+- **Antes de `/compact`:** dejar asentados en `ESTADO.md` (o archivo de trabajo) el tramo actual, cifras/rutas verificadas, decisiones aprobadas y lo pendiente.
+- **Al compactar:** pasar foco explícito (`/compact conservar reglas de CLAUDE.md, rutas verificadas, decisiones del usuario y errores recientes`) para no borrar restricciones ni errores previos. Entre tramos independientes conviene `/clear` y releer `ESTADO.md` antes que arrastrar contexto viejo.
+- **Hook `SessionStart`:** sigue *opt-in*; decidir en esta PC si se instala en `~/.claude/settings.json` o se descarta tras compararlo con Antigravity.
+
+## Notas de Windows (PowerShell 5.1)
+
+- **UTF-8 sin BOM:** `Get-Content` sin `-Encoding UTF8` seguido de `Out-File` (o `>`) rompe acentos de archivos UTF-8 sin BOM; usar `[IO.File]::ReadAllText` / `[IO.File]::WriteAllText` (con `[Text.UTF8Encoding]::new($false)`) o Python con `encoding="utf-8"`.
+- **Alias `R`:** una función auxiliar llamada `R` choca con el alias integrado de `Invoke-History` y falla en silencio sin tocar archivos; usar nombres largos.
+- **Skill externa `pptx`:** `scripts/office/validate.py` falla en Windows al no hallar sus esquemas XSD; validar abriendo en PowerPoint o en Linux/WSL y dejarlo asentado en el acta de `hallmark`.

@@ -13,6 +13,15 @@
 - Separar tres piezas: instrucciones estáticas, memoria que crece (lecciones, predicciones, decisiones) y la herramienta que consulta. El prompt no aprende; el registro sí.
 - Formatos simples y legibles a ojo (texto, JSON plano, versionados); la complejidad llega cuando el volumen la justifica.
 
+### Taxonomía de memoria e higiene
+
+Cada registro persistente guarda una clase distinta de memoria y tiene una regla de limpieza:
+
+- **Semántica** (hechos estables y restricciones vigentes): `ESTADO.md` («Dónde estamos», «Decisiones»), `~/.foreman/ambiente.md` y `DESIGN.md`. Si algo cambia, se actualiza en su lugar; no se acumulan contradicciones.
+- **Episódica** (qué pasó en un tramo o corrida concreta): `ESTADO.md` («Tramos», «Cifras publicadas que cambiaron»), `DELEGACIONES.md`, `LENTES.md`, `ESCRITURAS.md`, `FICHA.json` y `CORRIDA.json`. Si `ESTADO.md` pasa de una pantalla, los tramos viejos se archivan.
+- **Procedural** (qué ajustar en el método o en las skills): `IDEAS.md`. Un episodio aislado nunca se promueve solo a regla permanente: requiere patrón repetido o falla clara y aprobación del usuario (`foreman` regla 5).
+- **Aislamiento de frentes:** nunca cruzar memoria o registros de proyectos laborales y personales salvo instrucción explícita.
+
 ## Comunicar
 - Antes de escribir: para quién, por qué le importa y qué tiene que poder hacer con lo que lee (actuar, aclarar, actualizarse, prestar atención). La estructura sirve a esa acción.
 - Lo más importante primero; el detalle después.

@@ -64,7 +64,7 @@ la lente que la originó. Recomienda una y dice por qué. **Decide el usuario.**
 
 ## El registro
 
-Una fila por propuesta, en el registro de lentes que fija la configuración del ambiente:
+Anotá cada propuesta en el registro de lentes del ambiente (`foreman`, por defecto `~/.foreman/LENTES.md`):
 
 ```markdown
 | Fecha | Proyecto | Punto | Lente | Propuesta (una línea) | ¿Se usó? | Por qué |

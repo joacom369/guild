@@ -113,10 +113,14 @@ def revisar_clave(filas, cols):
         print("- Única entre las filas con clave.")
 
 
-def revisar_cruce(filas, otro, por, hoja, sep):
+def revisar_cruce(filas, cols, otro, por, hoja, sep):
     aca, _, alla = por.partition("=")
     alla = alla or aca
-    _, filas_otro = leer(otro, hoja, sep)
+    if aca not in cols:
+        raise SystemExit(f"Columna {aca!r} no encontrada en este archivo. Disponibles: {', '.join(cols)}")
+    cols_otro, filas_otro = leer(otro, hoja, sep)
+    if alla not in cols_otro:
+        raise SystemExit(f"Columna {alla!r} no encontrada en {Path(otro).name}. Disponibles: {', '.join(cols_otro)}")
     indice = Counter(valor_clave(f, [alla]) for f in filas_otro)
     indice.pop(None, None)
     sin_clave = ninguna = una = varias = 0
@@ -170,6 +174,10 @@ if __name__ == "__main__":
     print(tabla_md(["Columna", "Tipo", "Con valor", "Vacíos", "Ceros", "Distintos", "Mín", "Máx", "Más frecuentes"],
                    [perfil_columna(c, [f.get(c) for f in filas], a.decimal) for c in cols]))
     if a.clave:
-        revisar_clave(filas, [c.strip() for c in a.clave.split(",")])
+        claves = [c.strip() for c in a.clave.split(",")]
+        faltan = [c for c in claves if c not in cols]
+        if faltan:
+            raise SystemExit(f"Columna(s) de --clave no encontradas: {', '.join(faltan)}. Disponibles: {', '.join(cols)}")
+        revisar_clave(filas, claves)
     if a.cruzar:
-        revisar_cruce(filas, a.cruzar, a.por, a.hoja, a.sep)
+        revisar_cruce(filas, cols, a.cruzar, a.por, a.hoja, a.sep)
