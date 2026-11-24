@@ -32,6 +32,7 @@ de cada repositorio (las licencias, comprobadas en su archivo LICENSE); se revis
 | `Remotion Skills` · github.com/remotion-dev/skills | **Sin `LICENSE` en raíz** | Capa 5 (video programático), fuera del núcleo UI web; revisar licencia comercial de Remotion | Instalar sólo dentro de un proyecto puntual de Remotion |
 | `Manim` · ManimCommunity/manim / `Motion Canvas` · motion-canvas/motion-canvas | MIT | Capa 5 (video matemático/explicativo), fuera del catálogo base de páginas web | Referencia o herramienta sólo si el proyecto pide video programático |
 | `TweenJS` · CreateJS/TweenJS / `gifenc` · mattdesl/gifenc | MIT | Sin mantenimiento reciente (push `2023-12-18` y `2024-09-19` al `2026-11-24`) | Nada: usar CSS nativo, `Motion` o `Anime.js` |
+| `Seokwoooo/lucian-uxui` (skill externa) | MIT | Instala ~930 B siempre cargados, compite por disparo con `kiln`/`impeccable` y manda preferir sus bloques sin cambiar el diseño (choca con identidad propia y `DESIGN.md`) | Usar directo el catálogo `Seokwoooo/lucian-uxui-prompt` desde la tabla de primitivas abajo |
 
 ## Catálogo de referencias AAA (identidad propia, *clean-room*)
 
@@ -72,3 +73,4 @@ propia en el contrato del paso 3; nunca se clona el sitio ni se copia código pr
 | `shadcnblocks/kibo` ([`kibo-ui.com`](https://kibo-ui.com)) | MIT (push `2026-05-04`) | Extiende `shadcn/ui` con tablas, zonas de carga (*dropzones*) y bloques de IA; revisar el código al copiar |
 | `motiondivision/motion` | MIT (React y JS puro; **sólo si CSS nativo no alcanza**) | Física de resortes y transiciones de layout; obligatorio respetar `prefers-reduced-motion` |
 | `juliangarnier/anime` (Anime.js) | MIT (JS puro; **sólo si CSS nativo no alcanza**) | *Timelines*, *staggers* y animación SVG compleja sin React; obligatorio respetar `prefers-reduced-motion` |
+| `Seokwoooo/lucian-uxui-prompt` ([`lucianlabs.dev/uxui-prompt`](https://lucianlabs.dev/uxui-prompt/)) | MIT (**HTML/CSS/JS puro, sin dependencias**; 480 elementos con teclado, touch y `prefers-reduced-motion`) | Consultar bajo demanda la API estática (`https://lucianlabs.dev/uxui-prompt/api/v1/en/catalog.tsv`, `e/<ID>.txt` y `tokens.css`, espejo en `raw.githubusercontent.com/Seokwoooo/lucian-uxui-prompt/main/api/v1/en/`) sin inventar IDs. Al portar: conservar el comentario `MIT`, remapear `var(--ux-*)` a los tokens `:root` del proyecto, anular `.ux { font-family: inherit }`, quitar anchos fijos de galería para `390 px` y validar con `foto_pagina.py --estricto` |

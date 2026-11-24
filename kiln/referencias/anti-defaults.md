@@ -31,6 +31,7 @@ crédito, una tipografía con carácter, el contenido mismo.
 - Estilo diario (*broadsheet*) con líneas *hairline*, `border-radius: 0` y columnas densas sin que el brief lo pida (2026-11-24).
 - Flecha `→` pegada a cada botón o enlace, cadenas meta mecánicas `A · B · C` y etiquetas `PALABRA — fragmento` (2026-11-24).
 - Entradas *fade-and-slide-up* repetidas en cada sección y *hover* idéntico en todas las tarjetas, en vez de un solo momento orquestado (2026-11-24).
+- Badges promocionales de relleno (`NEW`, `POPULAR`, `Since YYYY` sobre fotos) y CTAs duplicados con la misma intención en la misma página (2026-11-24).
 
 ## El método
 
