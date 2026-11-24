@@ -1,7 +1,6 @@
 # Anti-defaults: lo que sale «de fábrica»
 
-Lista viva, revisada el 2026-10-26: los defaults cambian por oleadas, así que cada ítem nuevo se agrega con su
-fecha. Sin dirección, el modelo cae en unos pocos estilos; una instrucción general («que no parezca hecho por IA»)
+Lista viva, revisada el 2026-10-26 y ampliada el 2026-11-24: los defaults cambian por oleadas, así que cada ítem nuevo se agrega con su fecha. Sin dirección, el modelo cae en unos pocos estilos; una instrucción general («que no parezca hecho por IA»)
 sólo cambia un default por otro. Lo que funciona es **nombrar el patrón**. El pedido del usuario manda sobre esta
 lista: si pide un fondo crema, va crema.
 
@@ -28,6 +27,10 @@ crédito, una tipografía con carácter, el contenido mismo.
   abiertos (bibliotecas públicas, museos), con su crédito, y nunca presentadas como propias del cliente.
 - Sombra dura, borde lateral grueso de color, modales donde alcanza un panel.
 - Animaciones en loop sin función.
+- Fondo casi negro con un único acento verde ácido o bermellón como estética por defecto (2026-11-24).
+- Estilo diario (*broadsheet*) con líneas *hairline*, `border-radius: 0` y columnas densas sin que el brief lo pida (2026-11-24).
+- Flecha `→` pegada a cada botón o enlace, cadenas meta mecánicas `A · B · C` y etiquetas `PALABRA — fragmento` (2026-11-24).
+- Entradas *fade-and-slide-up* repetidas en cada sección y *hover* idéntico en todas las tarjetas, en vez de un solo momento orquestado (2026-11-24).
 
 ## El método
 
