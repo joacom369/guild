@@ -210,38 +210,45 @@ def subir_piso(nombre, modelo="sonnet"):
     print(f"{archivo.relative_to(RAIZ)}: " + ", ".join(f"{c} {m['tasa']:.0%} ({m['corridas']})" for c, m in casos.items()))
 
 
-if sys.argv[1:2] == ["--piso"]:
-    for nombre in sys.argv[2:]:
-        subir_piso(nombre)
-    sys.exit()
+def main(argv=None):
+    args = sys.argv[1:] if argv is None else list(argv)
 
-if sys.argv[1:2] == ["--verificar-sha256"]:
-    verificar_sha256(sys.argv[2] if len(sys.argv) > 2 else None)
-    sys.exit()
+    if args[:1] == ["--piso"]:
+        for nombre in args[1:]:
+            subir_piso(nombre)
+        return
 
-objetivos = sys.argv[1:] or PROPIAS
-bloqueadas = []
-for nombre in objetivos:
-    carpeta = RAIZ / nombre
-    assert (carpeta / "SKILL.md").exists(), f"{nombre}: no tiene SKILL.md"
-    validar_frontmatter(nombre, carpeta)
-    errores, avisos, resumen = controlar_piso(nombre, carpeta)
-    for aviso in avisos:
-        print(f"  aviso {nombre}: {aviso}")
-    if errores:
-        bloqueadas.append(nombre)
-        for error in errores:
-            print(f"  NO SALE {nombre}: {error}")
-        continue
-    destino = RAIZ / "dist" / f"{nombre}.zip"
-    destino.parent.mkdir(exist_ok=True)
-    with zipfile.ZipFile(destino, "w", zipfile.ZIP_DEFLATED) as z:
-        for f in archivos_skill(carpeta):
-            z.write(f, f.relative_to(RAIZ).as_posix())
-    print(f"{destino.relative_to(RAIZ)}: {destino.stat().st_size // 1024} KB; disparo: {resumen}")
+    if args[:1] == ["--verificar-sha256"]:
+        verificar_sha256(args[1] if len(args) > 1 else None)
+        return
 
-if bloqueadas:
-    sys.exit(f"No se empaquetaron: {', '.join(bloqueadas)}")
+    objetivos = args or PROPIAS
+    bloqueadas = []
+    for nombre in objetivos:
+        carpeta = RAIZ / nombre
+        assert (carpeta / "SKILL.md").exists(), f"{nombre}: no tiene SKILL.md"
+        validar_frontmatter(nombre, carpeta)
+        errores, avisos, resumen = controlar_piso(nombre, carpeta)
+        for aviso in avisos:
+            print(f"  aviso {nombre}: {aviso}")
+        if errores:
+            bloqueadas.append(nombre)
+            for error in errores:
+                print(f"  NO SALE {nombre}: {error}")
+            continue
+        destino = RAIZ / "dist" / f"{nombre}.zip"
+        destino.parent.mkdir(exist_ok=True)
+        with zipfile.ZipFile(destino, "w", zipfile.ZIP_DEFLATED) as z:
+            for f in archivos_skill(carpeta):
+                z.write(f, f.relative_to(RAIZ).as_posix())
+        print(f"{destino.relative_to(RAIZ)}: {destino.stat().st_size // 1024} KB; disparo: {resumen}")
 
-if not sys.argv[1:]:
-    escribir_sha256sums(objetivos)
+    if bloqueadas:
+        sys.exit(f"No se empaquetaron: {', '.join(bloqueadas)}")
+
+    if not args:
+        escribir_sha256sums(objetivos)
+
+
+if __name__ == "__main__":
+    main()
