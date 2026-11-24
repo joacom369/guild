@@ -101,7 +101,7 @@ Cuando un caso de `evals/piso.json` queda bajo el piso deseado (por ejemplo `pro
 ## Análisis de errores y suite E2E (opt-in)
 
 - **Análisis de errores sobre sesiones reales:** pide permiso previo al usuario declarando qué sesiones se leerán y el costo estimado (`foreman` regla 6). Se revisa una muestra acotada de fallas, se clasifican las causas concretas en categorías binarias (pasa / falla, nunca escalas blandas 1–5) y las fallas repetidas se convierten en reglas o casos de prueba propuestos en `IDEAS.md`.
-- **Suite E2E `quarry → assay → hallmark` (sólo *opt-in*):** evalúa que las skills no sólo disparen, sino que ejecuten completas sin perder trazabilidad. Nunca corre en cada push ni en CI por costo en tokens/USD; antes de correrla se estima el consumo con `tokenwise`. Sobre una carpeta fixture, un evaluador determinista en Python verifica: existencia y hash válido de `FICHA.json`, `CORRIDA.json`, salida 0 de `cifras.py` (0 huérfanas) y acta final de `hallmark`, midiendo consistencia en `k = 3` corridas (`pass^k`).
+- **Suite E2E `quarry → assay → hallmark` (sólo *opt-in*):** evalúa que las skills no sólo disparen, sino que ejecuten completas sin perder trazabilidad. Nunca corre en cada push ni en CI por costo en tokens/USD; antes de correrla se estima el consumo con `tokenwise`. Sobre una carpeta fixture, un evaluador determinista en Python verifica: existencia y hash válido de `FICHA.json`, `CORRIDA.json`, salida 0 de `cifras.py` (0 huérfanas) y acta final de `hallmark`, puntuando **éxito determinista (`pass^k` con `k = 3`), tokens y turnos** antes de conservar cualquier cambio del harness.
 
 ## Qué queda a mano
 

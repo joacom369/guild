@@ -66,6 +66,12 @@ No está instalado ni probado dentro de `settings.json`; sólo se probó el coma
 }
 ```
 
+## Hooks por proyecto (`PreToolUse` y `PostToolUse`, *opt-in*)
+
+Sin instalar salvo que el proyecto lo pida. En `.claude/settings.json` del proyecto se pueden agregar dos guardias deterministas:
+- **`PreToolUse` (`Read|Edit|Write|Bash`):** bloquear acceso a secretos (`.env`, `token.json`, `client_secret*.json`) y archivos protegidos antes de correr la herramienta.
+- **`PostToolUse` (`Edit|Write`):** correr `format` / `lint` / `typecheck` tras cada edición para detectar roturas al instante sin depender de la memoria del modelo.
+
 ## Conectores con la cuenta del usuario
 
 En una cuenta de claude.ai compartida, sus conectores pueden ser de otra persona. Lo que funcionó (2026-10-26):

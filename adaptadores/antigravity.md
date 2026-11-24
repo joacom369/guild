@@ -107,6 +107,32 @@ Para que Antigravity avise al abrir una sesión si hay ideas nuevas en `~/.forem
 }
 ```
 
+## Hooks por proyecto (`PreToolUse` y `PostToolUse`, *opt-in*)
+
+A diferencia de `SessionStart` (lista plana), `PreToolUse` y `PostToolUse` usan estructura **agrupada** (`matcher` con nombre de herramienta + arreglo `hooks`) en `.agents/hooks.json` dentro de un proyecto, siempre *opt-in* (se activan solo si el usuario los habilita):
+- **`PreToolUse`:** bloquear lectura/edición de secretos (`.env`, `token.json`, `client_secret*.json`) y archivos protegidos antes de ejecutar la herramienta.
+- **`PostToolUse`:** correr `format` / `lint` / `typecheck` determinista tras editar archivos.
+
+```json
+{
+  "guardia-y-calidad": {
+    "enabled": false,
+    "PreToolUse": [
+      {
+        "matcher": "read_file|edit_file|write_file|run_command",
+        "hooks": [{ "type": "command", "command": "python scripts/check_protected.py", "timeout": 10 }]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "edit_file|write_file",
+        "hooks": [{ "type": "command", "command": "python scripts/check_code.py", "timeout": 15 }]
+      }
+    ]
+  }
+}
+```
+
 ## Checklist para marcar «probado»
 
 - [x] Cargar el índice en `AGENTS.md` global y confirmar disparo correcto de los oficios en sesión real (verificado el 2026-11-23).
