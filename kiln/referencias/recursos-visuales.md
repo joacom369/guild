@@ -26,6 +26,12 @@ de cada repositorio (las licencias, comprobadas en su archivo LICENSE); se revis
 | `daisyui` · github.com/saadeghi/daisyui | MIT | Temas prearmados de una clase dan estética genérica de plantilla (descartado para AAA con identidad propia) | Prototipos desechables donde la velocidad manda sobre la identidad |
 | `cmdk` · github.com/dip/cmdk | MIT | Más de 1 año sin commits (`2025-10-29` al `2026-11-24`) | En `shadcn/ui` ya viene envuelto como `Command`; en HTML/JS puro se resuelve con `<dialog>` + filtro |
 | `tremor` · github.com/tremorlabs/tremor | Apache-2.0 | Más de 1 año sin commits (`2025-10-10` al `2026-11-24`) y sus tarjetas KPI de fábrica chocan con `anti-defaults.md` | Ver cómo compone Tailwind + Radix + Recharts; todo tablero sigue sujeto a `datos-en-pantalla.md` |
+| `react-bits` · github.com/DavidHDev/react-bits | **MIT + Commons Clause** (Pro pago $129–$349) | Mismo autor y restricción de no-redistribución que `canvas-ui`; abundan efectos anti-default | Sólo enlazar o estudiar; nunca redistribuir componentes ni copiar sin licencia |
+| `Aceternity UI` · ui.aceternity.com | **Propietaria / sin redistribución** + Pro pago | Efectos llamativos de hero chocan con `anti-defaults.md` | Sólo referencia *clean-room*; no copiar sin licencia |
+| `Preline UI` · github.com/htmlstreamofficial/preline | **MIT + Preline Fair Use License** | Tailwind sin React, pero su cláusula *Fair Use* restringe productos competidores y tiende a estética plantilla | Sólo uso en producto final evaluando licencia |
+| `Remotion Skills` · github.com/remotion-dev/skills | **Sin `LICENSE` en raíz** | Capa 5 (video programático), fuera del núcleo UI web; revisar licencia comercial de Remotion | Instalar sólo dentro de un proyecto puntual de Remotion |
+| `Manim` · ManimCommunity/manim / `Motion Canvas` · motion-canvas/motion-canvas | MIT | Capa 5 (video matemático/explicativo), fuera del catálogo base de páginas web | Referencia o herramienta sólo si el proyecto pide video programático |
+| `TweenJS` · CreateJS/TweenJS / `gifenc` · mattdesl/gifenc | MIT | Sin mantenimiento reciente (push `2023-12-18` y `2024-09-19` al `2026-11-24`) | Nada: usar CSS nativo, `Motion` o `Anime.js` |
 
 ## Catálogo de referencias AAA (identidad propia, *clean-room*)
 
@@ -39,6 +45,7 @@ propia en el contrato del paso 3; nunca se clona el sitio ni se copia código pr
 | [`bencho.dev`](https://bencho.dev) (Lorenzo Cabra) | Comercial / *freemium* (tier gratis explorable; Pro pago ~€79/año o €99 único + MCP propio) | Selects magnéticos, sliders, *dynamic islands*, pickers táctiles, feedback físico y respuestas de estado | No copiar código fuente Pro salvo licencia adquirida; reimplementar el comportamiento en CSS/JS propio |
 | [`emilkowal.ski`](https://emilkowal.ski) · [`animations.dev`](https://animations.dev) | Sitio / material educativo de referencia (no librería MIT única) | Curvas `ease-out`, micro-interacciones (`scale: 0.97`), entradas sin *layout shift* y *toasts* | Estudiar principios y temporizaciones; escribir la implementación propia |
 | [`rauno.me`](https://rauno.me) | Portfolio y ensayos de design engineering | Calidad táctil, detalles de foco/teclado, transiciones espaciales sobrias | Referencia de oficio; respetar autoría |
+| [`tactileui.dev`](https://tactileui.dev) | Core parcial MIT + *Founder Pass* pago ($99 + MCP) | Respuesta física tipo hardware en controles, sliders y conmutadores | No copiar bloques pagos sin licencia; estudiar la mecánica *clean-room* |
 
 ### Galerías AAA de dirección visual y estructura (adaptadas al brief)
 
@@ -61,3 +68,7 @@ propia en el contrato del paso 3; nunca se clona el sitio ni se copia código pr
 | `emilkowalski/sonner` | MIT | *Toasts* apilables con física cuidada en React (en HTML puro se replica con `aria-live="polite"`) |
 | `recharts/recharts` | MIT | Gráficos en React cuando SVG nativo no alcanza, siempre sujeto a `datos-en-pantalla.md` |
 | `mantinedev/mantine` | MIT; **sistema único** (nunca mezclar con Tailwind/`shadcn`/`Radix`) | Sólo en apps internas o *backoffices* React grandes donde conviene un kit integral (`+120` componentes/hooks) |
+| `cosscom/ui` ([`coss.com/ui`](https://coss.com/ui)) | MIT (`Base UI` + Tailwind, Cal.com) | Alternativa abierta, limpia y activa a Radix para piezas estilizadas con tokens propios |
+| `shadcnblocks/kibo` ([`kibo-ui.com`](https://kibo-ui.com)) | MIT (push `2026-05-04`) | Extiende `shadcn/ui` con tablas, zonas de carga (*dropzones*) y bloques de IA; revisar el código al copiar |
+| `motiondivision/motion` | MIT (React y JS puro; **sólo si CSS nativo no alcanza**) | Física de resortes y transiciones de layout; obligatorio respetar `prefers-reduced-motion` |
+| `juliangarnier/anime` (Anime.js) | MIT (JS puro; **sólo si CSS nativo no alcanza**) | *Timelines*, *staggers* y animación SVG compleja sin React; obligatorio respetar `prefers-reduced-motion` |
