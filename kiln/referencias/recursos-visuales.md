@@ -21,6 +21,11 @@ de cada repositorio (las licencias, comprobadas en su archivo LICENSE); se revis
 | motion-primitives · github.com/ibelick/motion-primitives | MIT | React + motion, en beta; ningún componente respeta el movimiento reducido (habría que envolverlo) | Patrones sueltos para reescribir en CSS |
 | cursify · github.com/ui-layouts/cursify | **Sin licencia**: todos los derechos reservados | No se puede copiar; además, en celular y en pantallas táctiles no hace nada y cambiar el cursor cuesta accesibilidad | Nada |
 | superdesign, better-design, design-taste (madebymustafa), taste-skill v2.1.5 | Ver el relevamiento | Skills o apps de diseño que duplican o contradicen las compañeras de `kiln` | Las ideas útiles ya están en `anti-defaults.md` y en el contrato del paso 3 |
+| `vaul` · github.com/emilkowalski/vaul | MIT | Su propio `README.md` declara «unmaintained» (push `2025-10-03` al `2026-11-24`) | Usar `<dialog>` nativo o primitivas activas (`Radix` / `Base UI`) |
+| `magicui` · github.com/magicuidesign/magicui | MIT | Sus efectos estrella (brillos, rayos, marquesinas) chocan con `anti-defaults.md` | Sólo estudiar un efecto puntual si el brief lo pide explícitamente y respeta `prefers-reduced-motion` |
+| `daisyui` · github.com/saadeghi/daisyui | MIT | Temas prearmados de una clase dan estética genérica de plantilla (descartado para AAA con identidad propia) | Prototipos desechables donde la velocidad manda sobre la identidad |
+| `cmdk` · github.com/dip/cmdk | MIT | Más de 1 año sin commits (`2025-10-29` al `2026-11-24`) | En `shadcn/ui` ya viene envuelto como `Command`; en HTML/JS puro se resuelve con `<dialog>` + filtro |
+| `tremor` · github.com/tremorlabs/tremor | Apache-2.0 | Más de 1 año sin commits (`2025-10-10` al `2026-11-24`) y sus tarjetas KPI de fábrica chocan con `anti-defaults.md` | Ver cómo compone Tailwind + Radix + Recharts; todo tablero sigue sujeto a `datos-en-pantalla.md` |
 
 ## Catálogo de referencias AAA (identidad propia, *clean-room*)
 
@@ -46,9 +51,13 @@ propia en el contrato del paso 3; nunca se clona el sitio ni se copia código pr
 | [`mobbin.com`](https://mobbin.com) | Flujos reales de producto, tableros, filtros, ajustes y pantallas móviles | Tratar un flujo de marketing como tablero o viceversa |
 | [`onepagelove.com`](https://onepagelove.com) | Referencia curada de páginas únicas, landings y portfolios concretos | Usar estructuras genéricas sin adaptar al verbo del proyecto |
 
-### Primitivas open-source (cuando el stack del proyecto usa React/Tailwind)
+### Primitivas y activos open-source (piezas opcionales; el criterio siempre es de `kiln`)
 
 | Recurso | Condición | Nota |
 |---|---|---|
+| `tabler/tabler-icons` | MIT (`+5.900` SVGs de trazo limpio) | Íconos por defecto en HTML puro (SVG inline) y en React, evitando emojis y SVGs dibujados a mano |
 | [`21st.dev`](https://21st.dev) | **Verificar la licencia individual de cada bloque** antes de incorporar | Útil para gadgets React/Tailwind concretos, siempre re-estilizado con tokens del proyecto |
 | `Radix UI` · `Base UI` · `shadcn/ui` | MIT; nunca entregar componentes con estilo de fábrica sin re-tematizar | Usar para comportamiento accesible complejo cuando CSS/HTML nativo (`<dialog>`, `popover`) no alcanza |
+| `emilkowalski/sonner` | MIT | *Toasts* apilables con física cuidada en React (en HTML puro se replica con `aria-live="polite"`) |
+| `recharts/recharts` | MIT | Gráficos en React cuando SVG nativo no alcanza, siempre sujeto a `datos-en-pantalla.md` |
+| `mantinedev/mantine` | MIT; **sistema único** (nunca mezclar con Tailwind/`shadcn`/`Radix`) | Sólo en apps internas o *backoffices* React grandes donde conviene un kit integral (`+120` componentes/hooks) |

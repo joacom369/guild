@@ -12,6 +12,9 @@ direcciones de `design-taste-frontend`: acá viven el **código**, los **widgets
 - Propiedad intelectual y licencias: de sitios comerciales o sin licencia abierta (como `bencho.dev` Pro) sólo se estudia
   el comportamiento visual o táctil (*clean-room*) y se construye una implementación propia en HTML/CSS/JS o con
   primitivas MIT explícitamente compatibles con el stack del proyecto.
+- **Prueba de unicidad antes de codear:** revisar el contrato del paso 3 contra el brief; si alguna elección (paleta,
+  tipografía, grilla o layout) serviría igual para un proyecto distinto, ajustarla y anotar qué se cambió antes de
+  escribir código.
 
 ## 2. Piso técnico HTML y CSS
 
@@ -40,6 +43,9 @@ Según lo que necesite el usuario, sumar gadgets reales y propios de la identida
   comparadores o sliders con valor numérico visible en `tabular-nums`, inspectores laterales (*drawers*) en `<dialog>`.
 - **Feedback honesto:** mensajes transitorios no intrusivos (*toasts* / barra de estado con `aria-live="polite"`) que
   nombran qué cambió o cómo reintentar si algo falla.
+- **Coherencia de verbo (botón → feedback):** el control nombra exactamente la acción («Publicar», «Guardar cambios»,
+  no «Enviar») y la confirmación repite el mismo verbo («Publicado»); los errores dicen qué pasó y cómo resolverlo, sin
+  disculpas vagas.
 
 Cada widget tiene que resolver:
 1. Todos sus estados: `default`, `hover`, `focus-visible`, `active`, `disabled`, `loading`, `empty` y `error`.
@@ -57,3 +63,6 @@ En la pasada única de [`../scripts/foto_pagina.py`](../scripts/foto_pagina.py) 
 - **Pruebas de estado para widgets:** cuando la página tiene gadgets interactivos, acompañarla con un plan JSON para
   `--interacciones` que verifique relaciones (`visible`, `hidden`, `changed`, `focused`, `text_contains`, `attr`),
   evitando esperas por tiempos fijos. Lo que no se corrió se informa explícitamente como no medido.
+- **Catálogo aislado en apps grandes:** usar `Storybook` (MIT) sólo en productos o apps grandes con librería propia de
+  componentes donde conviene aislar y probar todos los estados (`loading`, `empty`, `error`, `disabled`); nunca en
+  páginas sueltas o entregas chicas (`ponytail`).
