@@ -47,6 +47,11 @@ vale más que tres que confirman lo que ya andaba.
 | Archivo autónomo (se abre sin conexión) | Todo embebido (CSS, JS, fuentes, modelos); abrirlo desde el disco y no desde el servidor; vigilar el peso |
 | Carpeta para otra persona | Un LEEME con cómo abrirlo; nombres reservados reemplazados por su código; revisar el contenido final buscándolos |
 
+**Sólo si sale a dominio público (no aplica a informes autónomos, tableros internos ni herramientas personales):**
+- *Sitio público:* `meta description`, vista previa social (`og:image`), favicon real, `sitemap.xml` y `robots.txt`, página `404` propia e imágenes comprimidas (`WebP`/`AVIF`, con `width`/`height` explícitos para evitar saltos de layout).
+- *Si además tiene backend, base o usuarios:* HTTPS activo, headers de seguridad (`CSP`, `HSTS`, `X-Content-Type-Options`), *rate limiting* y protección anti-spam en formularios públicos, backups verificados, monitoreo de errores y prueba real de *signup / login / reset*. Si hay claves filtradas en el historial de Git, se **rotan** (borrar el archivo no alcanza).
+- *Legal y rastreo:* sin cookies no esenciales ni tracking **no** agregar banner de cookies; analítica sólo si el brief la pide; privacidad y términos generados como borrador requieren validación legal humana antes de publicar.
+
 Si la página muestra cifras, antes de entregar corré `hallmark` (cada cifra buscada en las salidas, identidades,
 acta). Cerrá con una o dos líneas: qué no se miró (otro navegador, un celular real, lectores de pantalla) y qué riesgo
 queda.

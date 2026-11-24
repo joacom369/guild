@@ -97,7 +97,10 @@ JS_SONDA = r"""
     if (esMovil) {
       const cs = getComputedStyle(el);
       const esLinkInline = el.tagName === 'A' && cs.display === 'inline' && !!el.closest('p, li, dd, figcaption');
-      if (!esLinkInline && (r.width < 44 || r.height < 44)) {
+      const esOffscreen = (cs.position === 'absolute' || cs.position === 'fixed')
+        && (r.right <= 0 || r.bottom <= 0)
+        && document.activeElement !== el;
+      if (!esLinkInline && !esOffscreen && (r.width < 44 || r.height < 44)) {
         targets_chicos.push(`${etiqueta(el)} (${Math.round(r.width)}x${Math.round(r.height)})`);
       }
     }
@@ -162,7 +165,7 @@ def _ignorar_url(url):
     return url.split("?", 1)[0].rstrip("/").endswith("/favicon.ico")
 
 
-def ax_sin_nombre(ax_result):
+async def ax_sin_nombre(cmd, ax_result):
     sin_nombre = []
     for nodo in ax_result.get("nodes", []):
         if nodo.get("ignored"):
@@ -172,7 +175,20 @@ def ax_sin_nombre(ax_result):
             continue
         nombre = ((nodo.get("name") or {}).get("value") or "").strip()
         if not nombre:
-            sin_nombre.append(f"role={rol}")
+            sel = ""
+            bid = nodo.get("backendDOMNodeId")
+            if bid:
+                try:
+                    info = (await cmd("DOM.describeNode", {"backendNodeId": bid})).get("node", {})
+                    tag = (info.get("localName") or info.get("nodeName") or "").lower()
+                    attrs = info.get("attributes") or []
+                    pares = dict(zip(attrs[0::2], attrs[1::2]))
+                    id_ = f"#{pares['id']}" if pares.get("id") else ""
+                    cls = "".join(f".{c}" for c in pares.get("class", "").split()[:2])
+                    sel = f" ({tag}{id_}{cls})" if tag else ""
+                except Exception:
+                    sel = ""
+            sin_nombre.append(f"role={rol}{sel}")
     return sin_nombre
 
 
@@ -344,7 +360,7 @@ async def capturar(ws_mod, ws_url, url, salida, ancho, alto, a, es_celular, plan
         sonda = {}
         if not a.sin_sonda:
             dom = await js(f"({JS_SONDA})({json.dumps(es_celular)})") or {}
-            ax = ax_sin_nombre(await cmd("Accessibility.getFullAXTree"))
+            ax = await ax_sin_nombre(cmd, await cmd("Accessibility.getFullAXTree"))
             await cmd("Emulation.setEmulatedMedia", {"features": [
                 {"name": "prefers-color-scheme", "value": esquema},
                 {"name": "prefers-reduced-motion", "value": "reduce"},
