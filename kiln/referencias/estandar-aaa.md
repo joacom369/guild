@@ -23,7 +23,7 @@ direcciones de `design-taste-frontend`: acá viven el **código**, los **widgets
   archivos HTML sueltos o servidores estáticos locales, declarar `<link rel="icon" href="data:,">` para evitar 404 ruidosos.
 - **APIs nativas antes que librerías:** preferir `<dialog>` (cierre con `Escape` y `::backdrop` nativos), `popover`,
   `<details>`/`<summary>`, `@container` para tarjetas adaptativas, `:has()`, `clamp()` fluido, `font-variant-numeric: tabular-nums`
-  para cifras, y `color-mix()` sobre tokens definidos en `:root`.
+  para cifras, `text-wrap: balance` en títulos / `text-wrap: pretty` en párrafos, y `color-mix()` sobre tokens definidos en `:root`.
 - **Movimiento sin degradar el render:** animar sólo propiedades compuestas (`transform`, `opacity`, `clip-path`, `filter`)
   con curvas `ease-out` exponenciales (`cubic-bezier(0.22, 1, 0.36, 1)`) y respuesta táctil al presionar (`scale(0.97)`
   en `:active`).
