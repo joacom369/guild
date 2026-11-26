@@ -32,6 +32,7 @@ Mirá la lista de skills disponibles (no el disco) y usá las que estén:
 | `design-taste-frontend` | Pasos 2 y 3: proponer direcciones y fijar la dirección visual de algo nuevo, sin defaults de plantilla. Viene marcada para no cargarse sola: leé su `SKILL.md` en la carpeta de skills (o pedile al usuario que la invoque por su nombre; en Antigravity figura como `design-taste-frontend-v2-experimental`). |
 | Estándar AAA y widgets | Paso 4 y widgets/gadgets reales: piso HTML/CSS, referencias *clean-room*, estados e invariantes en [referencias/estandar-aaa.md](referencias/estandar-aaa.md). |
 | Recursos visuales | Si el brief pide textura o movimiento, o referencias AAA curadas: [referencias/recursos-visuales.md](referencias/recursos-visuales.md). |
+| Narrativa creativa con datos | Entregables cuantitativos o económicos (interactivos, y opcional en archivos) para diseñar objetos del dominio y capas conectadas: [referencias/narrativa-creativa.md](referencias/narrativa-creativa.md). |
 | `impeccable` | Paso 6: `polish` al terminar cada página, `audit` antes de entregar; `document` para el sistema. |
 | `ponytail` | Paso 4: todo el código. Si no está, aplicá sus reglas igual (ver paso 4). |
 | `developing-with-streamlit` | Si el proyecto es Streamlit. |
@@ -96,7 +97,7 @@ El diseño apunta alto; el código, al mínimo que lo resuelve entero (reglas de
 - Sin abstracciones, opciones ni código «para después». Comentarios sólo del porqué.
 - Tokens en `:root` (color, espacio, tipo); los valores no se repiten sueltos.
 - Datos reales o verosímiles, nunca «Lorem ipsum» ni «Item 1». Con cifras de un modelo:
-  [referencias/datos-en-pantalla.md](referencias/datos-en-pantalla.md).
+  [referencias/datos-en-pantalla.md](referencias/datos-en-pantalla.md). Para salir del tablero genérico con objetos propios del dominio e interacción directa: [referencias/narrativa-creativa.md](referencias/narrativa-creativa.md).
 - Tablas, presentaciones y gráficos dentro del HTML:
   [referencias/tablas-y-presentaciones.md](referencias/tablas-y-presentaciones.md). 3D:
   [referencias/3d-web.md](referencias/3d-web.md).

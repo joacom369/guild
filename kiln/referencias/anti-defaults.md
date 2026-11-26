@@ -32,6 +32,7 @@ crédito, una tipografía con carácter, el contenido mismo.
 - Flecha `→` pegada a cada botón o enlace, cadenas meta mecánicas `A · B · C` y etiquetas `PALABRA — fragmento` (2026-11-24).
 - Entradas *fade-and-slide-up* repetidas en cada sección y *hover* idéntico en todas las tarjetas, en vez de un solo momento orquestado (2026-11-24).
 - Badges promocionales de relleno (`NEW`, `POPULAR`, `Since YYYY` sobre fotos) y CTAs duplicados con la misma intención en la misma página (2026-11-24).
+- Grilla Bento uniforme (2×2 tarjetas blancas con píldora arriba a la derecha, `<input type="range">` nativos y gráficos pasivos desconectados) cuando el dominio admite un instrumento unificado o un objeto propio (2026-11-25).
 
 ## El método
 

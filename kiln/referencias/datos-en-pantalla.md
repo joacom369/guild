@@ -20,6 +20,7 @@ Para tableros, informes y recorridos que muestran cifras de un modelo, una base 
 7. **Una cifra destacada por sección como máximo,** con unidad y contra qué se compara.
 8. **Lo confidencial no llega a la pantalla publicada:** nombres reservados por código o posición; se revisa
    el HTML final buscándolos antes de entregar.
+9. **Estados extremos y privacidad honestos.** Si una serie cruza a negativo o déficit, se dibuja la línea cero real y las barras cuelgan hacia abajo; si hay modo de ocultar montos, se tapan sólo las cifras monetarias (HTML y SVG) sin esconder porcentajes, tests ni prosa. Para diseño creativo e interactivo con datos: [narrativa-creativa.md](narrativa-creativa.md).
 
 ## Formato (es-AR, salvo que el proyecto diga otra cosa)
 

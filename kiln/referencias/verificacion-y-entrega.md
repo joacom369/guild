@@ -33,6 +33,18 @@ Qué mirar en las capturas:
 - Estados de carga, vacío y error, al menos una vez.
 - Si hay modo oscuro: los dos.
 
+## Auditoría visual multi-estado
+
+Validar sólo la captura inicial en reposo oculta fallos que aparecen recién al operar el entregable (etiquetas que se pisan al enfocar un período, barras de déficit invertidas, fugas de símbolos en modo ocultar montos o controles recortados dentro de pestañas secundarias).
+
+Cuando la pantalla tiene controles interactivos, pestañas o escenarios, capturar y **mirar las imágenes** de todos los estados de estrés antes de entregar:
+
+1. **Estado inicial** en escritorio (`1440×900`) y celular (`390×844`), en claro y oscuro si aplica.
+2. **Pestañas o lentes secundarias** y una selección activa (p. ej. un período, modelo o filtro distinto del inicial).
+3. **Escenario extremo o negativo / déficit** (comprobando línea cero real, escalas sin recorte y copys coherentes en zona negativa).
+4. **Modo privacidad / ocultar montos** si existe (verificando cero fugas de `$` u otros valores monetarios fuera de la clase protegida, incluidos `<text>` de SVG).
+5. **Diálogos abiertos (`<dialog>`)** sin cortes ni trampa de foco.
+
 ## Lo que las pruebas no ven
 
 Las pruebas pueden pasar y la página verse rota (un capítulo que no carga, un script en el orden equivocado, un
