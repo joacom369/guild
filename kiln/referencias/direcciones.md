@@ -11,6 +11,7 @@ ajusta al pedido. Ofrecé las 2 a 4 que encajan, no las seis.
 | Transmitir confianza (institucional, regulado, público amplio) | **Sobria y accesible** | Contraste alto, tipografía legible, poco movimiento, jerarquía clara, formularios cuidados | Efectos, texto sobre imagen, letra chica |
 | Sorprender o mostrar un espacio (gemelo, recorrido, producto físico) | **Inmersiva / 3D** | Escena con una cámara con intención, recorrido guiado por pasos, panel de datos sobrio al costado, versión sin 3D para celulares débiles | 3D por el efecto, controles sin guía, cargar todo de golpe |
 | Mostrar trabajo (portfolio, galería, caso) | **Vitrina** | La obra manda desde la primera pantalla, la interfaz se retira, tipografía con carácter | Texto que compite con la obra |
+| Explorar un modelo, escenario o datos complejos (finanzas, macro, micro, econometría, marketing) | **Instrumento vivo** | Prosa manipulable, objetos tangibles del dominio, capas conectadas al mismo estado, registro elegido según el encargo ([narrativa-creativa.md](narrativa-creativa.md)) | Grilla Bento de tarjetas sueltas, gráficos pasivos desconectados, adorno sin dato |
 
 ## Cómo armar la vista previa de cada opción
 
@@ -46,5 +47,6 @@ el usuario pide ver el rumbo antes de programar todo), mostrar una vista previa 
 - **Densidad:** aireada · media · compacta.
 - **Movimiento:** quieto · transiciones · narrativo (scroll) · cinematográfico.
 - **Tono:** sobrio · cálido · técnico · expresivo.
+- **Registro (en entregas con datos):** ejecutivo · editorial · académico · operativo (ver [narrativa-creativa.md](narrativa-creativa.md)).
 
 Ofrecelas como segunda pregunta sólo si la primera no las resolvió.

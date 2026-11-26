@@ -19,6 +19,8 @@ ejemplo, `docx`, `xlsx`, `pptx`, `pdf`). Si no hay ninguna, una biblioteca con v
 | Presentación | Una idea por diapositiva, título que dice la conclusión, tamaño mínimo de letra, gráfico dominante por diapositiva |
 | PDF | El del documento o la página de origen, más que el texto se pueda copiar y buscar |
 
+Si el archivo comunica análisis o datos (informe económico, deck, resumen de modelo), ofrecer al usuario la opción de aplicar el enfoque visual de [narrativa-creativa.md](narrativa-creativa.md) (objetos del dominio, grillas 10×10 de frecuencias, comparadores limpios) adaptado a lectura estática.
+
 ## El piso, en archivos
 
 - Abre sin advertencias en la aplicación de destino.
