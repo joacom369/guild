@@ -1,6 +1,6 @@
 # Anti-defaults: lo que sale «de fábrica»
 
-Lista viva, revisada el 2026-10-26 y ampliada el 2026-11-24: los defaults cambian por oleadas, así que cada ítem nuevo se agrega con su fecha. Sin dirección, el modelo cae en unos pocos estilos; una instrucción general («que no parezca hecho por IA»)
+Lista viva, revisada el 2026-10-26 y ampliada el 2026-11-26: los defaults cambian por oleadas, así que cada ítem nuevo se agrega con su fecha. Sin dirección, el modelo cae en unos pocos estilos; una instrucción general («que no parezca hecho por IA»)
 sólo cambia un default por otro. Lo que funciona es **nombrar el patrón**. El pedido del usuario manda sobre esta
 lista: si pide un fondo crema, va crema.
 
@@ -33,6 +33,7 @@ crédito, una tipografía con carácter, el contenido mismo.
 - Entradas *fade-and-slide-up* repetidas en cada sección y *hover* idéntico en todas las tarjetas, en vez de un solo momento orquestado (2026-11-24).
 - Badges promocionales de relleno (`NEW`, `POPULAR`, `Since YYYY` sobre fotos) y CTAs duplicados con la misma intención en la misma página (2026-11-24).
 - Grilla Bento uniforme (2×2 tarjetas blancas con píldora arriba a la derecha, `<input type="range">` nativos y gráficos pasivos desconectados) cuando el dominio admite un instrumento unificado o un objeto propio (2026-11-25).
+- Gráficos pasivos con leyenda lejana, barras planas sin desglose y tooltips de una sola cifra suelta cuando el tablero pide micro-instrumentos precisos, etiquetas directas y popovers sincronizados (2026-11-26).
 
 ## El método
 
