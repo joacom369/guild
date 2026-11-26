@@ -44,6 +44,7 @@ Cuando la pantalla tiene controles interactivos, pestañas o escenarios, captura
 3. **Escenario extremo o negativo / déficit** (comprobando línea cero real, escalas sin recorte y copys coherentes en zona negativa).
 4. **Modo privacidad / ocultar montos** si existe (verificando cero fugas de `$` u otros valores monetarios fuera de la clase protegida, incluidos `<text>` de SVG).
 5. **Diálogos abiertos (`<dialog>`)** sin cortes ni trampa de foco.
+6. **Lupa geométrica en SVG/Canvas y estados hover/popover:** comprobar `getBBox()` (`0` textos recortados respecto al `viewBox` y `0` solapamientos), contornos de hover ajustados al píxel sobre el dato real y tooltips/popovers abiertos sin tapar el punto enfocado.
 
 ## Lo que las pruebas no ven
 

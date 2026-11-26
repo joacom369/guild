@@ -47,6 +47,8 @@ propia en el contrato del paso 3; nunca se clona el sitio ni se copia código pr
 | [`emilkowal.ski`](https://emilkowal.ski) · [`animations.dev`](https://animations.dev) | Sitio / material educativo de referencia (no librería MIT única) | Curvas `ease-out`, micro-interacciones (`scale: 0.97`), entradas sin *layout shift* y *toasts* | Estudiar principios y temporizaciones; escribir la implementación propia |
 | [`rauno.me`](https://rauno.me) | Portfolio y ensayos de design engineering | Calidad táctil, detalles de foco/teclado, transiciones espaciales sobrias | Referencia de oficio; respetar autoría |
 | [`tactileui.dev`](https://tactileui.dev) | Core parcial MIT + *Founder Pass* pago ($99 + MCP) | Respuesta física tipo hardware en controles, sliders y conmutadores | No copiar bloques pagos sin licencia; estudiar la mecánica *clean-room* |
+| [`clara.com/ai-monitor`](https://www.clara.com/ai-monitor) | Sitio comercial / editorial de datos (relevado `2026-11-26`) | Par serif editorial + `tabular-nums`, etiquetas directas al final de curva, *cross-dimming* entre gráficos hermanos, barras divergentes con curva neta y acordeones BI con `interpolate-size` | Estudio *clean-room* de estructura e interacción; nunca copiar marca, paleta ni código |
+| `@adeebrq` ([`x.com/adeebrq`](https://x.com/adeebrq)) | Showcases estáticos de producto (relevado `2026-11-26`) | Paridad real claro/oscuro en tableros densos, *tick-bars* / tiras de confianza, barras segmentadas y sparklines en filas de tabla, tooltips con desglose y alertas accionables | Sólo referencia visual *clean-room*; nunca clonar composiciones ni copy |
 
 ### Galerías AAA de dirección visual y estructura (adaptadas al brief)
 

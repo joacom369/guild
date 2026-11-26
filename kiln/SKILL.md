@@ -33,6 +33,7 @@ Mirá la lista de skills disponibles (no el disco) y usá las que estén:
 | Estándar AAA y widgets | Paso 4 y widgets/gadgets reales: piso HTML/CSS, referencias *clean-room*, estados e invariantes en [referencias/estandar-aaa.md](referencias/estandar-aaa.md). |
 | Recursos visuales | Si el brief pide textura o movimiento, o referencias AAA curadas: [referencias/recursos-visuales.md](referencias/recursos-visuales.md). |
 | Narrativa creativa con datos | Entregables cuantitativos o económicos (interactivos, y opcional en archivos) para diseñar objetos del dominio y capas conectadas: [referencias/narrativa-creativa.md](referencias/narrativa-creativa.md). |
+| Oficio de micro-detalle | Micro-instrumentos en tablas/tarjetas, popovers sincronizados, paridad claro/oscuro y lupa geométrica al píxel: [referencias/oficio-microdetalle.md](referencias/oficio-microdetalle.md). |
 | `impeccable` | Paso 6: `polish` al terminar cada página, `audit` antes de entregar; `document` para el sistema. |
 | `ponytail` | Paso 4: todo el código. Si no está, aplicá sus reglas igual (ver paso 4). |
 | `developing-with-streamlit` | Si el proyecto es Streamlit. |
@@ -93,7 +94,7 @@ El diseño apunta alto; el código, al mínimo que lo resuelve entero (reglas de
 - Lo que el proyecto ya tiene (componentes, tokens, utilidades) antes que lo nuevo. CSS nativo antes que una
   librería. Ninguna dependencia por unas pocas líneas; si se agrega, con versión fija.
 - Piso AAA de HTML/CSS, widgets y gadgets reales con identidad propia (sin controles muertos ni copias de referencias):
-  [referencias/estandar-aaa.md](referencias/estandar-aaa.md).
+  [referencias/estandar-aaa.md](referencias/estandar-aaa.md). Para micro-instrumentos, popovers sincronizados, paridad claro/oscuro y lupa geométrica al píxel: [referencias/oficio-microdetalle.md](referencias/oficio-microdetalle.md).
 - Sin abstracciones, opciones ni código «para después». Comentarios sólo del porqué.
 - Tokens en `:root` (color, espacio, tipo); los valores no se repiten sueltos.
 - Datos reales o verosímiles, nunca «Lorem ipsum» ni «Item 1». Con cifras de un modelo:
